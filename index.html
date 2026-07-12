@@ -61,6 +61,7 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
+        /* ===== ЖАНРЫ — РАСКРЫВАЮТСЯ НА ВСЮ ШИРИНУ ===== */
         .genres-wrapper {
             position: absolute;
             top: 20px;
@@ -70,12 +71,13 @@
             align-items: center;
             height: 50px;
             overflow: visible;
+            max-width: calc(100% - 100px);
         }
 
         .genres-slide {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             overflow: hidden;
             max-width: 0;
             opacity: 0;
@@ -85,18 +87,18 @@
                         visibility 0.6s ease;
             padding: 0;
             white-space: nowrap;
-            height: 42px;
+            height: 44px;
             background: rgba(11, 14, 20, 0.85);
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid transparent;
             backdrop-filter: blur(10px);
         }
 
         .genres-slide.open {
-            max-width: 900px;
+            max-width: 1200px;
             opacity: 1;
             visibility: visible;
-            padding: 0 10px;
+            padding: 0 14px;
             border: 1px solid #2a313f;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
         }
@@ -109,7 +111,7 @@
             padding: 4px 12px;
             cursor: pointer;
             transition: 0.2s ease;
-            border-radius: 16px;
+            border-radius: 20px;
             white-space: nowrap;
             flex-shrink: 0;
             border: 2px solid #ff0000;
@@ -185,7 +187,6 @@
             transform: scale(1.01);
         }
 
-        /* ===== КНОПКА ПОИСКА С АНИМАЦИЕЙ ===== */
         .search-wrapper .search-btn {
             position: absolute;
             right: 8px;
@@ -199,7 +200,6 @@
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: system-ui, -apple-system, sans-serif;
             letter-spacing: 0.5px;
             height: 44px;
@@ -218,110 +218,19 @@
             transform: translateY(-50%) scale(0.97);
         }
 
-        /* Анимация движения кнопки влево */
         .search-wrapper .search-btn.animating {
             right: calc(100% - 140px);
             background: #00cc44;
             box-shadow: 0 0 40px rgba(0, 204, 68, 0.4);
-            transition: right 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-                        background 0.5s ease,
-                        box-shadow 0.5s ease;
         }
 
-        /* Возврат на место */
         .search-wrapper .search-btn.returning {
             right: 8px;
             background: #ff0000;
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
-            transition: right 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-                        background 0.5s ease,
-                        box-shadow 0.5s ease;
         }
 
-        .search-history-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: #151b24;
-            border: 1px solid #2a313f;
-            border-radius: 16px;
-            padding: 8px 0;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .search-history-dropdown.active {
-            display: block;
-            animation: dropdownSlide 0.25s ease;
-        }
-
-        .search-history-dropdown::-webkit-scrollbar {
-            width: 4px;
-        }
-        .search-history-dropdown::-webkit-scrollbar-track {
-            background: #1a212b;
-            border-radius: 10px;
-        }
-        .search-history-dropdown::-webkit-scrollbar-thumb {
-            background: #f1c40f;
-            border-radius: 10px;
-        }
-
-        .search-history-dropdown .history-item {
-            padding: 10px 20px;
-            color: #8892a8;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.15s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .search-history-dropdown .history-item:hover {
-            background: #1e232c;
-            color: #f0f2f5;
-        }
-
-        .search-history-dropdown .history-item .icon {
-            color: #3c4557;
-            font-size: 14px;
-        }
-
-        .search-history-dropdown .history-empty {
-            padding: 20px;
-            color: #3c4557;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .search-history-dropdown .history-clear-btn {
-            padding: 8px 20px;
-            color: #6a7288;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.15s ease;
-            border-top: 1px solid #1f2631;
-            text-align: center;
-        }
-
-        .search-history-dropdown .history-clear-btn:hover {
-            color: #ff4444;
-            background: rgba(255, 0, 0, 0.05);
-        }
-
-        @@keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
+        /* ===== РУЧНАЯ КАРУСЕЛЬ ===== */
         .bottom-section {
             width: 100%;
             height: calc(45vh - 4px);
@@ -337,16 +246,41 @@
 
         .marquee-container {
             width: 100%;
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: hidden;
             position: relative;
             padding-top: 10px;
+            cursor: grab;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .marquee-container:active {
+            cursor: grabbing;
+        }
+
+        .marquee-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .marquee-container::-webkit-scrollbar-track {
+            background: #1a212b;
+            border-radius: 10px;
+        }
+
+        .marquee-container::-webkit-scrollbar-thumb {
+            background: #f1c40f;
+            border-radius: 10px;
+        }
+
+        .marquee-container::-webkit-scrollbar-thumb:hover {
+            background: #f39c12;
         }
 
         .marquee {
             display: flex;
-            animation: scrollMarquee 80s linear infinite;
             gap: 25px;
-            padding-left: 20px;
+            padding: 0 20px;
             width: max-content;
             margin-top: 5px;
             align-items: flex-start;
@@ -408,15 +342,6 @@
             letter-spacing: 0.3px;
         }
 
-        @@keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .marquee-container:hover .marquee {
-            animation-play-state: paused;
-        }
-
         .search-results-grid {
             display: none;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -448,6 +373,7 @@
             margin-bottom: 12px;
         }
 
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -580,16 +506,17 @@
             transform: rotate(90deg);
         }
 
-        @@keyframes fadeIn {
+        @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        @@keyframes slideUp {
+        @keyframes slideUp {
             from { transform: translateY(30px) scale(0.95); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
+        /* ===== ФУТЕР ===== */
         .site-footer {
             width: 100%;
             background: #0f141c;
@@ -654,10 +581,6 @@
             transform: scale(1.02);
         }
 
-        .footer-column .email-link .email-icon {
-            margin-right: 8px;
-        }
-
         .footer-bottom {
             max-width: 1200px;
             margin: 0 auto;
@@ -693,7 +616,8 @@
             color: #f1c40f;
         }
 
-        @@media (max-width: 768px) {
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
             .bottom-section { height: calc(55vh - 4px); }
             .movie-card { width: 140px; }
@@ -706,9 +630,8 @@
             .logo-overlay { top: 12px; left: 12px; }
             .genres-wrapper { top: 12px; left: 60px; height: 38px; }
             .genres-slide { height: 34px; }
-            .genres-slide.open { max-width: 500px; }
+            .genres-slide.open { max-width: 70vw; }
             .genres-slide .genre-item { font-size: 12px; padding: 3px 10px; }
-            .search-history-dropdown .history-item { font-size: 14px; padding: 8px 16px; }
             .modal-content { max-width: 380px; max-height: 92vh; }
             .modal-content .modal-title { font-size: 18px; }
             .modal-content .modal-info { padding: 14px 16px 16px; }
@@ -718,6 +641,9 @@
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
                 gap: 16px;
                 padding: 10px 10px;
+            }
+            .marquee-container::-webkit-scrollbar {
+                height: 4px;
             }
             .footer-content {
                 grid-template-columns: 1fr;
@@ -730,10 +656,10 @@
             }
         }
 
-        @@media (max-width: 480px) {
+        @media (max-width: 480px) {
             .movie-card { width: 110px; }
             .movie-card .title { font-size: 10px; padding: 6px 8px; }
-            .marquee { gap: 15px; }
+            .marquee { gap: 15px; padding: 0 10px; }
             .search-wrapper { width: 96%; }
             .search-wrapper input { font-size: 14px; padding: 10px 16px; height: 44px; padding-right: 100px; }
             .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
@@ -741,9 +667,8 @@
             .logo-overlay { top: 8px; left: 8px; }
             .genres-wrapper { top: 8px; left: 48px; height: 32px; }
             .genres-slide { height: 28px; }
-            .genres-slide.open { max-width: 280px; padding: 0 6px; }
+            .genres-slide.open { max-width: 60vw; padding: 0 6px; }
             .genres-slide .genre-item { font-size: 10px; padding: 2px 8px; }
-            .search-history-dropdown .history-item { font-size: 13px; padding: 6px 14px; }
             .modal-overlay { padding: 10px; }
             .modal-content { max-width: 95%; max-height: 95vh; }
             .modal-content .modal-title { font-size: 16px; }
@@ -755,6 +680,9 @@
                 grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
                 gap: 12px;
                 padding: 10px 8px;
+            }
+            .marquee-container::-webkit-scrollbar {
+                height: 3px;
             }
             .footer-content {
                 grid-template-columns: 1fr;
@@ -983,6 +911,7 @@
             }
         ];
 
+        // ===== ЖАНРЫ =====
         function getAllGenres() {
             const genresSet = new Set();
             movies.forEach(movie => {
@@ -1065,17 +994,16 @@
             }
         }
 
+        // ===== КАРУСЕЛЬ (ручная) =====
         function getMarqueeHTML() {
             let html = '';
-            for (let repeat = 0; repeat < 2; repeat++) {
-                movies.forEach(movie => {
-                    const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
-                    html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                                <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                                <div class="title">${movie.name} ${badge}</div>
-                            </div>`;
-                });
-            }
+            movies.forEach(movie => {
+                const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
+                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name} ${badge}</div>
+                        </div>`;
+            });
             return html;
         }
 
@@ -1121,6 +1049,14 @@
         attachCardClickHandlers();
         renderGenres();
 
+        // ===== ПОДДЕРЖКА ПРОКРУТКИ КОЛЁСИКОМ =====
+        const marqueeContainer = document.getElementById('marqueeContainer');
+        marqueeContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            marqueeContainer.scrollLeft += e.deltaY;
+        });
+
+        // ===== ПОИСК =====
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         let isAnimating = false;
@@ -1222,7 +1158,6 @@
             }
         });
 
-        // ===== ОБНОВЛЕННАЯ ФУНКЦИЯ ПОИСКА С АНИМАЦИЕЙ =====
         function performSearch() {
             if (isAnimating) return;
 
@@ -1233,14 +1168,10 @@
 
             isAnimating = true;
             currentSearchQuery = query;
-
-            // Запускаем анимацию кнопки — движение влево
             searchBtn.classList.remove('returning');
             searchBtn.classList.add('animating');
 
-            // Ждём окончания анимации (0.8 секунды)
             setTimeout(() => {
-                // Выполняем поиск
                 let filtered = movies;
                 if (query.trim()) {
                     const lowerQuery = query.toLowerCase().trim();
@@ -1260,7 +1191,6 @@
                     renderSearchResults(filtered);
                 }
 
-                // Возвращаем кнопку на место
                 searchBtn.classList.remove('animating');
                 searchBtn.classList.add('returning');
 
@@ -1288,6 +1218,7 @@
             }
         });
 
+        // ===== МОДАЛЬНОЕ ОКНО =====
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalPoster = document.getElementById('modalPoster');
