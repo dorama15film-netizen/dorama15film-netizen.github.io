@@ -3,587 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дорамы от Дианы</title>
+    <title>Завтра снова на работу - Смотреть онлайн</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             background: #0b0e14;
             color: #f0f2f5;
-            font-family: system-ui, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        .image-wrapper {
-            width: 100%;
-            height: 55vh;
-            overflow: hidden;
-            position: relative;
-        }
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            display: block;
-        }
-        .logo-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            cursor: pointer;
-        }
-        .logo-overlay img {
-            height: 50px;
-            width: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
 
-        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЖАНРОВ ===== */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            background: #151b24;
-            border: 1px solid #2a313f;
-            border-radius: 16px;
-            min-width: 200px;
-            padding: 8px 0;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
-            z-index: 100;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .dropdown-menu.active {
-            display: block;
-        }
-        .dropdown-menu .menu-item {
-            padding: 10px 20px;
-            color: #8892a8;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.15s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .dropdown-menu .menu-item:hover {
-            background: #1e232c;
-            color: #f0f2f5;
-        }
-        .dropdown-menu .menu-item.active {
-            color: #f1c40f;
-            background: #1e232c;
-        }
-        .dropdown-menu .menu-item .count {
-            color: #3c4557;
-            font-size: 13px;
-        }
-
-        .search-section {
-            width: 100%;
-            padding: 15px 20px;
-            background: #0b0e14;
-            display: flex;
-            justify-content: center;
-        }
-        .search-wrapper {
-            width: 92%;
-            max-width: 1200px;
-            position: relative;
-        }
-        .search-wrapper input {
-            width: 100%;
-            padding: 14px 28px;
-            background: #000;
-            border: 3px solid #ff0000;
-            border-radius: 50px;
-            color: #f0f2f5;
-            font-size: 20px;
-            height: 58px;
-            padding-right: 140px;
-            outline: none;
-        }
-        .search-wrapper .search-btn {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #ff0000;
-            border: none;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            height: 44px;
-        }
-        .bottom-section {
-            width: 100%;
-            padding: 20px 0;
-            background: #0b0e14;
-            overflow: hidden;
-        }
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-        }
-        .marquee {
-            display: flex;
-            animation: scrollMarquee 80s linear infinite;
-            gap: 25px;
-            padding-left: 20px;
-            width: max-content;
-        }
-        .marquee-container:hover .marquee {
-            animation-play-state: paused;
-        }
-        .movie-card {
-            flex-shrink: 0;
-            width: 200px;
-            background: #151b24;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #2a313f;
-            cursor: pointer;
-            transition: 0.3s ease;
-        }
-        .movie-card:hover {
-            transform: scale(1.05);
-            border-color: #f1c40f;
-        }
-        .movie-card img {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            display: block;
-        }
-        .movie-card .title {
-            padding: 12px 14px;
-            text-align: center;
-            font-size: 15px;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        @keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .site-footer {
+        .header {
+            padding: 16px 30px;
             background: #0f141c;
-            border-top: 1px solid #1f2631;
-            padding: 30px 20px;
-            margin-top: auto;
-        }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
-        }
-        .footer-column h4 {
-            color: #f0f2f5;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .footer-column p {
-            color: #8892a8;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-        .footer-column a {
-            color: #f1c40f;
-            text-decoration: none;
-        }
-        .footer-column .email-link {
-            display: inline-block;
-            background: #1e232c;
-            padding: 8px 20px;
-            border-radius: 30px;
-            border: 1px solid #2a313f;
-            color: #f1c40f;
-            font-size: 15px;
-            font-weight: 600;
-            margin-top: 4px;
-        }
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 16px;
-            border-top: 1px solid #1a212b;
-            margin-top: 16px;
+            border-bottom: 1px solid #1f2631;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
             flex-wrap: wrap;
         }
-        .footer-bottom p {
-            color: #3c4557;
-            font-size: 13px;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-overlay.active {
+
+        .header .back-btn {
+            color: #8892a8;
+            text-decoration: none;
+            font-size: 18px;
             display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            font-weight: 500;
         }
-        .modal-content {
-            background: #151b24;
-            border-radius: 20px;
-            max-width: 420px;
-            width: 100%;
-            border: 2px solid #f1c40f;
-            overflow: hidden;
-            max-height: 90vh;
-            overflow-y: auto;
+
+        .header .back-btn:hover {
+            color: #f1c40f;
         }
-        .modal-content img {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            display: block;
-        }
-        .modal-content .modal-info {
-            padding: 20px;
-        }
-        .modal-content .modal-title {
+
+        .header .title {
             font-size: 22px;
             font-weight: 700;
-            margin-bottom: 8px;
+            color: #f0f2f5;
         }
-        .modal-content .modal-details {
+
+        .header .title span {
             color: #8892a8;
-            font-size: 14px;
-            line-height: 1.7;
-        }
-        .modal-content .modal-details strong {
-            color: #f0f2f5;
-        }
-        .modal-content .modal-rating {
-            color: #f1c40f;
-            font-size: 18px;
-            font-weight: 600;
-            margin: 8px 0 12px;
-        }
-        .modal-content .modal-watch-link {
-            display: block;
-            background: #f1c40f;
-            color: #0b0e14;
-            padding: 12px 20px;
-            border-radius: 30px;
-            text-align: center;
-            font-weight: 700;
+            font-weight: 400;
             font-size: 16px;
-            text-decoration: none;
-            margin-top: 8px;
+            margin-left: 10px;
         }
-        .modal-content .modal-close {
-            position: sticky;
-            top: 10px;
-            float: right;
-            margin: 10px 14px 0 0;
-            background: rgba(0,0,0,0.8);
-            border: 2px solid #2a313f;
-            color: #f0f2f5;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
+
+        .main-content {
+            flex: 1;
+            padding: 20px 30px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-wrapper {
+            width: 100%;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1f2631;
+            position: relative;
+            aspect-ratio: 16 / 9;
+        }
+
+        .player-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .episode-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .episode-info .current-episode {
             font-size: 20px;
-            cursor: pointer;
-            z-index: 10;
+            font-weight: 600;
+            color: #f1c40f;
         }
+
+        .episode-info .episode-title {
+            color: #8892a8;
+            font-size: 16px;
+        }
+
+        .episodes-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid #1f2631;
+            margin-bottom: 20px;
+        }
+
+        .episodes-list .episode-btn {
+            background: #151b24;
+            border: 2px solid #2a313f;
+            color: #8892a8;
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.25s ease;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .episodes-list .episode-btn:hover {
+            border-color: #f1c40f;
+            color: #f0f2f5;
+            transform: translateY(-2px);
+        }
+
+        .episodes-list .episode-btn.active {
+            background: #f1c40f;
+            border-color: #f1c40f;
+            color: #0b0e14;
+        }
+
+        .drama-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .drama-description {
+            color: #8892a8;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .drama-description strong {
+            color: #f0f2f5;
+        }
+
+        .drama-description .info-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .drama-description .info-item .label {
+            color: #6a7288;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .drama-description .info-item .value {
+            color: #f0f2f5;
+        }
+
+        .cast-section {
+            margin-top: 10px;
+        }
+
+        .cast-section .cast-title {
+            color: #f0f2f5;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cast-section .cast-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #1f2631;
+        }
+
+        .cast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .cast-item {
+            background: #151b24;
+            border: 1px solid #1f2631;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: 0.2s ease;
+        }
+
+        .cast-item:hover {
+            border-color: #2a313f;
+            background: #1a212b;
+        }
+
+        .cast-item .actor-name {
+            color: #f0f2f5;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .cast-item .actor-role {
+            color: #8892a8;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .cast-item .actor-desc {
+            color: #6a7288;
+            font-size: 12px;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .cast-item .actor-role-tag {
+            display: inline-block;
+            background: #1e232c;
+            color: #f1c40f;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
         @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
+            .header { padding: 12px 16px; }
+            .header .title { font-size: 18px; }
+            .main-content { padding: 12px 16px 20px; }
+            .episodes-list .episode-btn { padding: 8px 16px; font-size: 13px; }
+            .episode-info .current-episode { font-size: 17px; }
+            .drama-info { grid-template-columns: 1fr; gap: 20px; }
+            .cast-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .drama-description .info-item .label { min-width: 80px; font-size: 14px; }
+        }
+
+        @media (max-width: 480px) {
+            .header .title { font-size: 15px; }
+            .header .title span { font-size: 13px; display: block; margin-left: 0; }
+            .episodes-list .episode-btn { padding: 6px 14px; font-size: 12px; }
+            .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .cast-item { padding: 10px 12px; }
+            .cast-item .actor-name { font-size: 13px; }
+            .cast-item .actor-role { font-size: 12px; }
+            .drama-description .info-item { flex-direction: column; gap: 2px; }
+            .drama-description .info-item .label { min-width: auto; }
         }
     </style>
 </head>
 <body>
-
-    <div class="image-wrapper">
-        <img src="Pr.jpeg" alt="Изображение" />
-        <div class="logo-overlay" id="logoWrapper">
-            <img src="Logo.jpeg" alt="Логотип" />
-            <div class="dropdown-menu" id="dropdownMenu"></div>
+    <header class="header">
+        <a href="/" class="back-btn">← На главную</a>
+        <div class="title">
+            🎬 Завтра снова на работу!
+            <span>6 серий</span>
         </div>
-    </div>
+    </header>
 
-    <div class="search-section">
-        <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Поиск фильмов..." />
-            <button class="search-btn" id="searchBtn">Найти</button>
+    <main class="main-content">
+        <!-- ПЛЕЕР -->
+        <div class="player-wrapper">
+            <iframe id="videoPlayer" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
         </div>
-    </div>
 
-    <div class="bottom-section">
-        <div class="marquee-container">
-            <div class="marquee" id="marquee"></div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">✕</button>
-            <img id="modalPoster" src="" alt="Постер" />
-            <div class="modal-info">
-                <div class="modal-title" id="modalTitle">Название</div>
-                <div class="modal-details" id="modalDetails"></div>
-                <div class="modal-rating" id="modalRating">⭐ 9.5</div>
-                <a class="modal-watch-link" id="watchLink" href="watch.html">▶ Смотреть все серии</a>
+        <div class="episode-info">
+            <div>
+                <span class="current-episode" id="currentEpisode">Серия 1</span>
+                <span class="episode-title" id="episodeTitle">— Начало истории</span>
             </div>
         </div>
-    </div>
 
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h4>О сайте</h4>
-                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
+        <div class="episodes-list" id="episodesList"></div>
+
+        <div class="drama-info">
+            <div class="drama-description">
+                <div class="info-item"><span class="label">📅 Дата выхода:</span><span class="value">22 июня 2026 года</span></div>
+                <div class="info-item"><span class="label">🎭 Жанр:</span><span class="value">мелодрама, комедия</span></div>
+                <div class="info-item"><span class="label">🌍 Страна:</span><span class="value">Республика Корея</span></div>
+                <div class="info-item"><span class="label">🎬 Режиссёр:</span><span class="value">Чо Ын-соль</span></div>
+                <div class="info-item"><span class="label">✍️ Сценарист:</span><span class="value">Ким Гён Мин</span></div>
+                <div class="info-item"><span class="label">📺 Серий:</span><span class="value">12</span></div>
+                <div class="info-item"><span class="label">📡 Трансляция:</span><span class="value">tvN</span></div>
             </div>
-            <div class="footer-column">
-                <h4>Информация</h4>
-                <p>© 2026 Дорамы от Дианы</p>
-            </div>
-            <div class="footer-column">
-                <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
+
+            <div class="cast-section">
+                <div class="cast-title">🎭 Актёрский состав</div>
+                <div class="cast-grid">
+                    <div class="cast-item"><div class="actor-name">Со Ин Гук</div><div class="actor-role">Кан Си У</div><div class="actor-desc">Руководитель подразделения бытовой техники</div><span class="actor-role-tag">Главная роль</span></div>
+                    <div class="cast-item"><div class="actor-name">Пак Джи Хён</div><div class="actor-role">Ча Джи Юн</div><div class="actor-desc">Сотрудница с семилетним стажем</div><span class="actor-role-tag">Главная роль</span></div>
+                    <div class="cast-item"><div class="actor-name">Кан Ми На</div><div class="actor-role">Юн Но А</div><div class="actor-desc">Сотрудница подразделения бытовой техники</div></div>
+                    <div class="cast-item"><div class="actor-name">Чхве Гён Хун</div><div class="actor-role">Чо Га Ыль</div><div class="actor-desc">Вокалист группы, первая любовь Ча Джи Юн</div></div>
+                    <div class="cast-item"><div class="actor-name">Вон Гю Бин</div><div class="actor-role">Ли Чжэ Ин</div><div class="actor-desc">Сёрфер с фиолетовыми волосами</div></div>
+                    <div class="cast-item"><div class="actor-name">Пак Е Ён</div><div class="actor-role">Чхве Су Джин</div><div class="actor-desc">Руководитель дизайн-команды</div></div>
+                    <div class="cast-item"><div class="actor-name">Ким Джон Ён</div><div class="actor-role">Хан У Джин</div><div class="actor-desc">Президент отдела DA</div></div>
+                    <div class="cast-item"><div class="actor-name">Хан Тхэ Ха</div><div class="actor-role">Ку Сын Джун</div><div class="actor-desc">Гитарист группы «Каыль»</div></div>
+                    <div class="cast-item"><div class="actor-name">Ю Сон Чжу</div><div class="actor-role">Чха Ён Мук</div><div class="actor-desc">Отец Ча Джи Юн</div></div>
+                    <div class="cast-item"><div class="actor-name">Ли Чжи Хён</div><div class="actor-role">Нам Хе Гён</div><div class="actor-desc">Мать Ча Джи Юн</div></div>
+                    <div class="cast-item"><div class="actor-name">Ём Сын И</div><div class="actor-role">Юн Да Ра</div><div class="actor-desc">Старшая сестра Юн Но А</div></div>
+                    <div class="cast-item"><div class="actor-name">Ким Хак Сон</div><div class="actor-role">Но Джин Чхоль</div><div class="actor-desc">Управляющий директор отдела DA</div></div>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
-        </div>
-    </footer>
+    </main>
 
     <script>
-        const movies = [
-            { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия' },
-            { name: 'Начало', year: 2010, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg', genre: 'фантастика, боевик' },
-            { name: 'Тёмный рыцарь', year: 2008, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_111543.jpg', genre: 'боевик, драма' },
-            { name: 'Форрест Гамп', year: 1994, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg', genre: 'драма, комедия' },
-            { name: 'Зелёная миля', year: 1999, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg', genre: 'драма, фэнтези' },
-            { name: 'Список Шиндлера', year: 1993, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg', genre: 'драма, история' },
-            { name: 'Бойцовский клуб', year: 1999, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg', genre: 'драма' },
-            { name: 'Криминальное чтиво', year: 1994, rating: 8.4, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_342.jpg', genre: 'криминал, драма' },
-            { name: 'Гладиатор', year: 2000, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_474.jpg', genre: 'боевик, драма' },
-            { name: 'Матрица', year: 1999, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg', genre: 'фантастика, боевик' },
-            { name: 'Властелин колец', year: 2003, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg', genre: 'фэнтези, приключения' },
-            { name: 'Джокер', year: 2019, rating: 8.2, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1049709.jpg', genre: 'драма' },
-            { name: 'Оппенгеймер', year: 2023, rating: 8.4, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_4667487.jpg', genre: 'драма, история' },
-            { name: 'Побег из Шоушенка', year: 1994, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_326.jpg', genre: 'драма' },
-            { name: 'Крёстный отец', year: 1972, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_328.jpg', genre: 'криминал, драма' },
-            { name: 'Дюна', year: 2021, rating: 8.0, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1169310.jpg', genre: 'фантастика, приключения' },
-            { name: 'Аватар', year: 2009, rating: 8.0, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_251733.jpg', genre: 'фантастика, приключения' },
-            { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
-        ];
-
-        const dramaInfo = {
-            name: 'Завтра снова на работу!',
-            year: 2024,
-            rating: 9.5,
-            poster: 'DR.jpg',
-            details: `<strong>Дата выхода:</strong> 22 июня 2026 года<br><strong>Жанр:</strong> мелодрама, комедия<br><strong>Страна:</strong> Республика Корея<br><strong>Режиссёр:</strong> Чо Ын-соль`
+        // ===== YouTube ССЫЛКИ =====
+        const EPISODE_VIDEOS = {
+            1: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_1',
+            2: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_2',
+            3: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_3',
+            4: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_4',
+            5: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_5',
+            6: 'https://www.youtube.com/embed/ЗАМЕНИТЕ_НА_ВАШ_ID_6'
         };
 
-        // ===== ЖАНРЫ =====
-        function getAllGenres() {
-            const genresSet = new Set();
-            movies.forEach(movie => {
-                if (movie.genre) {
-                    movie.genre.split(',').forEach(g => {
-                        const trimmed = g.trim();
-                        if (trimmed.toLowerCase() !== 'триллер') {
-                            genresSet.add(trimmed);
-                        }
-                    });
-                }
-            });
-            return Array.from(genresSet).sort();
-        }
+        const episodes = [
+            { number: 1, title: 'Начало истории' },
+            { number: 2, title: 'Поворот событий' },
+            { number: 3, title: 'Тайна раскрывается' },
+            { number: 4, title: 'Битва' },
+            { number: 5, title: 'Испытание' },
+            { number: 6, title: 'Финал' }
+        ];
 
-        function renderGenres() {
-            const container = document.getElementById('dropdownMenu');
-            const genres = getAllGenres();
-            let html = `<div class="menu-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></div>`;
-            genres.forEach(genre => {
-                const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
-                html += `<div class="menu-item" data-genre="${genre}">${genre} <span class="count">${count}</span></div>`;
-            });
-            container.innerHTML = html;
+        const episodesList = document.getElementById('episodesList');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const currentEpisodeSpan = document.getElementById('currentEpisode');
+        const episodeTitleSpan = document.getElementById('episodeTitle');
+        let currentEpisode = 1;
 
-            container.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const genre = this.dataset.genre;
-                    filterByGenre(genre);
-                    container.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-                    this.classList.add('active');
-                    closeGenres();
-                });
+        function renderEpisodes() {
+            episodesList.innerHTML = '';
+            episodes.forEach(ep => {
+                const btn = document.createElement('button');
+                btn.className = 'episode-btn' + (ep.number === currentEpisode ? ' active' : '');
+                btn.textContent = `Серия ${ep.number}`;
+                btn.dataset.number = ep.number;
+                btn.addEventListener('click', () => loadEpisode(ep.number));
+                episodesList.appendChild(btn);
             });
         }
 
-        function toggleGenres() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('active');
+        function loadEpisode(number) {
+            currentEpisode = number;
+            const episode = episodes.find(e => e.number === number);
+            currentEpisodeSpan.textContent = `Серия ${number}`;
+            episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
+            document.querySelectorAll('.episode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
+            });
+            videoPlayer.src = EPISODE_VIDEOS[number];
         }
 
-        function closeGenres() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.remove('active');
+        function saveLastEpisode(number) {
+            try { localStorage.setItem('lastDramaEpisode', number); } catch(e) {}
         }
 
-        document.getElementById('logoWrapper').addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleGenres();
+        function getLastEpisode() {
+            try { return parseInt(localStorage.getItem('lastDramaEpisode')) || 1; } catch(e) { return 1; }
+        }
+
+        renderEpisodes();
+        loadEpisode(getLastEpisode());
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.episode-btn');
+            if (btn) saveLastEpisode(parseInt(btn.dataset.number));
         });
 
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('logoWrapper');
-            const menu = document.getElementById('dropdownMenu');
-            if (!wrapper.contains(e.target) && !menu.contains(e.target)) {
-                closeGenres();
-            }
+        window.addEventListener('load', () => {
+            const saved = getLastEpisode();
+            if (saved !== currentEpisode) loadEpisode(saved);
         });
-
-        let currentGenre = 'all';
-
-        function filterByGenre(genre) {
-            currentGenre = genre;
-            const query = document.getElementById('searchInput').value;
-            let filtered = movies;
-            if (genre !== 'all') {
-                filtered = filtered.filter(m => m.genre && m.genre.includes(genre));
-            }
-            if (query.trim()) {
-                const lowerQuery = query.toLowerCase().trim();
-                filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
-            }
-            renderMarquee(filtered);
-        }
-
-        // ===== КАРУСЕЛЬ =====
-        function renderMarquee(filteredMovies) {
-            const marquee = document.getElementById('marquee');
-            if (!filteredMovies) filteredMovies = movies;
-            if (filteredMovies.length === 0) {
-                marquee.innerHTML = '<div style="color:#8892a8;padding:40px;font-size:20px;width:100%;text-align:center;">😕 Ничего не найдено</div>';
-                return;
-            }
-            let html = '';
-            for (let repeat = 0; repeat < 2; repeat++) {
-                filteredMovies.forEach(movie => {
-                    const badge = movie.isSeries ? '6 серий' : '';
-                    html += `
-                        <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name} ${badge}</div>
-                        </div>
-                    `;
-                });
-            }
-            marquee.innerHTML = html;
-            attachCardClickHandlers();
-        }
-
-        // ===== МОДАЛЬНОЕ ОКНО =====
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalClose = document.getElementById('modalClose');
-        const modalPoster = document.getElementById('modalPoster');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDetails = document.getElementById('modalDetails');
-        const modalRating = document.getElementById('modalRating');
-        const watchLink = document.getElementById('watchLink');
-
-        function openModal(movie) {
-            if (movie.isDrama) {
-                modalPoster.src = dramaInfo.poster;
-                modalTitle.textContent = dramaInfo.name;
-                modalDetails.innerHTML = dramaInfo.details;
-                modalRating.textContent = `⭐ ${dramaInfo.rating}`;
-                watchLink.style.display = 'block';
-                watchLink.href = 'watch.html';
-            } else {
-                modalPoster.src = movie.poster;
-                modalTitle.textContent = movie.name;
-                modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
-                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
-                watchLink.style.display = 'none';
-            }
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        modalClose.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
-        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
-
-        function attachCardClickHandlers() {
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    try { const movie = JSON.parse(this.dataset.movie); openModal(movie); } catch(e) { console.error(e); }
-                });
-            });
-        }
-
-        // ===== ПОИСК =====
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-
-        function performSearch() {
-            const query = searchInput.value;
-            let filtered = movies;
-            if (query.trim()) {
-                const lowerQuery = query.toLowerCase().trim();
-                filtered = movies.filter(m => m.name.toLowerCase().includes(lowerQuery));
-            }
-            if (currentGenre !== 'all') {
-                filtered = filtered.filter(m => m.genre && m.genre.includes(currentGenre));
-            }
-            renderMarquee(filtered);
-        }
-
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { e.preventDefault(); performSearch(); }
-        });
-
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        renderMarquee(movies);
-        renderGenres();
-        attachCardClickHandlers();
     </script>
-
 </body>
 </html>
