@@ -737,7 +737,7 @@
                 <div class="modal-title" id="modalTitle">Название</div>
                 <div class="modal-details" id="modalDetails"></div>
                 <div class="modal-rating" id="modalRating">⭐ 9.5</div>
-                <a class="modal-watch-link" id="watchLink" href="watch.html">▶ Смотреть все серии</a>
+                <a class="modal-watch-link" id="watchLink" href="watch.html"> Смотреть все серии</a>
             </div>
         </div>
     </div>
@@ -754,7 +754,7 @@
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1088,20 +1088,20 @@
             const dropdown = document.getElementById('searchHistoryDropdown');
             const history = getSearchHistory();
             if (history.length === 0) {
-                dropdown.innerHTML = `<div class="history-empty">📭 История поиска пуста</div>`;
+                dropdown.innerHTML = `<div class="history-empty"> История поиска пуста</div>`;
                 return;
             }
             let html = '';
             history.forEach(query => {
                 html += `
                     <div class="history-item" data-query="${query}">
-                        <span class="icon">🔍</span>
+                        <span class="icon"></span>
                         <span>${query}</span>
                     </div>
                 `;
             });
             html += `
-                <div class="history-clear-btn" id="clearHistoryBtn">🗑️ Очистить историю</div>
+                <div class="history-clear-btn" id="clearHistoryBtn"> Очистить историю</div>
             `;
             dropdown.innerHTML = html;
             dropdown.querySelectorAll('.history-item').forEach(item => {
