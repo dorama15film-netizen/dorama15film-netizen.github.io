@@ -56,6 +56,7 @@
     </header>
 
     <main class="main-content">
+        <!-- ===== ПЛЕЕР GOOGLE ДИСК ===== -->
         <div class="player-wrapper">
             <iframe id="videoPlayer" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
         </div>
@@ -101,14 +102,14 @@
     </main>
 
     <script>
-        // ===== ID С GOOGLE ДИСКА =====
-        const EPISODE_IDS = {
-            1: '1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK',
-            2: '1_1JjQriKaTU-2R1Fm9DvObebkSN594rW',
-            3: '1eyG0vj2qyG31KZwms6zRO7AgbhZLKct8',
-            4: '1xHW58vCLsDaE57nyfnaKGSbTAUb75GzG',
-            5: '1kFvBvgO030Kp_F6RHw3lGDgvtiKfw8_n',
-            6: '1tzb5y8GYWCkmQzaUBwpV2q1zkIMao9f9'
+        // ===== ВАШИ ID С GOOGLE ДИСКА =====
+        const EPISODE_VIDEOS = {
+            1: 'https://drive.google.com/file/d/1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK/preview',
+            2: 'https://drive.google.com/file/d/1_1JjQriKaTU-2R1Fm9DvObebkSN594rW/preview',
+            3: 'https://drive.google.com/file/d/1eyG0vj2qyG31KZwms6zRO7AgbhZLKct8/preview',
+            4: 'https://drive.google.com/file/d/1xHW58vCLsDaE57nyfnaKGSbTAUb75GzG/preview',
+            5: 'https://drive.google.com/file/d/1kFvBvgO030Kp_F6RHw3lGDgvtiKfw8_n/preview',
+            6: 'https://drive.google.com/file/d/1tzb5y8GYWCkmQzaUBwpV2q1zkIMao9f9/preview'
         };
 
         const episodes = [
@@ -147,8 +148,7 @@
                 btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
             });
 
-            const videoId = EPISODE_IDS[number];
-            videoPlayer.src = `https://drive.google.com/file/d/${videoId}/preview`;
+            videoPlayer.src = EPISODE_VIDEOS[number];
         }
 
         function saveLastEpisode(number) {
