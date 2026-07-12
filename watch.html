@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -111,14 +111,15 @@
     </main>
 
     <script>
+        // ===== ВСЕ 6 СЕРИЙ (исправленные ссылки) =====
         const EPISODE_VIDEOS = {
-    1: 'https://drive.google.com/file/d/1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK/preview',
-    2: 'https://drive.google.com/file/d/1_1JjQriKaTU-2R1Fm9DvObebkSN594rW/preview',
-    3: 'https://drive.google.com/file/d/1eyG0vj2qyG31KZwms6zRO7AgbhZLKct8/preview',
-    4: 'https://drive.google.com/file/d/1xHW58vCLsDaE57nyfnaKGSbTAUb75GzG/preview',
-    5: 'https://drive.google.com/file/d/1kFvBvgO030Kp_F6RHw3lGDgvtiKfw8_n/preview',
-    6: 'https://drive.google.com/file/d/1tzb5y8GYWCkmQzaUBwpV2q1zkIMao9f9/preview'
-};
+            1: 'https://drive.google.com/file/d/1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK/preview',
+            2: 'https://drive.google.com/file/d/1_1JjQriKaTU-2R1Fm9DvObebkSN594rW/preview',
+            3: 'https://drive.google.com/file/d/1eyG0vj2qyG31KZwms6zRO7AgbhZLKct8/preview',
+            4: 'https://drive.google.com/file/d/1xHW58vCLsDaE57nyfnaKGSbTAUb75GzG/preview',
+            5: 'https://drive.google.com/file/d/1kFvBvgO030Kp_F6RHw3lGDgvtiKfw8_n/preview',
+            6: 'https://drive.google.com/file/d/1tzb5y8GYWCkmQzaUBwpV2q1zkIMao9f9/preview'
+        };
 
         const episodes = [
             { number: 1, title: 'Начало истории' },
@@ -148,15 +149,15 @@
         }
 
         function loadEpisode(number) {
-    currentEpisode = number;
-    const episode = episodes.find(e => e.number === number);
-    currentEpisodeSpan.textContent = `Серия ${number}`;
-    episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
-    document.querySelectorAll('.episode-btn').forEach(btn => {
-        btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
-    });
-    videoPlayer.src = EPISODE_VIDEOS[number];
-}
+            currentEpisode = number;
+            const episode = episodes.find(e => e.number === number);
+            currentEpisodeSpan.textContent = `Серия ${number}`;
+            episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
+            document.querySelectorAll('.episode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
+            });
+            videoPlayer.src = EPISODE_VIDEOS[number];
+        }
 
         function saveLastEpisode(number) {
             try { localStorage.setItem('lastDramaEpisode', number); } catch(e) {}
