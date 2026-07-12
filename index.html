@@ -339,224 +339,48 @@
     </footer>
 
     <script>
-        const movies = [
-            {
-                name: 'Завтра снова на работу!',
-                year: 2024,
-                rating: 9.5,
-                poster: '/DR.jpg',
-                isDrama: true,
-                isSeries: true
-            },
-            {
-                name: 'Начало',
-                year: 2010,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg'
-            },
-            {
-                name: 'Тёмный рыцарь',
-                year: 2008,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_111543.jpg'
-            },
-            {
-                name: 'Форрест Гамп',
-                year: 1994,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg'
-            },
-            {
-                name: 'Зелёная миля',
-                year: 1999,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg'
-            },
-            {
-                name: 'Список Шиндлера',
-                year: 1993,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg'
-            },
-            {
-                name: 'Бойцовский клуб',
-                year: 1999,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg'
-            },
-            {
-                name: 'Криминальное чтиво',
-                year: 1994,
-                rating: 8.4,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_342.jpg'
-            },
-            {
-                name: 'Гладиатор',
-                year: 2000,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_474.jpg'
-            },
-            {
-                name: 'Матрица',
-                year: 1999,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg'
-            },
-            {
-                name: 'Властелин колец',
-                year: 2003,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg'
-            },
-            {
-                name: 'Джокер',
-                year: 2019,
-                rating: 8.2,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1049709.jpg'
-            },
-            {
-                name: 'Оппенгеймер',
-                year: 2023,
-                rating: 8.4,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_4667487.jpg'
-            },
-            {
-                name: 'Побег из Шоушенка',
-                year: 1994,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_326.jpg'
-            },
-            {
-                name: 'Крёстный отец',
-                year: 1972,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_328.jpg'
-            },
-            {
-                name: 'Дюна',
-                year: 2021,
-                rating: 8.0,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1169310.jpg'
-            },
-            {
-                name: 'Аватар',
-                year: 2009,
-                rating: 8.0,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_251733.jpg'
-            },
-            {
-                name: 'Титаник',
-                year: 1997,
-                rating: 8.3,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg'
-            }
-        ];
+    const movies = [
+        { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true },
+        { name: 'Начало', year: 2010, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg' },
+        { name: 'Тёмный рыцарь', year: 2008, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_111543.jpg' },
+        { name: 'Форрест Гамп', year: 1994, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg' },
+        { name: 'Зелёная миля', year: 1999, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg' },
+        { name: 'Список Шиндлера', year: 1993, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg' },
+        { name: 'Бойцовский клуб', year: 1999, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg' },
+        { name: 'Криминальное чтиво', year: 1994, rating: 8.4, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_342.jpg' },
+        { name: 'Гладиатор', year: 2000, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_474.jpg' },
+        { name: 'Матрица', year: 1999, rating: 8.5, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg' },
+        { name: 'Властелин колец', year: 2003, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg' },
+        { name: 'Джокер', year: 2019, rating: 8.2, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1049709.jpg' },
+        { name: 'Оппенгеймер', year: 2023, rating: 8.4, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_4667487.jpg' },
+        { name: 'Побег из Шоушенка', year: 1994, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_326.jpg' },
+        { name: 'Крёстный отец', year: 1972, rating: 8.7, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_328.jpg' },
+        { name: 'Дюна', year: 2021, rating: 8.0, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1169310.jpg' },
+        { name: 'Аватар', year: 2009, rating: 8.0, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_251733.jpg' },
+        { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg' }
+    ];
 
-        const dramaInfo = {
-            name: 'Завтра снова на работу!',
-            year: 2024,
-            rating: 9.5,
-            poster: '/DR.jpg',
-            details: `
-                <strong>Дата выхода:</strong> 22 июня 2026 года<br>
-                <strong>Жанр:</strong> мелодрама, комедия<br>
-                <strong>Страна:</strong> Республика Корея<br>
-                <strong>Режиссёр:</strong> Чо Ын-соль
-            `
-        };
+    const dramaInfo = {
+        name: 'Завтра снова на работу!',
+        year: 2024,
+        rating: 9.5,
+        poster: 'DR.jpg',
+        details: `<strong>Дата выхода:</strong> 22 июня 2026 года<br><strong>Жанр:</strong> мелодрама, комедия<br><strong>Страна:</strong> Республика Корея<br><strong>Режиссёр:</strong> Чо Ын-соль`
+    };
 
-        function getMarqueeHTML() {
-            let html = '';
-            for (let repeat = 0; repeat < 2; repeat++) {
-                movies.forEach(movie => {
-                    const badge = movie.isSeries ? '6 серий' : '';
-                    html += `
-                        <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name} ${badge}</div>
-                        </div>
-                    `;
-                });
-            }
-            return html;
+    // ===== КАРУСЕЛЬ С АНИМАЦИЕЙ =====
+    function getMarqueeHTML(filter = '') {
+        let filteredMovies = movies;
+        if (filter.trim()) {
+            const query = filter.toLowerCase().trim();
+            filteredMovies = movies.filter(m => m.name.toLowerCase().includes(query));
         }
-
-        document.getElementById('marquee').innerHTML = getMarqueeHTML();
-
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalClose = document.getElementById('modalClose');
-        const modalPoster = document.getElementById('modalPoster');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDetails = document.getElementById('modalDetails');
-        const modalRating = document.getElementById('modalRating');
-        const watchLink = document.getElementById('watchLink');
-
-        function openModal(movie) {
-            if (movie.isDrama) {
-                modalPoster.src = dramaInfo.poster;
-                modalTitle.textContent = dramaInfo.name;
-                modalDetails.innerHTML = dramaInfo.details;
-                modalRating.textContent = `⭐ ${dramaInfo.rating}`;
-                watchLink.style.display = 'block';
-                watchLink.href = '/watch.html';
-            } else {
-                modalPoster.src = movie.poster;
-                modalTitle.textContent = movie.name;
-                modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
-                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
-                watchLink.style.display = 'none';
-            }
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        if (filteredMovies.length === 0) {
+            return '<div style="color:#8892a8;padding:40px;font-size:20px;width:100%;text-align:center;">😕 Ничего не найдено</div>';
         }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        modalClose.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) closeModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        document.querySelectorAll('.movie-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const movieData = this.dataset.movie;
-                if (movieData) {
-                    try {
-                        const movie = JSON.parse(movieData);
-                        openModal(movie);
-                    } catch (e) {
-                        console.error('Ошибка:', e);
-                    }
-                }
-            });
-        });
-
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-
-        searchBtn.addEventListener('click', function() {
-            const query = searchInput.value.toLowerCase().trim();
-            const marquee = document.getElementById('marquee');
-            
-            if (!query) {
-                marquee.innerHTML = getMarqueeHTML();
-                return;
-            }
-
-            const filtered = movies.filter(m => m.name.toLowerCase().includes(query));
-            if (filtered.length === 0) {
-                marquee.innerHTML = '<div style="color:#8892a8;padding:40px;font-size:20px;width:100%;text-align:center;">😕 Ничего не найдено</div>';
-                return;
-            }
-
-            let html = '';
-            filtered.forEach(movie => {
+        let html = '';
+        for (let repeat = 0; repeat < 2; repeat++) {
+            filteredMovies.forEach(movie => {
                 const badge = movie.isSeries ? '6 серий' : '';
                 html += `
                     <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
@@ -565,30 +389,86 @@
                     </div>
                 `;
             });
-            marquee.innerHTML = html;
+        }
+        return html;
+    }
 
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const movieData = this.dataset.movie;
-                    if (movieData) {
-                        try {
-                            const movie = JSON.parse(movieData);
-                            openModal(movie);
-                        } catch (e) {
-                            console.error('Ошибка:', e);
-                        }
-                    }
-                });
+    const marqueeElement = document.getElementById('marquee');
+    marqueeElement.innerHTML = getMarqueeHTML();
+
+    // ===== МОДАЛЬНОЕ ОКНО =====
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalPoster = document.getElementById('modalPoster');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDetails = document.getElementById('modalDetails');
+    const modalRating = document.getElementById('modalRating');
+    const watchLink = document.getElementById('watchLink');
+
+    function openModal(movie) {
+        if (movie.isDrama) {
+            modalPoster.src = dramaInfo.poster;
+            modalTitle.textContent = dramaInfo.name;
+            modalDetails.innerHTML = dramaInfo.details;
+            modalRating.textContent = `⭐ ${dramaInfo.rating}`;
+            watchLink.style.display = 'block';
+            watchLink.href = 'watch.html';
+        } else {
+            modalPoster.src = movie.poster;
+            modalTitle.textContent = movie.name;
+            modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
+            modalRating.textContent = `⭐ ${movie.rating || '—'}`;
+            watchLink.style.display = 'none';
+        }
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+    function attachCardClickHandlers() {
+        document.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', function() {
+                try { const movie = JSON.parse(this.dataset.movie); openModal(movie); } catch(e) { console.error(e); }
             });
         });
+    }
 
-        searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                searchBtn.click();
-            }
-        });
-    </script>
+    attachCardClickHandlers();
+
+    // ===== ПОИСК =====
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+
+    function performSearch() {
+        const query = searchInput.value;
+        marqueeElement.innerHTML = getMarqueeHTML(query);
+        // Перезапускаем анимацию
+        marqueeElement.style.animation = 'none';
+        setTimeout(() => {
+            marqueeElement.style.animation = 'scrollMarquee 80s linear infinite';
+        }, 10);
+        attachCardClickHandlers();
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch();
+        }
+    });
+
+    // ===== ПЛЕЕР (watch.html) =====
+    // В файле watch.html ссылки на видео уже есть
+</script>
 
 </body>
 </html>
