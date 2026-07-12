@@ -62,12 +62,13 @@
             align-items: center;
             height: 50px;
             overflow: visible;
+            max-width: calc(100% - 100px);
         }
 
         .genres-slide {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             overflow: hidden;
             max-width: 0;
             opacity: 0;
@@ -85,10 +86,10 @@
         }
 
         .genres-slide.open {
-            max-width: 1200px;
+            max-width: 900px;
             opacity: 1;
             visibility: visible;
-            padding: 0 14px;
+            padding: 0 12px;
             border: 1px solid #2a313f;
             box-shadow: 0 8px 30px rgba(0,0,0,0.6);
         }
@@ -96,9 +97,9 @@
         .genres-slide .genre-item {
             color: #f1c40f;
             font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 5px 14px;
+            padding: 4px 12px;
             cursor: pointer;
             transition: 0.2s ease;
             border-radius: 20px;
@@ -121,8 +122,8 @@
         }
         .genres-slide .genre-item .count {
             color: #ff6666;
-            font-size: 11px;
-            margin-left: 4px;
+            font-size: 10px;
+            margin-left: 3px;
         }
         .genres-slide .genre-item.active .count {
             color: #f1c40f;
@@ -364,20 +365,12 @@
         }
 
         @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
             .genres-slide.open {
-                max-width: 500px;
+                max-width: 60vw;
             }
             .genres-slide .genre-item {
-                font-size: 12px;
-                padding: 3px 10px;
+                font-size: 11px;
+                padding: 3px 8px;
             }
             .genres-wrapper {
                 top: 12px;
@@ -394,16 +387,25 @@
                 top: 12px;
                 left: 12px;
             }
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         @media (max-width: 480px) {
             .genres-slide.open {
-                max-width: 280px;
+                max-width: 55vw;
                 padding: 0 6px;
             }
             .genres-slide .genre-item {
-                font-size: 10px;
-                padding: 2px 8px;
+                font-size: 9px;
+                padding: 2px 6px;
+                border-width: 1.5px;
             }
             .genres-wrapper {
                 top: 8px;
