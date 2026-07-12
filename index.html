@@ -745,7 +745,7 @@
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -754,29 +754,13 @@
     </footer>
 
     <script>
-        const DRAMA_VIDEO_ID = '1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK';
-
-        const dramaInfo = {
-            name: 'Завтра снова на работу!',
-            year: 2024,
-            rating: 9.5,
-            poster: 'DR.jpg',
-            genre: 'мелодрама, комедия',
-            details: `
-                <strong>Дата выхода:</strong> 22 июня 2026 года<br>
-                <strong>Жанр:</strong> мелодрама, комедия<br>
-                <strong>Страна:</strong> Республика Корея<br>
-                <strong>Режиссёр:</strong> Чо Ын-соль
-            `
-        };
-
+        // ===== СПИСОК ФИЛЬМОВ =====
         const movies = [
             {
                 name: 'Завтра снова на работу!',
                 year: 2024,
                 rating: 9.5,
                 poster: 'DR.jpg',
-                videoId: DRAMA_VIDEO_ID,
                 isDrama: true,
                 isSeries: true,
                 genre: 'мелодрама, комедия',
@@ -1001,7 +985,6 @@
             let html = '';
             movies.forEach(movie => {
                 const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
-                const isDrama = movie.isDrama ? 'true' : 'false';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
                             <div class="title">${movie.name} ${badge}</div>
@@ -1131,14 +1114,52 @@
 
         function openModal(movie) {
             if (movie.isDrama) {
-                modalPoster.src = dramaInfo.poster;
-                modalTitle.textContent = dramaInfo.name;
-                modalDetails.innerHTML = dramaInfo.details;
-                modalRating.textContent = `⭐ ${dramaInfo.rating}`;
+                let dramaData = {};
+                
+                if (movie.dramaId === 'drama1') {
+                    dramaData = {
+                        name: 'Завтра снова на работу!',
+                        year: 2024,
+                        rating: 9.5,
+                        poster: 'DR.jpg',
+                        details: `
+                            <strong>Дата выхода:</strong> 22 июня 2026 года<br>
+                            <strong>Жанр:</strong> мелодрама, комедия<br>
+                            <strong>Страна:</strong> Республика Корея<br>
+                            <strong>Режиссёр:</strong> Чо Ын-соль
+                        `
+                    };
+                } else if (movie.dramaId === 'drama2') {
+                    dramaData = {
+                        name: 'Нырять без снаряжения',
+                        year: 2026,
+                        rating: 8.5,
+                        poster: 'Wt.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Чон Хон-су<br>
+                            <strong>Жанр:</strong> Мелодрама<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 00:40:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else {
+                    dramaData = {
+                        name: movie.name,
+                        year: movie.year,
+                        rating: movie.rating,
+                        poster: movie.poster,
+                        details: `<strong>Год:</strong> ${movie.year || '—'}`
+                    };
+                }
+
+                modalPoster.src = dramaData.poster;
+                modalTitle.textContent = dramaData.name;
+                modalDetails.innerHTML = dramaData.details;
+                modalRating.textContent = `⭐ ${dramaData.rating}`;
                 watchLink.style.display = 'block';
-                // Передаём ID дорамы в ссылку
-                const dramaId = movie.dramaId || 'drama1';
-                watchLink.href = `watch.html?drama=${dramaId}`;
+                watchLink.href = `watch.html?drama=${movie.dramaId || 'drama1'}`;
             } else {
                 modalPoster.src = movie.poster;
                 modalTitle.textContent = movie.name;
