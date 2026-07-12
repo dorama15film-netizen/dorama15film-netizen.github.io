@@ -3,29 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Просмотр</title>
+    <title>Дорамы от Дианы</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        html, body {
-            width: 100%;
-            height: 100%;
+        body {
             background: #0b0e14;
-            overflow-x: hidden;
+            color: #f0f2f5;
+            font-family: system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-
         .image-wrapper {
             width: 100%;
             height: 55vh;
             overflow: hidden;
             position: relative;
-            flex-shrink: 0;
         }
-
         .image-wrapper img {
             width: 100%;
             height: 100%;
@@ -33,150 +31,43 @@
             object-position: top center;
             display: block;
         }
-
         .logo-overlay {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 10;
             cursor: pointer;
-            user-select: none;
         }
-
         .logo-overlay img {
             height: 50px;
             width: auto;
             border-radius: 10px;
-            transition: 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
-
-        .logo-overlay img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
-        }
-
-        .genres-wrapper {
-            position: absolute;
-            top: 20px;
-            left: 80px;
-            z-index: 9;
-            display: flex;
-            align-items: center;
-            height: 50px;
-            overflow: visible;
-        }
-
-        .genres-slide {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            overflow: hidden;
-            max-width: 0;
-            opacity: 0;
-            visibility: hidden;
-            transition: max-width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease, visibility 0.6s ease;
-            padding: 0;
-            white-space: nowrap;
-            height: 42px;
-            background: rgba(11, 14, 20, 0.85);
-            border-radius: 10px;
-            border: 1px solid transparent;
-            backdrop-filter: blur(10px);
-        }
-
-        .genres-slide.open {
-            max-width: 1200px;
-            opacity: 1;
-            visibility: visible;
-            padding: 0 10px;
-            border: 1px solid #2a313f;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .genres-slide .genre-item {
-            color: #f1c40f;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 4px 12px;
-            cursor: pointer;
-            transition: 0.2s ease;
-            border-radius: 16px;
-            white-space: nowrap;
-            flex-shrink: 0;
-            border: 2px solid #ff0000;
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .genres-slide .genre-item:hover {
-            color: #ffffff;
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff3333;
-            transform: scale(1.05);
-        }
-
-        .genres-slide .genre-item.active {
-            color: #f1c40f;
-            background: rgba(255, 0, 0, 0.25);
-            border-color: #ff3333;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-        }
-
-        .genres-slide .genre-item .count {
-            color: #ff6666;
-            font-size: 11px;
-            margin-left: 4px;
-        }
-
-        .genres-slide .genre-item.active .count {
-            color: #f1c40f;
-        }
-
         .search-section {
             width: 100%;
-            padding: 15px 20px 8px 20px;
+            padding: 15px 20px;
             background: #0b0e14;
             display: flex;
             justify-content: center;
-            flex-shrink: 0;
         }
-
         .search-wrapper {
             width: 92%;
             max-width: 1200px;
             position: relative;
-            overflow: visible;
-            border-radius: 50px;
         }
-
         .search-wrapper input {
             width: 100%;
             padding: 14px 28px;
-            background: #000000;
+            background: #000;
             border: 3px solid #ff0000;
             border-radius: 50px;
             color: #f0f2f5;
             font-size: 20px;
-            font-family: system-ui, -apple-system, sans-serif;
-            outline: none;
-            transition: 0.3s ease;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
             height: 58px;
             padding-right: 140px;
+            outline: none;
         }
-
-        .search-wrapper input::placeholder {
-            color: #6a7288;
-            font-size: 18px;
-        }
-
-        .search-wrapper input:focus {
-            border-color: #ff3333;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.25);
-            transform: scale(1.01);
-        }
-
         .search-wrapper .search-btn {
             position: absolute;
             right: 8px;
@@ -190,161 +81,28 @@
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-family: system-ui, -apple-system, sans-serif;
-            letter-spacing: 0.5px;
             height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            white-space: nowrap;
         }
-
-        .search-wrapper .search-btn:hover {
-            background: #cc0000;
-            transform: translateY(-50%) scale(0.97);
-        }
-
-        .search-wrapper .search-btn.animating {
-            animation: slideToLeft 2.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-
-        .search-wrapper .search-btn.returning {
-            animation: slideToRight 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-
-        @@keyframes slideToLeft {
-            0% { right: 8px; transform: translateY(-50%) scale(1); background: #ff0000; }
-            30% { transform: translateY(-50%) scale(1.1); background: #ff3333; }
-            70% { transform: translateY(-50%) scale(0.95); }
-            100% { right: calc(100% - 150px); transform: translateY(-50%) scale(1); background: #00cc44; box-shadow: 0 0 40px rgba(0, 204, 68, 0.4); }
-        }
-
-        @@keyframes slideToRight {
-            0% { right: calc(100% - 150px); transform: translateY(-50%) scale(1); background: #00cc44; }
-            50% { transform: translateY(-50%) scale(0.95); }
-            100% { right: 8px; transform: translateY(-50%) scale(1); background: #ff0000; }
-        }
-
-        .search-history-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: #151b24;
-            border: 1px solid #2a313f;
-            border-radius: 16px;
-            padding: 8px 0;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .search-history-dropdown.active {
-            display: block;
-            animation: dropdownSlide 0.25s ease;
-        }
-
-        .search-history-dropdown::-webkit-scrollbar {
-            width: 4px;
-        }
-        .search-history-dropdown::-webkit-scrollbar-track {
-            background: #1a212b;
-            border-radius: 10px;
-        }
-        .search-history-dropdown::-webkit-scrollbar-thumb {
-            background: #f1c40f;
-            border-radius: 10px;
-        }
-
-        .search-history-dropdown .history-item {
-            padding: 10px 20px;
-            color: #8892a8;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.15s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .search-history-dropdown .history-item:hover {
-            background: #1e232c;
-            color: #f0f2f5;
-        }
-
-        .search-history-dropdown .history-item .icon {
-            color: #3c4557;
-            font-size: 14px;
-        }
-
-        .search-history-dropdown .history-empty {
-            padding: 20px;
-            color: #3c4557;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .search-history-dropdown .history-clear-btn {
-            padding: 8px 20px;
-            color: #6a7288;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.15s ease;
-            border-top: 1px solid #1f2631;
-            text-align: center;
-        }
-
-        .search-history-dropdown .history-clear-btn:hover {
-            color: #ff4444;
-            background: rgba(255, 0, 0, 0.05);
-        }
-
-        @@keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
         .bottom-section {
             width: 100%;
-            height: calc(45vh - 4px);
-            background: #0b0e14;
-            display: flex;
-            align-items: flex-start;
-            overflow: hidden;
-            position: relative;
-            flex-shrink: 0;
             padding: 20px 0;
-            margin-top: 5px;
+            background: #0b0e14;
+            overflow: hidden;
         }
-
         .marquee-container {
             width: 100%;
             overflow: hidden;
-            position: relative;
-            padding-top: 10px;
         }
-
         .marquee {
             display: flex;
             animation: scrollMarquee 80s linear infinite;
             gap: 25px;
             padding-left: 20px;
             width: max-content;
-            margin-top: 5px;
-            align-items: flex-start;
         }
-
-        .marquee.hidden {
-            display: none;
+        .marquee-container:hover .marquee {
+            animation-play-state: paused;
         }
-
         .movie-card {
             flex-shrink: 0;
             width: 200px;
@@ -352,243 +110,33 @@
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid #2a313f;
-            transition: 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
-
-        .movie-card:hover {
-            transform: scale(1.05);
-            border-color: #f1c40f;
-            box-shadow: 0 12px 40px rgba(241, 196, 15, 0.15);
-        }
-
-        .movie-card .poster {
+        .movie-card img {
             width: 100%;
-            aspect-ratio: 2 / 3;
+            aspect-ratio: 2/3;
             object-fit: cover;
             display: block;
-            background: #1a212b;
         }
-
         .movie-card .title {
-            padding: 12px 14px 14px;
-            color: #f0f2f5;
-            font-family: system-ui, -apple-system, sans-serif;
+            padding: 12px 14px;
+            text-align: center;
             font-size: 15px;
             font-weight: 600;
-            text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            background: #151b24;
-            border-top: 1px solid #1f2631;
         }
-
-        .movie-card .watch-badge {
-            display: inline-block;
-            background: #f1c40f;
-            color: #0b0e14;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 12px;
-            border-radius: 20px;
-            margin-top: 4px;
-            letter-spacing: 0.3px;
-        }
-
-        @@keyframes scrollMarquee {
+        @keyframes scrollMarquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
-
-        .marquee-container:hover .marquee {
-            animation-play-state: paused;
-        }
-
-        .search-results-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-            padding: 10px 20px;
-            width: 100%;
-        }
-
-        .search-results-grid.active {
-            display: grid;
-        }
-
-        .no-results {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-            color: #8892a8;
-            font-size: 20px;
-            grid-column: 1 / -1;
-        }
-
-        .no-results.active {
-            display: block;
-        }
-
-        .no-results span {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
-            padding: 15px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #151b24;
-            border-radius: 20px;
-            max-width: 420px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 2px solid #f1c40f;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-            animation: slideUp 0.4s ease;
-            position: relative;
-        }
-
-        .modal-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .modal-content::-webkit-scrollbar-track {
-            background: #1a212b;
-        }
-        .modal-content::-webkit-scrollbar-thumb {
-            background: #f1c40f;
-            border-radius: 10px;
-        }
-
-        .modal-content .modal-poster {
-            width: 100%;
-            aspect-ratio: 2 / 3;
-            object-fit: cover;
-            display: block;
-            background: #1a212b;
-        }
-
-        .modal-content .modal-info {
-            padding: 16px 20px 20px;
-        }
-
-        .modal-content .modal-title {
-            color: #f0f2f5;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .modal-content .modal-details {
-            color: #8892a8;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            line-height: 1.7;
-            margin-bottom: 6px;
-        }
-
-        .modal-content .modal-details strong {
-            color: #f0f2f5;
-        }
-
-        .modal-content .modal-rating {
-            color: #f1c40f;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .modal-content .modal-watch-link {
-            display: block;
-            width: 100%;
-            background: #f1c40f;
-            color: #0b0e14;
-            padding: 12px 20px;
-            border-radius: 30px;
-            border: none;
-            font-weight: 700;
-            font-size: 16px;
-            transition: 0.2s;
-            font-family: system-ui, -apple-system, sans-serif;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .modal-content .modal-watch-link:hover {
-            background: #f39c12;
-            transform: scale(1.02);
-        }
-
-        .modal-content .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #2a313f;
-            color: #f0f2f5;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: system-ui, sans-serif;
-            z-index: 10;
-        }
-
-        .modal-content .modal-close:hover {
-            background: #c0392b;
-            border-color: #c0392b;
-            transform: rotate(90deg);
-        }
-
-        @@keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @@keyframes slideUp {
-            from { transform: translateY(30px) scale(0.95); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        /* ===== ФУТЕР ===== */
         .site-footer {
-            width: 100%;
             background: #0f141c;
             border-top: 1px solid #1f2631;
-            padding: 30px 20px 20px;
-            flex-shrink: 0;
+            padding: 30px 20px;
             margin-top: auto;
         }
-
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -596,34 +144,25 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 30px;
         }
-
         .footer-column h4 {
             color: #f0f2f5;
-            font-family: system-ui, -apple-system, sans-serif;
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 12px;
-            letter-spacing: 0.5px;
         }
-
         .footer-column p {
             color: #8892a8;
-            font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             line-height: 1.8;
         }
-
         .footer-column a {
             color: #f1c40f;
             text-decoration: none;
-            transition: 0.2s;
         }
-
         .footer-column a:hover {
             color: #f39c12;
             text-decoration: underline;
         }
-
         .footer-column .email-link {
             display: inline-block;
             background: #1e232c;
@@ -633,21 +172,7 @@
             color: #f1c40f;
             font-size: 15px;
             font-weight: 600;
-            transition: 0.2s;
-            margin-top: 4px;
         }
-
-        .footer-column .email-link:hover {
-            background: #2a313f;
-            border-color: #f1c40f;
-            text-decoration: none;
-            transform: scale(1.02);
-        }
-
-        .footer-column .email-link .email-icon {
-            margin-right: 8px;
-        }
-
         .footer-bottom {
             max-width: 1200px;
             margin: 0 auto;
@@ -656,45 +181,15 @@
             margin-top: 16px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
         }
-
         .footer-bottom p {
             color: #3c4557;
-            font-family: system-ui, -apple-system, sans-serif;
             font-size: 13px;
         }
-
-        .footer-bottom .social-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .footer-bottom .social-links a {
-            color: #3c4557;
-            font-size: 18px;
-            transition: 0.2s;
-            text-decoration: none;
-        }
-
-        .footer-bottom .social-links a:hover {
-            color: #f1c40f;
-        }
-
-        @@media (max-width: 768px) {
+        @media (max-width: 768px) {
             .footer-content {
                 grid-template-columns: 1fr;
-                gap: 20px;
                 text-align: center;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-            .footer-column .email-link {
-                display: inline-block;
             }
         }
     </style>
@@ -703,569 +198,79 @@
 
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Изображение" />
-
-        <div class="logo-overlay" id="logoWrapper">
+        <div class="logo-overlay">
             <img src="Logo.jpeg" alt="Логотип" />
-        </div>
-
-        <div class="genres-wrapper">
-            <div class="genres-slide" id="genresSlide"></div>
         </div>
     </div>
 
     <div class="search-section">
         <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Поиск фильмов..." autocomplete="off" />
-            <button class="search-btn" id="searchBtn">Найти</button>
-            <div class="search-history-dropdown" id="searchHistoryDropdown"></div>
+            <input type="text" placeholder="Поиск фильмов..." />
+            <button class="search-btn">Найти</button>
         </div>
     </div>
 
     <div class="bottom-section">
-        <div class="marquee-container" id="marqueeContainer">
-            <div class="marquee" id="marquee"></div>
-            <div class="search-results-grid" id="searchResultsGrid"></div>
-            <div class="no-results" id="noResults">
-                <span>😕</span>
-                Ничего не найдено
+        <div class="marquee-container">
+            <div class="marquee" id="marquee">
+                <div class="movie-card">
+                    <img src="DR.jpg" alt="Дорама" />
+                    <div class="title">Завтра снова на работу!</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg" alt="Начало" />
+                    <div class="title">Начало</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg" alt="Форрест Гамп" />
+                    <div class="title">Форрест Гамп</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg" alt="Зелёная миля" />
+                    <div class="title">Зелёная миля</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg" alt="Бойцовский клуб" />
+                    <div class="title">Бойцовский клуб</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg" alt="Матрица" />
+                    <div class="title">Матрица</div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg" alt="Властелин колец" />
+                    <div class="title">Властелин колец</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">✕</button>
-            <img class="modal-poster" id="modalPoster" src="" alt="Постер" />
-            <div class="modal-info">
-                <div class="modal-title" id="modalTitle">Название</div>
-                <div class="modal-details" id="modalDetails"></div>
-                <div class="modal-rating" id="modalRating">⭐ 9.5</div>
-                <a class="modal-watch-link" id="watchLink" href="watch.html">▶ Смотреть все серии</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== ФУТЕР ===== -->
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-column">
                 <h4>О сайте</h4>
-                <p>
-                    <strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.
-                    Мы собираем лучшие истории, чтобы вы могли наслаждаться просмотром в любое время.
-                </p>
+                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
             </div>
             <div class="footer-column">
                 <h4>Информация</h4>
-                <p>
-                    Все видео предоставлены для ознакомления.<br>
-                    Права принадлежат их законным владельцам.<br>
-                    © 2026 Дорамы от Дианы
-                </p>
+                <p>© 2026 Дорамы от Дианы</p>
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <p>
-                    По всем вопросам пишите на почту:
-                </p>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">
-                    ✉️ dorama15film@gmail.com
-                </a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
-            <div class="social-links">
-                <a href="#" title="Telegram">📱</a>
-                <a href="#" title="VK">📘</a>
-                <a href="#" title="YouTube">▶️</a>
-                <a href="mailto:dorama15film@gmail.com" title="Email">✉️</a>
-            </div>
+            <p>© 2026 Дорамы от Дианы</p>
         </div>
     </footer>
 
     <script>
-        const DRAMA_VIDEO_ID = '1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK';
-
-        const dramaInfo = {
-            name: 'Завтра снова на работу!',
-            year: 2024,
-            rating: 9.5,
-            poster: 'DR.jpg',
-            genre: 'мелодрама, комедия',
-            details: `
-                <strong>Дата выхода:</strong> 22 июня 2026 года<br>
-                <strong>Жанр:</strong> мелодрама, комедия<br>
-                <strong>Страна:</strong> Республика Корея<br>
-                <strong>Режиссёр:</strong> Чо Ын-соль
-            `
-        };
-
-        const movies = [
-            {
-                name: 'Завтра снова на работу!',
-                year: 2024,
-                rating: 9.5,
-                poster: 'DR.jpg',
-                videoId: DRAMA_VIDEO_ID,
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама, комедия'
-            },
-            {
-                name: 'Начало',
-                year: 2010,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg',
-                genre: 'фантастика, боевик'
-            },
-            {
-                name: 'Тёмный рыцарь',
-                year: 2008,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_111543.jpg',
-                genre: 'боевик, драма'
-            },
-            {
-                name: 'Форрест Гамп',
-                year: 1994,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg',
-                genre: 'драма, комедия'
-            },
-            {
-                name: 'Зелёная миля',
-                year: 1999,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg',
-                genre: 'драма, фэнтези'
-            },
-            {
-                name: 'Список Шиндлера',
-                year: 1993,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg',
-                genre: 'драма, история'
-            },
-            {
-                name: 'Бойцовский клуб',
-                year: 1999,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg',
-                genre: 'драма'
-            },
-            {
-                name: 'Криминальное чтиво',
-                year: 1994,
-                rating: 8.4,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_342.jpg',
-                genre: 'криминал, драма'
-            },
-            {
-                name: 'Гладиатор',
-                year: 2000,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_474.jpg',
-                genre: 'боевик, драма'
-            },
-            {
-                name: 'Матрица',
-                year: 1999,
-                rating: 8.5,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg',
-                genre: 'фантастика, боевик'
-            },
-            {
-                name: 'Властелин колец',
-                year: 2003,
-                rating: 8.6,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg',
-                genre: 'фэнтези, приключения'
-            },
-            {
-                name: 'Джокер',
-                year: 2019,
-                rating: 8.2,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1049709.jpg',
-                genre: 'драма'
-            },
-            {
-                name: 'Оппенгеймер',
-                year: 2023,
-                rating: 8.4,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_4667487.jpg',
-                genre: 'драма, история'
-            },
-            {
-                name: 'Побег из Шоушенка',
-                year: 1994,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_326.jpg',
-                genre: 'драма'
-            },
-            {
-                name: 'Крёстный отец',
-                year: 1972,
-                rating: 8.7,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_328.jpg',
-                genre: 'криминал, драма'
-            },
-            {
-                name: 'Дюна',
-                year: 2021,
-                rating: 8.0,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1169310.jpg',
-                genre: 'фантастика, приключения'
-            },
-            {
-                name: 'Аватар',
-                year: 2009,
-                rating: 8.0,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_251733.jpg',
-                genre: 'фантастика, приключения'
-            },
-            {
-                name: 'Титаник',
-                year: 1997,
-                rating: 8.3,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg',
-                genre: 'драма, мелодрама'
-            }
-        ];
-
-        function getAllGenres() {
-            const genresSet = new Set();
-            movies.forEach(movie => {
-                if (movie.genre) {
-                    movie.genre.split(',').forEach(g => {
-                        const trimmed = g.trim();
-                        if (trimmed.toLowerCase() !== 'триллер') {
-                            genresSet.add(trimmed);
-                        }
-                    });
-                }
-            });
-            return Array.from(genresSet).sort();
-        }
-
-        function renderGenres() {
-            const container = document.getElementById('genresSlide');
-            const genres = getAllGenres();
-            let html = `<span class="genre-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></span>`;
-            genres.forEach(genre => {
-                const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
-                html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
-            });
-            container.innerHTML = html;
-
-            container.querySelectorAll('.genre-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const genre = this.dataset.genre;
-                    filterByGenre(genre);
-                    container.querySelectorAll('.genre-item').forEach(m => m.classList.remove('active'));
-                    this.classList.add('active');
-                    closeGenres();
-                });
-            });
-        }
-
-        function toggleGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.toggle('open');
-        }
-
-        function closeGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.remove('open');
-        }
-
-        document.getElementById('logoWrapper').addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleGenres();
-        });
-
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('logoWrapper');
-            const slide = document.getElementById('genresSlide');
-            if (!wrapper.contains(e.target) && !slide.contains(e.target)) {
-                closeGenres();
-            }
-        });
-
-        let currentGenre = 'all';
-        let currentSearchQuery = '';
-
-        function filterByGenre(genre) {
-            currentGenre = genre;
-            const query = currentSearchQuery;
-            let filtered = movies;
-            if (genre !== 'all') {
-                filtered = filtered.filter(m => m.genre && m.genre.includes(genre));
-            }
-            if (query.trim()) {
-                const lowerQuery = query.toLowerCase().trim();
-                filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
-            }
-            if (query.trim() || genre !== 'all') {
-                renderSearchResults(filtered);
-                document.getElementById('marquee').classList.add('hidden');
-            } else {
-                resetSearch();
-            }
-        }
-
-        function getMarqueeHTML() {
-            let html = '';
-            for (let repeat = 0; repeat < 2; repeat++) {
-                movies.forEach(movie => {
-                    const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
-                    html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                                <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                                <div class="title">${movie.name} ${badge}</div>
-                            </div>`;
-                });
-            }
-            return html;
-        }
-
-        function renderSearchResults(filteredMovies) {
-            const grid = document.getElementById('searchResultsGrid');
-            const noResults = document.getElementById('noResults');
-            const marquee = document.getElementById('marquee');
-            if (filteredMovies.length === 0) {
-                grid.classList.remove('active');
-                grid.innerHTML = '';
-                noResults.classList.add('active');
-                marquee.classList.add('hidden');
-                return;
-            }
-            noResults.classList.remove('active');
-            marquee.classList.add('hidden');
-            grid.classList.add('active');
-            let html = '';
-            filteredMovies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
-                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name} ${badge}</div>
-                        </div>`;
-            });
-            grid.innerHTML = html;
-            attachCardClickHandlers();
-        }
-
-        function resetSearch() {
-            const grid = document.getElementById('searchResultsGrid');
-            const noResults = document.getElementById('noResults');
-            const marquee = document.getElementById('marquee');
-            grid.classList.remove('active');
-            grid.innerHTML = '';
-            noResults.classList.remove('active');
-            marquee.classList.remove('hidden');
-            currentSearchQuery = '';
-            document.getElementById('searchInput').value = '';
-        }
-
-        document.getElementById('marquee').innerHTML = getMarqueeHTML();
-        attachCardClickHandlers();
-        renderGenres();
-
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        let isAnimating = false;
-
-        const SEARCH_HISTORY_KEY = 'searchHistory';
-        const MAX_HISTORY = 3;
-
-        function getSearchHistory() {
-            try {
-                const data = localStorage.getItem(SEARCH_HISTORY_KEY);
-                return data ? JSON.parse(data) : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        function saveSearchHistory(query) {
-            if (!query || !query.trim()) return;
-            let history = getSearchHistory();
-            history = history.filter(item => item.toLowerCase() !== query.toLowerCase().trim());
-            history.unshift(query.trim());
-            if (history.length > MAX_HISTORY) {
-                history = history.slice(0, MAX_HISTORY);
-            }
-            localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(history));
-        }
-
-        function renderSearchHistoryDropdown() {
-            const dropdown = document.getElementById('searchHistoryDropdown');
-            const history = getSearchHistory();
-            if (history.length === 0) {
-                dropdown.innerHTML = `<div class="history-empty">📭 История поиска пуста</div>`;
-                return;
-            }
-            let html = '';
-            history.forEach(query => {
-                html += `
-                    <div class="history-item" data-query="${query}">
-                        <span class="icon">🔍</span>
-                        <span>${query}</span>
-                    </div>
-                `;
-            });
-            html += `
-                <div class="history-clear-btn" id="clearHistoryBtn">🗑️ Очистить историю</div>
-            `;
-            dropdown.innerHTML = html;
-            dropdown.querySelectorAll('.history-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const query = this.dataset.query;
-                    document.getElementById('searchInput').value = query;
-                    closeHistoryDropdown();
-                    performSearch();
-                });
-            });
-            const clearBtn = document.getElementById('clearHistoryBtn');
-            if (clearBtn) {
-                clearBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    localStorage.removeItem(SEARCH_HISTORY_KEY);
-                    renderSearchHistoryDropdown();
-                    const dropdown = document.getElementById('searchHistoryDropdown');
-                    dropdown.innerHTML = `<div class="history-empty">📭 История поиска очищена</div>`;
-                });
-            }
-        }
-
-        function closeHistoryDropdown() {
-            const dropdown = document.getElementById('searchHistoryDropdown');
-            dropdown.classList.remove('active');
-        }
-
-        searchInput.addEventListener('focus', function() {
-            const history = getSearchHistory();
-            if (history.length > 0) {
-                renderSearchHistoryDropdown();
-                document.getElementById('searchHistoryDropdown').classList.add('active');
-            } else {
-                const dropdown = document.getElementById('searchHistoryDropdown');
-                dropdown.innerHTML = `<div class="history-empty">📭 История поиска пуста</div>`;
-                dropdown.classList.add('active');
-            }
-        });
-
-        searchInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                closeHistoryDropdown();
-            }
-        });
-
-        searchInput.addEventListener('blur', function() {
-            setTimeout(closeHistoryDropdown, 200);
-        });
-
-        document.addEventListener('click', function(e) {
-            const wrapper = document.querySelector('.search-wrapper');
-            if (!wrapper.contains(e.target)) {
-                closeHistoryDropdown();
-            }
-        });
-
-        function performSearch() {
-            if (isAnimating) return;
-            const query = searchInput.value;
-            if (query && query.trim()) {
-                saveSearchHistory(query);
-            }
-            currentSearchQuery = query;
-            isAnimating = true;
-            searchBtn.classList.remove('returning');
-            searchBtn.classList.add('animating');
-
-            setTimeout(() => {
-                filterByGenre(currentGenre);
-                searchBtn.classList.remove('animating');
-                searchBtn.classList.add('returning');
-                setTimeout(() => {
-                    searchBtn.classList.remove('returning');
-                    isAnimating = false;
-                }, 1500);
-            }, 2200);
-        }
-
-        searchBtn.addEventListener('click', performSearch);
-        searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                performSearch();
-            }
-        });
-
-        searchInput.addEventListener('input', function() {
-            if (this.value.trim() === '' && currentGenre === 'all') {
-                resetSearch();
-            } else if (this.value.trim() === '' && currentGenre !== 'all') {
-                currentSearchQuery = '';
-                filterByGenre(currentGenre);
-            }
-        });
-
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalClose = document.getElementById('modalClose');
-        const modalPoster = document.getElementById('modalPoster');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDetails = document.getElementById('modalDetails');
-        const modalRating = document.getElementById('modalRating');
-        const watchLink = document.getElementById('watchLink');
-
-        function openModal(movie) {
-            if (movie.isDrama) {
-                modalPoster.src = dramaInfo.poster;
-                modalTitle.textContent = dramaInfo.name;
-                modalDetails.innerHTML = dramaInfo.details;
-                modalRating.textContent = `⭐ ${dramaInfo.rating}`;
-                watchLink.style.display = 'block';
-                watchLink.href = 'watch.html';
-            } else {
-                modalPoster.src = movie.poster;
-                modalTitle.textContent = movie.name;
-                modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
-                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
-                watchLink.style.display = 'none';
-            }
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        modalClose.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) closeModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        function attachCardClickHandlers() {
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const movieData = this.dataset.movie;
-                    if (movieData) {
-                        try {
-                            const movie = JSON.parse(movieData);
-                            openModal(movie);
-                        } catch (e) {
-                            console.error('Ошибка парсинга:', e);
-                        }
-                    }
-                });
-            });
-        }
+        // Дублируем карточки для бесконечной анимации
+        const marquee = document.getElementById('marquee');
+        const cards = marquee.innerHTML;
+        marquee.innerHTML = cards + cards;
     </script>
+
 </body>
 </html>
