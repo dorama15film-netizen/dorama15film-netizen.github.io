@@ -31,6 +31,8 @@
             object-position: top center;
             display: block;
         }
+
+        /* ===== ЛОГОТИП ===== */
         .logo-overlay {
             position: absolute;
             top: 20px;
@@ -43,50 +45,90 @@
             width: auto;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            transition: 0.3s ease;
+        }
+        .logo-overlay img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(241,196,15,0.3);
         }
 
-        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЖАНРОВ ===== */
-        .dropdown-menu {
-            display: none;
+        /* ===== ЖАНРЫ — ВЫЕЗЖАЮТ ВПРАВО ===== */
+        .genres-wrapper {
             position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            background: #151b24;
-            border: 1px solid #2a313f;
-            border-radius: 16px;
-            min-width: 200px;
-            padding: 8px 0;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
-            z-index: 100;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        .dropdown-menu.active {
-            display: block;
-        }
-        .dropdown-menu .menu-item {
-            padding: 10px 20px;
-            color: #8892a8;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.15s ease;
+            top: 20px;
+            left: 80px;
+            z-index: 9;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-        .dropdown-menu .menu-item:hover {
-            background: #1e232c;
-            color: #f0f2f5;
-        }
-        .dropdown-menu .menu-item.active {
-            color: #f1c40f;
-            background: #1e232c;
-        }
-        .dropdown-menu .menu-item .count {
-            color: #3c4557;
-            font-size: 13px;
+            height: 50px;
+            overflow: visible;
         }
 
+        .genres-slide {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            max-width: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: max-width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.6s ease,
+                        visibility 0.6s ease;
+            padding: 0;
+            white-space: nowrap;
+            height: 44px;
+            background: rgba(11, 14, 20, 0.85);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        .genres-slide.open {
+            max-width: 1200px;
+            opacity: 1;
+            visibility: visible;
+            padding: 0 14px;
+            border: 1px solid #2a313f;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+        }
+
+        .genres-slide .genre-item {
+            color: #f1c40f;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 5px 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border: 2px solid #ff0000;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .genres-slide .genre-item:hover {
+            color: #ffffff;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff3333;
+            transform: scale(1.05);
+        }
+        .genres-slide .genre-item.active {
+            color: #f1c40f;
+            background: rgba(255, 0, 0, 0.25);
+            border-color: #ff3333;
+            box-shadow: 0 0 15px rgba(255,0,0,0.2);
+        }
+        .genres-slide .genre-item .count {
+            color: #ff6666;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+        .genres-slide .genre-item.active .count {
+            color: #f1c40f;
+        }
+
+        /* ===== ПОИСК ===== */
         .search-section {
             width: 100%;
             padding: 15px 20px;
@@ -126,6 +168,8 @@
             cursor: pointer;
             height: 44px;
         }
+
+        /* ===== КАРУСЕЛЬ ===== */
         .bottom-section {
             width: 100%;
             padding: 20px 0;
@@ -179,6 +223,8 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
+
+        /* ===== ФУТЕР ===== */
         .site-footer {
             background: #0f141c;
             border-top: 1px solid #1f2631;
@@ -233,6 +279,8 @@
             color: #3c4557;
             font-size: 13px;
         }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -314,6 +362,7 @@
             cursor: pointer;
             z-index: 10;
         }
+
         @media (max-width: 768px) {
             .footer-content {
                 grid-template-columns: 1fr;
@@ -323,19 +372,73 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .genres-slide.open {
+                max-width: 500px;
+            }
+            .genres-slide .genre-item {
+                font-size: 12px;
+                padding: 3px 10px;
+            }
+            .genres-wrapper {
+                top: 12px;
+                left: 60px;
+                height: 38px;
+            }
+            .genres-slide {
+                height: 34px;
+            }
+            .logo-overlay img {
+                height: 38px;
+            }
+            .logo-overlay {
+                top: 12px;
+                left: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .genres-slide.open {
+                max-width: 280px;
+                padding: 0 6px;
+            }
+            .genres-slide .genre-item {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+            .genres-wrapper {
+                top: 8px;
+                left: 48px;
+                height: 32px;
+            }
+            .genres-slide {
+                height: 28px;
+            }
+            .logo-overlay img {
+                height: 32px;
+            }
+            .logo-overlay {
+                top: 8px;
+                left: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== КАРТИНКА С ЛОГОТИПОМ ===== -->
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Изображение" />
+
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
-            <div class="dropdown-menu" id="dropdownMenu"></div>
+        </div>
+
+        <div class="genres-wrapper">
+            <div class="genres-slide" id="genresSlide"></div>
         </div>
     </div>
 
+    <!-- ===== ПОИСК ===== -->
     <div class="search-section">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="Поиск фильмов..." />
@@ -343,12 +446,14 @@
         </div>
     </div>
 
+    <!-- ===== КАРУСЕЛЬ ===== -->
     <div class="bottom-section">
         <div class="marquee-container">
             <div class="marquee" id="marquee"></div>
         </div>
     </div>
 
+    <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">✕</button>
@@ -362,27 +467,18 @@
         </div>
     </div>
 
+    <!-- ===== ФУТЕР ===== -->
     <footer class="site-footer">
         <div class="footer-content">
-            <div class="footer-column">
-                <h4>О сайте</h4>
-                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Информация</h4>
-                <p>© 2026 Дорамы от Дианы</p>
-            </div>
-            <div class="footer-column">
-                <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
-            </div>
+            <div class="footer-column"><h4>О сайте</h4><p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p></div>
+            <div class="footer-column"><h4>Информация</h4><p>© 2026 Дорамы от Дианы</p></div>
+            <div class="footer-column"><h4>Контакты</h4><a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a></div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
-        </div>
+        <div class="footer-bottom"><p>© 2026 Дорамы от Дианы. Все права защищены.</p></div>
     </footer>
 
     <script>
+        // ===== СПИСОК ФИЛЬМОВ =====
         const movies = [
             { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия' },
             { name: 'Начало', year: 2010, rating: 8.6, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg', genre: 'фантастика, боевик' },
@@ -429,20 +525,21 @@
         }
 
         function renderGenres() {
-            const container = document.getElementById('dropdownMenu');
+            const container = document.getElementById('genresSlide');
             const genres = getAllGenres();
-            let html = `<div class="menu-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></div>`;
+            let html = `<span class="genre-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
                 const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
-                html += `<div class="menu-item" data-genre="${genre}">${genre} <span class="count">${count}</span></div>`;
+                html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
             });
             container.innerHTML = html;
 
-            container.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', function() {
+            container.querySelectorAll('.genre-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const genre = this.dataset.genre;
                     filterByGenre(genre);
-                    container.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+                    container.querySelectorAll('.genre-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     closeGenres();
                 });
@@ -450,13 +547,13 @@
         }
 
         function toggleGenres() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('active');
+            const slide = document.getElementById('genresSlide');
+            slide.classList.toggle('open');
         }
 
         function closeGenres() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.remove('active');
+            const slide = document.getElementById('genresSlide');
+            slide.classList.remove('open');
         }
 
         document.getElementById('logoWrapper').addEventListener('click', function(e) {
@@ -466,8 +563,8 @@
 
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('logoWrapper');
-            const menu = document.getElementById('dropdownMenu');
-            if (!wrapper.contains(e.target) && !menu.contains(e.target)) {
+            const slide = document.getElementById('genresSlide');
+            if (!wrapper.contains(e.target) && !slide.contains(e.target)) {
                 closeGenres();
             }
         });
@@ -576,7 +673,10 @@
 
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') { e.preventDefault(); performSearch(); }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
         });
 
         // ===== ИНИЦИАЛИЗАЦИЯ =====
