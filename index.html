@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -111,6 +111,11 @@
             overflow: hidden;
             border: 1px solid #2a313f;
             cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+            border-color: #f1c40f;
         }
         .movie-card img {
             width: 100%;
@@ -159,10 +164,6 @@
             color: #f1c40f;
             text-decoration: none;
         }
-        .footer-column a:hover {
-            color: #f39c12;
-            text-decoration: underline;
-        }
         .footer-column .email-link {
             display: inline-block;
             background: #1e232c;
@@ -172,6 +173,7 @@
             color: #f1c40f;
             font-size: 15px;
             font-weight: 600;
+            margin-top: 4px;
         }
         .footer-bottom {
             max-width: 1200px;
@@ -181,14 +183,101 @@
             margin-top: 16px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .footer-bottom p {
             color: #3c4557;
             font-size: 13px;
         }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: #151b24;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            border: 2px solid #f1c40f;
+            overflow: hidden;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            display: block;
+        }
+        .modal-content .modal-info {
+            padding: 20px;
+        }
+        .modal-content .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .modal-content .modal-details {
+            color: #8892a8;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .modal-content .modal-details strong {
+            color: #f0f2f5;
+        }
+        .modal-content .modal-rating {
+            color: #f1c40f;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 8px 0 12px;
+        }
+        .modal-content .modal-watch-link {
+            display: block;
+            background: #f1c40f;
+            color: #0b0e14;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        .modal-content .modal-close {
+            position: sticky;
+            top: 10px;
+            float: right;
+            margin: 10px 14px 0 0;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #2a313f;
+            color: #f0f2f5;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+        }
         @media (max-width: 768px) {
             .footer-content {
                 grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
                 text-align: center;
             }
         }
@@ -197,50 +286,34 @@
 <body>
 
     <div class="image-wrapper">
-        <img src="Pr.jpeg" alt="Изображение" />
-        <div class="logo-overlay">
-            <img src="Logo.jpeg" alt="Логотип" />
+        <img src="/Pr.jpeg" alt="Изображение" />
+        <div class="logo-overlay" id="logoWrapper">
+            <img src="/Logo.jpeg" alt="Логотип" />
         </div>
     </div>
 
     <div class="search-section">
         <div class="search-wrapper">
-            <input type="text" placeholder="Поиск фильмов..." />
-            <button class="search-btn">Найти</button>
+            <input type="text" id="searchInput" placeholder="Поиск фильмов..." />
+            <button class="search-btn" id="searchBtn">Найти</button>
         </div>
     </div>
 
     <div class="bottom-section">
         <div class="marquee-container">
-            <div class="marquee" id="marquee">
-                <div class="movie-card">
-                    <img src="DR.jpg" alt="Дорама" />
-                    <div class="title">Завтра снова на работу!</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg" alt="Начало" />
-                    <div class="title">Начало</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg" alt="Форрест Гамп" />
-                    <div class="title">Форрест Гамп</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg" alt="Зелёная миля" />
-                    <div class="title">Зелёная миля</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg" alt="Бойцовский клуб" />
-                    <div class="title">Бойцовский клуб</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg" alt="Матрица" />
-                    <div class="title">Матрица</div>
-                </div>
-                <div class="movie-card">
-                    <img src="https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg" alt="Властелин колец" />
-                    <div class="title">Властелин колец</div>
-                </div>
+            <div class="marquee" id="marquee"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <img id="modalPoster" src="" alt="Постер" />
+            <div class="modal-info">
+                <div class="modal-title" id="modalTitle">Название</div>
+                <div class="modal-details" id="modalDetails"></div>
+                <div class="modal-rating" id="modalRating">⭐ 9.5</div>
+                <a class="modal-watch-link" id="watchLink" href="/watch.html">▶ Смотреть все серии</a>
             </div>
         </div>
     </div>
@@ -249,11 +322,11 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h4>О сайте</h4>
-                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
+                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов. Мы собираем лучшие истории, чтобы вы могли наслаждаться просмотром в любое время.</p>
             </div>
             <div class="footer-column">
                 <h4>Информация</h4>
-                <p>© 2026 Дорамы от Дианы</p>
+                <p>Все видео предоставлены для ознакомления.<br>Права принадлежат их законным владельцам.<br>© 2026 Дорамы от Дианы</p>
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
@@ -261,15 +334,260 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Дорамы от Дианы</p>
+            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
         </div>
     </footer>
 
     <script>
-        // Дублируем карточки для бесконечной анимации
-        const marquee = document.getElementById('marquee');
-        const cards = marquee.innerHTML;
-        marquee.innerHTML = cards + cards;
+        const movies = [
+            {
+                name: 'Завтра снова на работу!',
+                year: 2024,
+                rating: 9.5,
+                poster: '/DR.jpg',
+                isDrama: true,
+                isSeries: true
+            },
+            {
+                name: 'Начало',
+                year: 2010,
+                rating: 8.6,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_447301.jpg'
+            },
+            {
+                name: 'Тёмный рыцарь',
+                year: 2008,
+                rating: 8.5,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_111543.jpg'
+            },
+            {
+                name: 'Форрест Гамп',
+                year: 1994,
+                rating: 8.7,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_448.jpg'
+            },
+            {
+                name: 'Зелёная миля',
+                year: 1999,
+                rating: 8.6,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_435.jpg'
+            },
+            {
+                name: 'Список Шиндлера',
+                year: 1993,
+                rating: 8.7,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_329.jpg'
+            },
+            {
+                name: 'Бойцовский клуб',
+                year: 1999,
+                rating: 8.6,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_361.jpg'
+            },
+            {
+                name: 'Криминальное чтиво',
+                year: 1994,
+                rating: 8.4,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_342.jpg'
+            },
+            {
+                name: 'Гладиатор',
+                year: 2000,
+                rating: 8.5,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_474.jpg'
+            },
+            {
+                name: 'Матрица',
+                year: 1999,
+                rating: 8.5,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_301.jpg'
+            },
+            {
+                name: 'Властелин колец',
+                year: 2003,
+                rating: 8.6,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_312.jpg'
+            },
+            {
+                name: 'Джокер',
+                year: 2019,
+                rating: 8.2,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1049709.jpg'
+            },
+            {
+                name: 'Оппенгеймер',
+                year: 2023,
+                rating: 8.4,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_4667487.jpg'
+            },
+            {
+                name: 'Побег из Шоушенка',
+                year: 1994,
+                rating: 8.7,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_326.jpg'
+            },
+            {
+                name: 'Крёстный отец',
+                year: 1972,
+                rating: 8.7,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_328.jpg'
+            },
+            {
+                name: 'Дюна',
+                year: 2021,
+                rating: 8.0,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_1169310.jpg'
+            },
+            {
+                name: 'Аватар',
+                year: 2009,
+                rating: 8.0,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_251733.jpg'
+            },
+            {
+                name: 'Титаник',
+                year: 1997,
+                rating: 8.3,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg'
+            }
+        ];
+
+        const dramaInfo = {
+            name: 'Завтра снова на работу!',
+            year: 2024,
+            rating: 9.5,
+            poster: '/DR.jpg',
+            details: `
+                <strong>Дата выхода:</strong> 22 июня 2026 года<br>
+                <strong>Жанр:</strong> мелодрама, комедия<br>
+                <strong>Страна:</strong> Республика Корея<br>
+                <strong>Режиссёр:</strong> Чо Ын-соль
+            `
+        };
+
+        function getMarqueeHTML() {
+            let html = '';
+            for (let repeat = 0; repeat < 2; repeat++) {
+                movies.forEach(movie => {
+                    const badge = movie.isSeries ? '6 серий' : '';
+                    html += `
+                        <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name} ${badge}</div>
+                        </div>
+                    `;
+                });
+            }
+            return html;
+        }
+
+        document.getElementById('marquee').innerHTML = getMarqueeHTML();
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalPoster = document.getElementById('modalPoster');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDetails = document.getElementById('modalDetails');
+        const modalRating = document.getElementById('modalRating');
+        const watchLink = document.getElementById('watchLink');
+
+        function openModal(movie) {
+            if (movie.isDrama) {
+                modalPoster.src = dramaInfo.poster;
+                modalTitle.textContent = dramaInfo.name;
+                modalDetails.innerHTML = dramaInfo.details;
+                modalRating.textContent = `⭐ ${dramaInfo.rating}`;
+                watchLink.style.display = 'block';
+                watchLink.href = '/watch.html';
+            } else {
+                modalPoster.src = movie.poster;
+                modalTitle.textContent = movie.name;
+                modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
+                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
+                watchLink.style.display = 'none';
+            }
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const movieData = this.dataset.movie;
+                if (movieData) {
+                    try {
+                        const movie = JSON.parse(movieData);
+                        openModal(movie);
+                    } catch (e) {
+                        console.error('Ошибка:', e);
+                    }
+                }
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+
+        searchBtn.addEventListener('click', function() {
+            const query = searchInput.value.toLowerCase().trim();
+            const marquee = document.getElementById('marquee');
+            
+            if (!query) {
+                marquee.innerHTML = getMarqueeHTML();
+                return;
+            }
+
+            const filtered = movies.filter(m => m.name.toLowerCase().includes(query));
+            if (filtered.length === 0) {
+                marquee.innerHTML = '<div style="color:#8892a8;padding:40px;font-size:20px;width:100%;text-align:center;">😕 Ничего не найдено</div>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(movie => {
+                const badge = movie.isSeries ? '6 серий' : '';
+                html += `
+                    <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                        <img src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                        <div class="title">${movie.name} ${badge}</div>
+                    </div>
+                `;
+            });
+            marquee.innerHTML = html;
+
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const movieData = this.dataset.movie;
+                    if (movieData) {
+                        try {
+                            const movie = JSON.parse(movieData);
+                            openModal(movie);
+                        } catch (e) {
+                            console.error('Ошибка:', e);
+                        }
+                    }
+                });
+            });
+        });
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchBtn.click();
+            }
+        });
     </script>
 
 </body>
