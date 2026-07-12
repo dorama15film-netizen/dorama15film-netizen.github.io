@@ -56,9 +56,9 @@
     </header>
 
     <main class="main-content">
-        <!-- ===== ПЛЕЕР RUTUBE ===== -->
+        <!-- ===== ПЛЕЕР NUNO ===== -->
         <div class="player-wrapper">
-            <iframe id="videoPlayer" src="" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+            <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
         </div>
 
         <div class="episode-info">
@@ -102,14 +102,16 @@
     </main>
 
     <script>
-        // ===== ССЫЛКИ НА ВИДЕО =====
+        // ===== ССЫЛКИ НА ВИДЕО (NUNO) =====
+        // ID для первой серии: JgeIVxew5LF
+        // Для остальных серий замените ID
         const EPISODE_VIDEOS = {
-            1: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow',
-            2: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 2 СЕРИЮ
-            3: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 3 СЕРИЮ
-            4: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 4 СЕРИЮ
-            5: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 5 СЕРИЮ
-            6: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow'  // ЗАМЕНИТЕ НА 6 СЕРИЮ
+            1: 'https://nuno.ru/watch/JgeIVxew5LF',
+            2: 'https://nuno.ru/watch/ЗАМЕНИТЕ_НА_2_СЕРИЮ',
+            3: 'https://nuno.ru/watch/ЗАМЕНИТЕ_НА_3_СЕРИЮ',
+            4: 'https://nuno.ru/watch/ЗАМЕНИТЕ_НА_4_СЕРИЮ',
+            5: 'https://nuno.ru/watch/ЗАМЕНИТЕ_НА_5_СЕРИЮ',
+            6: 'https://nuno.ru/watch/ЗАМЕНИТЕ_НА_6_СЕРИЮ'
         };
 
         const episodes = [
