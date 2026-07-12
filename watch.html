@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Завтра снова на работу - Смотреть онлайн</title>
+    <title>Смотреть дораму</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0b0e14; color: #f0f2f5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
@@ -25,14 +25,15 @@
         .drama-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 10px; }
         .drama-description { color: #8892a8; font-size: 15px; line-height: 1.8; }
         .drama-description .info-item { display: flex; gap: 10px; margin-bottom: 6px; }
-        .drama-description .info-item .label { color: #6a7288; min-width: 100px; flex-shrink: 0; }
+        .drama-description .info-item .label { color: #6a7288; min-width: 120px; flex-shrink: 0; }
         .drama-description .info-item .value { color: #f0f2f5; }
+        .drama-description .plot { color: #8892a8; font-size: 14px; line-height: 1.8; margin-top: 8px; }
+        .drama-description .plot strong { color: #f0f2f5; }
         .cast-section .cast-title { color: #f0f2f5; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
         .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
         .cast-item { background: #151b24; border: 1px solid #1f2631; border-radius: 12px; padding: 12px 16px; }
         .cast-item .actor-name { color: #f0f2f5; font-size: 15px; font-weight: 600; }
         .cast-item .actor-role { color: #8892a8; font-size: 13px; margin-top: 2px; }
-        .cast-item .actor-desc { color: #6a7288; font-size: 12px; margin-top: 4px; }
         .cast-item .actor-role-tag { background: #1e232c; color: #f1c40f; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; }
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
@@ -40,23 +41,26 @@
             .main-content { padding: 12px 16px 20px; }
             .drama-info { grid-template-columns: 1fr; gap: 20px; }
             .cast-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .drama-description .info-item .label { min-width: 90px; }
         }
         @media (max-width: 480px) {
             .header .title { font-size: 15px; }
             .header .title span { font-size: 13px; display: block; margin-left: 0; }
             .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .cast-item { padding: 10px 12px; }
+            .drama-description .info-item { flex-direction: column; gap: 2px; }
+            .drama-description .info-item .label { min-width: auto; }
+            .drama-description .plot { font-size: 13px; }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <a href="/" class="back-btn">← На главную</a>
-        <div class="title">🎬 Завтра снова на работу! <span>6 серий</span></div>
+        <div class="title">🎬 <span id="dramaTitle">Завтра снова на работу!</span> <span id="dramaEpisodes">6 серий</span></div>
     </header>
 
     <main class="main-content">
-        <!-- ===== ПЛЕЕР ВКОНТАКТЕ ===== -->
         <div class="player-wrapper">
             <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
         </div>
@@ -70,48 +74,92 @@
 
         <div class="episodes-list" id="episodesList"></div>
 
-        <div class="drama-info">
-            <div class="drama-description">
-                <div class="info-item"><span class="label"> Дата выхода:</span><span class="value">22 июня 2026 года</span></div>
-                <div class="info-item"><span class="label"> Жанр:</span><span class="value">мелодрама, комедия</span></div>
-                <div class="info-item"><span class="label"> Страна:</span><span class="value">Республика Корея</span></div>
-                <div class="info-item"><span class="label"> Режиссёр:</span><span class="value">Чо Ын-соль</span></div>
-                <div class="info-item"><span class="label"> Сценарист:</span><span class="value">Ким Гён Мин</span></div>
-                <div class="info-item"><span class="label"> Серий:</span><span class="value">12</span></div>
-                <div class="info-item"><span class="label"> Трансляция:</span><span class="value">tvN</span></div>
-            </div>
-
-            <div class="cast-section">
-                <div class="cast-title"> Актёрский состав</div>
-                <div class="cast-grid">
-                    <div class="cast-item"><div class="actor-name">Со Ин Гук</div><div class="actor-role">Кан Си У</div><div class="actor-desc">Руководитель подразделения бытовой техники</div><span class="actor-role-tag">Главная роль</span></div>
-                    <div class="cast-item"><div class="actor-name">Пак Джи Хён</div><div class="actor-role">Ча Джи Юн</div><div class="actor-desc">Сотрудница с семилетним стажем</div><span class="actor-role-tag">Главная роль</span></div>
-                    <div class="cast-item"><div class="actor-name">Кан Ми На</div><div class="actor-role">Юн Но А</div><div class="actor-desc">Сотрудница подразделения бытовой техники</div></div>
-                    <div class="cast-item"><div class="actor-name">Чхве Гён Хун</div><div class="actor-role">Чо Га Ыль</div><div class="actor-desc">Вокалист группы, первая любовь Ча Джи Юн</div></div>
-                    <div class="cast-item"><div class="actor-name">Вон Гю Бин</div><div class="actor-role">Ли Чжэ Ин</div><div class="actor-desc">Сёрфер с фиолетовыми волосами</div></div>
-                    <div class="cast-item"><div class="actor-name">Пак Е Ён</div><div class="actor-role">Чхве Су Джин</div><div class="actor-desc">Руководитель дизайн-команды</div></div>
-                    <div class="cast-item"><div class="actor-name">Ким Джон Ён</div><div class="actor-role">Хан У Джин</div><div class="actor-desc">Президент отдела DA</div></div>
-                    <div class="cast-item"><div class="actor-name">Хан Тхэ Ха</div><div class="actor-role">Ку Сын Джун</div><div class="actor-desc">Гитарист группы «Каыль»</div></div>
-                    <div class="cast-item"><div class="actor-name">Ю Сон Чжу</div><div class="actor-role">Чха Ён Мук</div><div class="actor-desc">Отец Ча Джи Юн</div></div>
-                    <div class="cast-item"><div class="actor-name">Ли Чжи Хён</div><div class="actor-role">Нам Хе Гён</div><div class="actor-desc">Мать Ча Джи Юн</div></div>
-                    <div class="cast-item"><div class="actor-name">Ём Сын И</div><div class="actor-role">Юн Да Ра</div><div class="actor-desc">Старшая сестра Юн Но А</div></div>
-                    <div class="cast-item"><div class="actor-name">Ким Хак Сон</div><div class="actor-role">Но Джин Чхоль</div><div class="actor-desc">Управляющий директор отдела DA</div></div>
-                </div>
-            </div>
-        </div>
+        <div class="drama-info" id="dramaInfo"></div>
     </main>
 
     <script>
-        // ===== ССЫЛКИ НА ВСЕ 6 СЕРИЙ ВКОНТАКТЕ =====
-        const EPISODE_VIDEOS = {
-            1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239017&hash=840fe3708e6631e2&hd=3',
-            2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239018&hash=beca558dabab47be&hd=3',
-            3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239019&hash=2d01bbbcca816411&hd=3',
-            4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239020&hash=11e776e7ffbe1859&hd=3',
-            5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239021&hash=3e2b94d232d22eef&hd=3',
-            6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
+        // ===== ДАННЫЕ О ДОРАМАХ =====
+        const DRAMAS = {
+            drama1: {
+                name: 'Завтра снова на работу!',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode1',
+                info: {
+                    year: '2024',
+                    director: 'Чо Ын-соль',
+                    genre: 'мелодрама, комедия',
+                    country: 'Республика Корея',
+                    duration: '—',
+                    translation: '—',
+                    plot: 'Увлекательная история о жизни и любви.',
+                    cast: [
+                        { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
+                        { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
+                        { name: 'Кан Ми На', role: 'Юн Но А', tag: '' },
+                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: '' },
+                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
+                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
+                    ]
+                },
+                videos: {
+                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239017&hash=840fe3708e6631e2&hd=3',
+                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239018&hash=beca558dabab47be&hd=3',
+                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239019&hash=2d01bbbcca816411&hd=3',
+                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239020&hash=11e776e7ffbe1859&hd=3',
+                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239021&hash=3e2b94d232d22eef&hd=3',
+                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
+                }
+            },
+            drama2: {
+                name: 'Лазурная весна ',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode2',
+                info: {
+                    year: '2026',
+                    director: 'Чон Хон-су',
+                    genre: 'Мелодрама',
+                    country: 'Корея Южная',
+                    duration: '00:40:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Говорят, море умеет слушать. Не отвечает, не осуждает — просто шумит, перекатывая гальку, и ждёт. Именно к нему и приходят двое, каждый со своим грузом, каждый — на последнем издыхании в той жизни, которую уже не в силах тащить дальше. Юн Док Хён давно перестал ждать чего-то от будущего. Прошлое прилипло к нему, как морская соль к коже — незаметно, намертво, и уже не смыть. Со Ан На когда-то бежала вперёд быстрее всех, но однажды упала — и не просто разбила колено. Разбилась вся жизнь, которую она строила. Теперь тревога стала её постоянным спутником, тихим и удушающим, как туман над водой ранним утром. Они встречаются в маленьком прибрежном посёлке, где время течёт иначе. Без суеты. Без дедлайнов. Здесь рыбаки чинят сети, пахнет водорослями и жареной рыбой, и кажется, что мир снаружи — это просто сон, который никак не хочет заканчиваться. Нырять без снаряжения — странный выбор для людей, которые едва держатся на поверхности. Но именно под водой что-то меняется. Там нет голосов, нет воспоминаний, нет страха перед завтрашним днём. Только холод, темнота и собственное сердцебиение. И — странным образом — покой.',
+                    cast: [
+                        { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' },
+                        { name: 'Ко Джу-хи', role: 'Второстепенная роль', tag: '' },
+                        { name: 'Чон Хён-мин', role: 'Второстепенная роль', tag: '' }
+                    ]
+                },
+                videos: {
+                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239023&hash=ed3dfe7f49737604&hd=3',
+                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239024&hash=53ba059fa9ecb049&hd=3',
+                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239025&hash=65c706e3c5886f24&hd=3',
+                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239026&hash=679f21016c9672ec&hd=3',
+                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239027&hash=340f22a92d15b7b6&hd=3',
+                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239028&hash=77eede5363ac751f&hd=3'
+                }
+            }
         };
 
+        // ===== ОПРЕДЕЛЯЕМ КАКУЮ ДОРАМУ ПОКАЗЫВАТЬ =====
+        const urlParams = new URLSearchParams(window.location.search);
+        let dramaId = urlParams.get('drama') || 'drama1';
+
+        if (!urlParams.has('drama')) {
+            const saved = localStorage.getItem('lastDramaId');
+            if (saved && DRAMAS[saved]) {
+                dramaId = saved;
+            }
+        }
+
+        const drama = DRAMAS[dramaId];
+        if (!drama) {
+            window.location.href = '/';
+            throw new Error('Дорама не найдена');
+        }
+
+        localStorage.setItem('lastDramaId', dramaId);
+
+        // ===== ЗАГРУЗКА ДОРАМЫ =====
         const episodes = [
             { number: 1, title: 'Начало истории' },
             { number: 2, title: 'Поворот событий' },
@@ -125,18 +173,56 @@
         const videoPlayer = document.getElementById('videoPlayer');
         const currentEpisodeSpan = document.getElementById('currentEpisode');
         const episodeTitleSpan = document.getElementById('episodeTitle');
+        const dramaTitle = document.getElementById('dramaTitle');
+        const dramaEpisodes = document.getElementById('dramaEpisodes');
+        const dramaInfoDiv = document.getElementById('dramaInfo');
+
         let currentEpisode = 1;
+
+        function renderInfo() {
+            const info = drama.info;
+            dramaTitle.textContent = drama.name;
+            dramaEpisodes.textContent = `${drama.episodes} серий`;
+
+            let castHtml = '';
+            info.cast.forEach(actor => {
+                const tag = actor.tag ? `<span class="actor-role-tag">${actor.tag}</span>` : '';
+                castHtml += `
+                    <div class="cast-item">
+                        <div class="actor-name">${actor.name}</div>
+                        <div class="actor-role">${actor.role}</div>
+                        ${tag}
+                    </div>
+                `;
+            });
+
+            dramaInfoDiv.innerHTML = `
+                <div class="drama-description">
+                    <div class="info-item"><span class="label"> Год выпуска:</span><span class="value">${info.year}</span></div>
+                    <div class="info-item"><span class="label"> Режиссёр:</span><span class="value">${info.director}</span></div>
+                    <div class="info-item"><span class="label"> Жанр:</span><span class="value">${info.genre}</span></div>
+                    <div class="info-item"><span class="label"> Страна:</span><span class="value">${info.country}</span></div>
+                    ${info.duration ? `<div class="info-item"><span class="label"> Продолжительность:</span><span class="value">${info.duration}</span></div>` : ''}
+                    ${info.translation ? `<div class="info-item"><span class="label">🔊 Перевод:</span><span class="value">${info.translation}</span></div>` : ''}
+                    ${info.plot ? `<div class="plot"><strong>Описание:</strong><br>${info.plot}</div>` : ''}
+                </div>
+                <div class="cast-section">
+                    <div class="cast-title"> Актёрский состав</div>
+                    <div class="cast-grid">${castHtml}</div>
+                </div>
+            `;
+        }
 
         function renderEpisodes() {
             episodesList.innerHTML = '';
-            episodes.forEach(ep => {
+            for (let i = 1; i <= drama.episodes; i++) {
                 const btn = document.createElement('button');
-                btn.className = 'episode-btn' + (ep.number === currentEpisode ? ' active' : '');
-                btn.textContent = `Серия ${ep.number}`;
-                btn.dataset.number = ep.number;
-                btn.addEventListener('click', () => loadEpisode(ep.number));
+                btn.className = 'episode-btn' + (i === currentEpisode ? ' active' : '');
+                btn.textContent = `Серия ${i}`;
+                btn.dataset.number = i;
+                btn.addEventListener('click', () => loadEpisode(i));
                 episodesList.appendChild(btn);
-            });
+            }
         }
 
         function loadEpisode(number) {
@@ -148,17 +234,21 @@
                 btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
             });
 
-            videoPlayer.src = EPISODE_VIDEOS[number];
+            const videoUrl = drama.videos[number];
+            if (videoUrl) {
+                videoPlayer.src = videoUrl;
+            }
         }
 
         function saveLastEpisode(number) {
-            try { localStorage.setItem('lastDramaEpisode', number); } catch(e) {}
+            try { localStorage.setItem(drama.storageKey, number); } catch(e) {}
         }
 
         function getLastEpisode() {
-            try { return parseInt(localStorage.getItem('lastDramaEpisode')) || 1; } catch(e) { return 1; }
+            try { return parseInt(localStorage.getItem(drama.storageKey)) || 1; } catch(e) { return 1; }
         }
 
+        renderInfo();
         renderEpisodes();
         loadEpisode(getLastEpisode());
 
