@@ -56,9 +56,9 @@
     </header>
 
     <main class="main-content">
-        <!-- ===== ПЛЕЕР VK VIDEO ===== -->
+        <!-- ===== ПЛЕЕР RUTUBE ===== -->
         <div class="player-wrapper">
-            <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
+            <iframe id="videoPlayer" src="" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
         </div>
 
         <div class="episode-info">
@@ -102,15 +102,14 @@
     </main>
 
     <script>
-        // ===== VK VIDEO ССЫЛКИ =====
-        // Для каждой серии нужно вставить свою ссылку из ВК
+        // ===== ССЫЛКИ НА ВИДЕО =====
         const EPISODE_VIDEOS = {
-            1: 'https://vkvideo.ru/playlist/554998965_1/season_undefined',
-            2: 'https://vk.com/video_ext.php?oid=554998965&id=456239075&autoplay=1', // ЗАМЕНИТЕ НА ВАШУ 2 СЕРИЮ
-            3: 'https://vk.com/video_ext.php?oid=554998965&id=456239075&autoplay=1', // ЗАМЕНИТЕ НА ВАШУ 3 СЕРИЮ
-            4: 'https://vk.com/video_ext.php?oid=554998965&id=456239075&autoplay=1', // ЗАМЕНИТЕ НА ВАШУ 4 СЕРИЮ
-            5: 'https://vk.com/video_ext.php?oid=554998965&id=456239075&autoplay=1', // ЗАМЕНИТЕ НА ВАШУ 5 СЕРИЮ
-            6: 'https://vk.com/video_ext.php?oid=554998965&id=456239075&autoplay=1'  // ЗАМЕНИТЕ НА ВАШУ 6 СЕРИЮ
+            1: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow',
+            2: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 2 СЕРИЮ
+            3: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 3 СЕРИЮ
+            4: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 4 СЕРИЮ
+            5: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow', // ЗАМЕНИТЕ НА 5 СЕРИЮ
+            6: 'https://rutube.ru/play/embed/8292c673ee37d3125642d6908c989a1c/?p=2iH4S2OPDeSApdVsZyJUow'  // ЗАМЕНИТЕ НА 6 СЕРИЮ
         };
 
         const episodes = [
