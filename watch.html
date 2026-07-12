@@ -5,202 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Завтра снова на работу - Смотреть онлайн</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0b0e14;
-            color: #f0f2f5;
-            font-family: system-ui, -apple-system, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            padding: 16px 30px;
-            background: #0f141c;
-            border-bottom: 1px solid #1f2631;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .header .back-btn {
-            color: #8892a8;
-            text-decoration: none;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-        }
-        .header .back-btn:hover {
-            color: #f1c40f;
-        }
-        .header .title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #f0f2f5;
-        }
-        .header .title span {
-            color: #8892a8;
-            font-weight: 400;
-            font-size: 16px;
-            margin-left: 10px;
-        }
-        .main-content {
-            flex: 1;
-            padding: 20px 30px 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .player-wrapper {
-            width: 100%;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #1f2631;
-            position: relative;
-            aspect-ratio: 16 / 9;
-        }
-        .player-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-        .episode-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0 10px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .episode-info .current-episode {
-            font-size: 20px;
-            font-weight: 600;
-            color: #f1c40f;
-        }
-        .episode-info .episode-title {
-            color: #8892a8;
-            font-size: 16px;
-        }
-        .episodes-list {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 10px 0 20px;
-            border-bottom: 1px solid #1f2631;
-            margin-bottom: 20px;
-        }
-        .episodes-list .episode-btn {
-            background: #151b24;
-            border: 2px solid #2a313f;
-            color: #8892a8;
-            padding: 10px 24px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: 0.25s ease;
-        }
-        .episodes-list .episode-btn:hover {
-            border-color: #f1c40f;
-            color: #f0f2f5;
-        }
-        .episodes-list .episode-btn.active {
-            background: #f1c40f;
-            border-color: #f1c40f;
-            color: #0b0e14;
-        }
-        .drama-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 10px;
-        }
-        .drama-description {
-            color: #8892a8;
-            font-size: 15px;
-            line-height: 1.8;
-        }
-        .drama-description .info-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
-        .drama-description .info-item .label {
-            color: #6a7288;
-            min-width: 100px;
-            flex-shrink: 0;
-        }
-        .drama-description .info-item .value {
-            color: #f0f2f5;
-        }
-        .cast-section .cast-title {
-            color: #f0f2f5;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .cast-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-        }
-        .cast-item {
-            background: #151b24;
-            border: 1px solid #1f2631;
-            border-radius: 12px;
-            padding: 12px 16px;
-        }
-        .cast-item .actor-name {
-            color: #f0f2f5;
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .cast-item .actor-role {
-            color: #8892a8;
-            font-size: 13px;
-            margin-top: 2px;
-        }
-        .cast-item .actor-desc {
-            color: #6a7288;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        .cast-item .actor-role-tag {
-            background: #1e232c;
-            color: #f1c40f;
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-        .google-drive-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 12px 30px;
-            background: #f1c40f;
-            color: #0b0e14;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .google-drive-link:hover {
-            background: #f39c12;
-            transform: scale(1.02);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0b0e14; color: #f0f2f5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { padding: 16px 30px; background: #0f141c; border-bottom: 1px solid #1f2631; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .header .back-btn { color: #8892a8; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 500; }
+        .header .back-btn:hover { color: #f1c40f; }
+        .header .title { font-size: 22px; font-weight: 700; color: #f0f2f5; }
+        .header .title span { color: #8892a8; font-weight: 400; font-size: 16px; margin-left: 10px; }
+        .main-content { flex: 1; padding: 20px 30px 30px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; }
+        .player-wrapper { width: 100%; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid #1f2631; position: relative; aspect-ratio: 16 / 9; }
+        .player-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
+        .episode-info { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; flex-wrap: wrap; gap: 10px; }
+        .episode-info .current-episode { font-size: 20px; font-weight: 600; color: #f1c40f; }
+        .episode-info .episode-title { color: #8892a8; font-size: 16px; }
+        .episodes-list { display: flex; gap: 12px; flex-wrap: wrap; padding: 10px 0 20px; border-bottom: 1px solid #1f2631; margin-bottom: 20px; }
+        .episodes-list .episode-btn { background: #151b24; border: 2px solid #2a313f; color: #8892a8; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.25s ease; }
+        .episodes-list .episode-btn:hover { border-color: #f1c40f; color: #f0f2f5; }
+        .episodes-list .episode-btn.active { background: #f1c40f; border-color: #f1c40f; color: #0b0e14; }
+        .drama-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 10px; }
+        .drama-description { color: #8892a8; font-size: 15px; line-height: 1.8; }
+        .drama-description .info-item { display: flex; gap: 10px; margin-bottom: 6px; }
+        .drama-description .info-item .label { color: #6a7288; min-width: 100px; flex-shrink: 0; }
+        .drama-description .info-item .value { color: #f0f2f5; }
+        .cast-section .cast-title { color: #f0f2f5; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+        .cast-item { background: #151b24; border: 1px solid #1f2631; border-radius: 12px; padding: 12px 16px; }
+        .cast-item .actor-name { color: #f0f2f5; font-size: 15px; font-weight: 600; }
+        .cast-item .actor-role { color: #8892a8; font-size: 13px; margin-top: 2px; }
+        .cast-item .actor-desc { color: #6a7288; font-size: 12px; margin-top: 4px; }
+        .cast-item .actor-role-tag { background: #1e232c; color: #f1c40f; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; }
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
             .header .title { font-size: 18px; }
@@ -236,9 +69,6 @@
 
         <div class="episodes-list" id="episodesList"></div>
 
-        <!-- ===== КНОПКА ДЛЯ ОТКРЫТИЯ НА GOOGLE ДИСКЕ ===== -->
-        <a class="google-drive-link" id="driveLink" href="#" target="_blank">▶ Открыть на Google Диске</a>
-
         <div class="drama-info">
             <div class="drama-description">
                 <div class="info-item"><span class="label">📅 Дата выхода:</span><span class="value">22 июня 2026 года</span></div>
@@ -271,7 +101,7 @@
     </main>
 
     <script>
-        // ===== ВАШИ ID С GOOGLE ДИСКА =====
+        // ===== ID С GOOGLE ДИСКА =====
         const EPISODE_IDS = {
             1: '1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK',
             2: '1_1JjQriKaTU-2R1Fm9DvObebkSN594rW',
@@ -294,7 +124,6 @@
         const videoPlayer = document.getElementById('videoPlayer');
         const currentEpisodeSpan = document.getElementById('currentEpisode');
         const episodeTitleSpan = document.getElementById('episodeTitle');
-        const driveLink = document.getElementById('driveLink');
         let currentEpisode = 1;
 
         function renderEpisodes() {
@@ -319,10 +148,7 @@
             });
 
             const videoId = EPISODE_IDS[number];
-            // Пробуем вставить в iframe
             videoPlayer.src = `https://drive.google.com/file/d/${videoId}/preview`;
-            // Ссылка для открытия на Google Диске
-            driveLink.href = `https://drive.google.com/file/d/${videoId}/view`;
         }
 
         function saveLastEpisode(number) {
