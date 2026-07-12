@@ -1,0 +1,556 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "завтра снова на работу - Смотреть онлайн";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя дорама - Смотреть онлайн</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0e14;
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 16px 30px;
+            background: #0f141c;
+            border-bottom: 1px solid #1f2631;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+            .header .back-btn {
+                color: #8892a8;
+                text-decoration: none;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: 0.2s;
+                font-weight: 500;
+            }
+
+                .header .back-btn:hover {
+                    color: #f1c40f;
+                }
+
+            .header .title {
+                font-size: 22px;
+                font-weight: 700;
+                color: #f0f2f5;
+            }
+
+                .header .title span {
+                    color: #8892a8;
+                    font-weight: 400;
+                    font-size: 16px;
+                    margin-left: 10px;
+                }
+
+        .main-content {
+            flex: 1;
+            padding: 20px 30px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-wrapper {
+            width: 100%;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1f2631;
+            position: relative;
+            aspect-ratio: 16 / 9;
+        }
+
+            .player-wrapper iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                display: block;
+            }
+
+        .episode-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+            .episode-info .current-episode {
+                font-size: 20px;
+                font-weight: 600;
+                color: #f1c40f;
+            }
+
+            .episode-info .episode-title {
+                color: #8892a8;
+                font-size: 16px;
+            }
+
+        .episodes-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid #1f2631;
+            margin-bottom: 20px;
+        }
+
+            .episodes-list .episode-btn {
+                background: #151b24;
+                border: 2px solid #2a313f;
+                color: #8892a8;
+                padding: 10px 24px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-size: 15px;
+                font-weight: 600;
+                transition: 0.25s ease;
+                font-family: system-ui, -apple-system, sans-serif;
+            }
+
+                .episodes-list .episode-btn:hover {
+                    border-color: #f1c40f;
+                    color: #f0f2f5;
+                    transform: translateY(-2px);
+                }
+
+                .episodes-list .episode-btn.active {
+                    background: #f1c40f;
+                    border-color: #f1c40f;
+                    color: #0b0e14;
+                }
+
+        /* ===== ИНФОРМАЦИЯ О ДОРАМЕ ===== */
+        .drama-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .drama-description {
+            color: #8892a8;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+            .drama-description strong {
+                color: #f0f2f5;
+            }
+
+            .drama-description .info-item {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 6px;
+            }
+
+                .drama-description .info-item .label {
+                    color: #6a7288;
+                    min-width: 100px;
+                    flex-shrink: 0;
+                }
+
+                .drama-description .info-item .value {
+                    color: #f0f2f5;
+                }
+
+        /* ===== АКТЁРСКИЙ СОСТАВ ===== */
+        .cast-section {
+            margin-top: 10px;
+        }
+
+            .cast-section .cast-title {
+                color: #f0f2f5;
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+                .cast-section .cast-title::after {
+                    content: '';
+                    flex: 1;
+                    height: 1px;
+                    background: #1f2631;
+                }
+
+        .cast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .cast-item {
+            background: #151b24;
+            border: 1px solid #1f2631;
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: 0.2s ease;
+        }
+
+            .cast-item:hover {
+                border-color: #2a313f;
+                background: #1a212b;
+            }
+
+            .cast-item .actor-name {
+                color: #f0f2f5;
+                font-size: 15px;
+                font-weight: 600;
+            }
+
+            .cast-item .actor-role {
+                color: #8892a8;
+                font-size: 13px;
+                margin-top: 2px;
+            }
+
+            .cast-item .actor-desc {
+                color: #6a7288;
+                font-size: 12px;
+                margin-top: 4px;
+                line-height: 1.4;
+            }
+
+            .cast-item .actor-role-tag {
+                display: inline-block;
+                background: #1e232c;
+                color: #f1c40f;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 10px;
+                border-radius: 20px;
+                margin-top: 4px;
+            }
+
+        /* ===== АДАПТИВ ===== */
+        @@media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+                .header .title {
+                    font-size: 18px;
+                }
+
+            .main-content {
+                padding: 12px 16px 20px;
+            }
+
+            .episodes-list .episode-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .episode-info .current-episode {
+                font-size: 17px;
+            }
+
+            .drama-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cast-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+
+            .drama-description .info-item .label {
+                min-width: 80px;
+                font-size: 14px;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .header .title {
+                font-size: 15px;
+            }
+
+                .header .title span {
+                    font-size: 13px;
+                    display: block;
+                    margin-left: 0;
+                }
+
+            .episodes-list .episode-btn {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .cast-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .cast-item {
+                padding: 10px 12px;
+            }
+
+                .cast-item .actor-name {
+                    font-size: 13px;
+                }
+
+                .cast-item .actor-role {
+                    font-size: 12px;
+                }
+
+            .drama-description .info-item {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+                .drama-description .info-item .label {
+                    min-width: auto;
+                }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="back-btn">← На главную</a>
+        <div class="title">
+             Завтра снова на работу!
+            <span>6 серий</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Плеер -->
+        <div class="player-wrapper">
+            <iframe id="videoPlayer" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+
+        <!-- Информация о серии -->
+        <div class="episode-info">
+            <div>
+                <span class="current-episode" id="currentEpisode">Серия 1</span>
+                <span class="episode-title" id="episodeTitle">— Начало истории</span>
+            </div>
+        </div>
+
+        <!-- Список серий -->
+        <div class="episodes-list" id="episodesList">
+            <!-- Серии будут вставлены через JavaScript -->
+        </div>
+
+        <!-- ===== ИНФОРМАЦИЯ О ДОРАМЕ ===== -->
+        <div class="drama-info">
+            <div class="drama-description">
+                <div class="info-item">
+                    <span class="label"> Дата выхода:</span>
+                    <span class="value">22 июня 2026 года</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Жанр:</span>
+                    <span class="value">мелодрама, комедия</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Страна:</span>
+                    <span class="value">Республика Корея</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Режиссёр:</span>
+                    <span class="value">Чо Ын-соль</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Сценарист:</span>
+                    <span class="value">Ким Гён Мин</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Серий:</span>
+                    <span class="value">12</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"> Трансляция:</span>
+                    <span class="value">tvN</span>
+                </div>
+            </div>
+
+            <!-- ===== АКТЁРСКИЙ СОСТАВ ===== -->
+            <div class="cast-section">
+                <div class="cast-title"> Актёрский состав</div>
+                <div class="cast-grid">
+                    <div class="cast-item">
+                        <div class="actor-name">Со Ин Гук</div>
+                        <div class="actor-role">Кан Си У</div>
+                        <div class="actor-desc">Руководитель подразделения бытовой техники</div>
+                        <span class="actor-role-tag">Главная роль</span>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Пак Джи Хён</div>
+                        <div class="actor-role">Ча Джи Юн</div>
+                        <div class="actor-desc">Сотрудница с семилетним стажем</div>
+                        <span class="actor-role-tag">Главная роль</span>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Кан Ми На</div>
+                        <div class="actor-role">Юн Но А</div>
+                        <div class="actor-desc">Сотрудница подразделения бытовой техники</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Чхве Гён Хун</div>
+                        <div class="actor-role">Чо Га Ыль</div>
+                        <div class="actor-desc">Вокалист группы, первая любовь Ча Джи Юн</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Вон Гю Бин</div>
+                        <div class="actor-role">Ли Чжэ Ин</div>
+                        <div class="actor-desc">Сёрфер с фиолетовыми волосами</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Пак Е Ён</div>
+                        <div class="actor-role">Чхве Су Джин</div>
+                        <div class="actor-desc">Руководитель дизайн-команды</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Ким Джон Ён</div>
+                        <div class="actor-role">Хан У Джин</div>
+                        <div class="actor-desc">Президент отдела DA</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Хан Тхэ Ха</div>
+                        <div class="actor-role">Ку Сын Джун</div>
+                        <div class="actor-desc">Гитарист группы «Каыль»</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Ю Сон Чжу</div>
+                        <div class="actor-role">Чха Ён Мук</div>
+                        <div class="actor-desc">Отец Ча Джи Юн</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Ли Чжи Хён</div>
+                        <div class="actor-role">Нам Хе Гён</div>
+                        <div class="actor-desc">Мать Ча Джи Юн</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Ём Сын И</div>
+                        <div class="actor-role">Юн Да Ра</div>
+                        <div class="actor-desc">Старшая сестра Юн Но А</div>
+                    </div>
+                    <div class="cast-item">
+                        <div class="actor-name">Ким Хак Сон</div>
+                        <div class="actor-role">Но Джин Чхоль</div>
+                        <div class="actor-desc">Управляющий директор отдела DA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ===== ВСЕ 6 СЕРИЙ =====
+        const EPISODE_VIDEOS = {
+            1: '1wTxwAKTALWz2W9Z5jb_I3tAbOMZ90epK',
+            2: '1_1JjQriKaTU-2R1Fm9DvObebkSN594rW',
+            3: '1eyG0vj2qyG31KZwms6zRO7AgbhZLKct8',
+            4: '1xHW58vCLsDaE57nyfnaKGSbTAUb75GzG',
+            5: '1kFvBvgO030Kp_F6RHw3lGDgvtiKfw8_n',
+            6: '1tzb5y8GYWCkmQzaUBwpV2q1zkIMao9f9'
+        };
+
+        const episodes = [
+            { number: 1, title: 'Начало истории' },
+            { number: 2, title: 'Поворот событий' },
+            { number: 3, title: 'Тайна раскрывается' },
+            { number: 4, title: 'Битва' },
+            { number: 5, title: 'Испытание' },
+            { number: 6, title: 'Финал' }
+        ];
+
+        const episodesList = document.getElementById('episodesList');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const currentEpisodeSpan = document.getElementById('currentEpisode');
+        const episodeTitleSpan = document.getElementById('episodeTitle');
+
+        let currentEpisode = 1;
+
+        function renderEpisodes() {
+            episodesList.innerHTML = '';
+            episodes.forEach(ep => {
+                const btn = document.createElement('button');
+                btn.className = 'episode-btn' + (ep.number === currentEpisode ? ' active' : '');
+                btn.textContent = `Серия ${ep.number}`;
+                btn.dataset.number = ep.number;
+                btn.addEventListener('click', () => {
+                    loadEpisode(ep.number);
+                });
+                episodesList.appendChild(btn);
+            });
+        }
+
+        function loadEpisode(number) {
+            currentEpisode = number;
+            const episode = episodes.find(e => e.number === number);
+
+            currentEpisodeSpan.textContent = `Серия ${number}`;
+            episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
+
+            document.querySelectorAll('.episode-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
+            });
+
+            const videoId = EPISODE_VIDEOS[number];
+            videoPlayer.src = `https://drive.google.com/file/d/${videoId}/preview`;
+        }
+
+        function saveLastEpisode(number) {
+            try {
+                localStorage.setItem('lastDramaEpisode', number);
+            } catch (e) {}
+        }
+
+        function getLastEpisode() {
+            try {
+                return parseInt(localStorage.getItem('lastDramaEpisode')) || 1;
+            } catch (e) {
+                return 1;
+            }
+        }
+
+        renderEpisodes();
+        const lastEpisode = getLastEpisode();
+        loadEpisode(lastEpisode);
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.episode-btn');
+            if (btn) {
+                saveLastEpisode(parseInt(btn.dataset.number));
+            }
+        });
+
+        window.addEventListener('load', () => {
+            const saved = getLastEpisode();
+            if (saved !== currentEpisode) {
+                loadEpisode(saved);
+            }
+        });
+    </script>
+</body>
+</html>
