@@ -779,12 +779,12 @@
             {
                 name: 'Абсолютная величина любви ',
                 year: 2026,
-                rating: 7,6,
+                rating: 7.6,
                 poster: 'DD.jpg',
                 isDrama: true,
                 isSeries: true,
                 genre: 'мелодрама, комедия',
-                dramaId: 'drama3
+                dramaId: 'drama3'
             },
             {
                 name: 'Форрест Гамп',
@@ -1138,6 +1138,19 @@
                             <strong>Страна:</strong> Корея Южная<br>
                             <strong>Продолжительность:</strong> 00:40:00<br>
                             <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama3') {
+                    dramaData = {
+                        name: 'Абсолютная величина любви',
+                        year: 2026,
+                        rating: 8.5,
+                        poster: 'DD.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Тхэ Гон Ли<br>
+                            <strong>Жанр:</strong> мелодрама, комедия<br>
+                            <strong>Страна:</strong> Корея Южная
                         `
                     };
                 } else {
