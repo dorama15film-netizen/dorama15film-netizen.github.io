@@ -784,6 +784,16 @@
                 dramaId: 'drama3'
             },
             {
+                name: 'Атхит - это я',
+                year: 2022,
+                rating: 7.8,
+                poster: 'i.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, романтика',
+                dramaId: 'drama4'
+            },
+            {
                 name: 'Титаник',
                 year: 1997,
                 rating: 8.3,
@@ -1050,6 +1060,24 @@
                             <strong>Режиссёр:</strong> Тхэ Гон Ли<br>
                             <strong>Жанр:</strong> мелодрама, комедия<br>
                             <strong>Страна:</strong> Корея Южная
+                        `
+                    };
+                } else if (movie.dramaId === 'drama4') {
+                    dramaData = {
+                        name: 'Атхит - это я',
+                        year: 2022,
+                        rating: 7.8,
+                        poster: 'i.jpg',
+                        details: `
+                            <strong>Оригинальное название:</strong> Even Sun<br>
+                            <strong>Другие названия:</strong> I'm Mr. Athit, Even Sun Series, Chan Nee Lae Nai Athit<br>
+                            <strong>Год:</strong> 2022<br>
+                            <strong>Страна:</strong> Таиланд<br>
+                            <strong>Жанр:</strong> комедия, романтика<br>
+                            <strong>Продолжительность:</strong> 44 мин.<br>
+                            <strong>Перевод:</strong> Русская озвучка<br>
+                            <strong>Озвучка:</strong> ПВА ШОУ, DubLik.Tv, FSG Libertas.Subtitles, FSG The Art Of Love Asia.Subtitles<br>
+                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler
                         `
                     };
                 } else {
