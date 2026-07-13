@@ -61,67 +61,69 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
+        /* ===== ЖАНРЫ — ВЫПАДАЮТ ВНИЗ ===== */
         .genres-wrapper {
             position: absolute;
-            top: 20px;
-            left: 80px;
-            z-index: 9;
+            top: 70px;
+            left: 20px;
+            z-index: 20;
             display: flex;
-            align-items: center;
-            height: 50px;
+            flex-direction: column;
+            align-items: flex-start;
             overflow: visible;
-            max-width: calc(100% - 100px);
+            max-width: 90vw;
         }
 
         .genres-slide {
             display: flex;
-            align-items: center;
-            gap: 4px;
-            overflow: hidden;
-            max-width: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            max-height: 0;
             opacity: 0;
             visibility: hidden;
-            transition: max-width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                         opacity 0.6s ease,
                         visibility 0.6s ease;
             padding: 0;
-            white-space: nowrap;
-            height: 44px;
-            background: rgba(11, 14, 20, 0.85);
+            background: rgba(11, 14, 20, 0.92);
             border-radius: 12px;
             border: 1px solid transparent;
             backdrop-filter: blur(10px);
+            width: 100%;
         }
 
         .genres-slide.open {
-            max-width: 1200px;
+            max-height: 500px;
             opacity: 1;
             visibility: visible;
-            padding: 0 14px;
+            padding: 12px 14px;
             border: 1px solid #2a313f;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
         }
 
         .genres-slide .genre-item {
             color: #f1c40f;
             font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            padding: 4px 12px;
+            padding: 6px 14px;
             cursor: pointer;
             transition: 0.2s ease;
             border-radius: 20px;
             white-space: nowrap;
-            flex-shrink: 0;
+            width: 100%;
             border: 2px solid #ff0000;
             background: rgba(0, 0, 0, 0.3);
+            text-align: left;
         }
 
         .genres-slide .genre-item:hover {
             color: #ffffff;
             background: rgba(255, 0, 0, 0.2);
             border-color: #ff3333;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .genres-slide .genre-item.active {
@@ -134,7 +136,7 @@
         .genres-slide .genre-item .count {
             color: #ff6666;
             font-size: 11px;
-            margin-left: 4px;
+            margin-left: 8px;
         }
 
         .genres-slide .genre-item.active .count {
@@ -611,7 +613,6 @@
             color: #f1c40f;
         }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
             .bottom-section { height: calc(55vh - 4px); }
@@ -623,11 +624,8 @@
             .search-wrapper .search-btn { padding: 8px 18px; font-size: 14px; height: 38px; }
             .logo-overlay img { height: 38px; }
             .logo-overlay { top: 12px; left: 12px; }
-            .genres-wrapper { top: 12px; left: 60px; height: 38px; max-width: calc(100% - 80px); }
-            .genres-slide { height: 36px; gap: 3px; }
-            .genres-slide.open { max-width: 70vw; padding: 0 8px; }
-            .genres-slide .genre-item { font-size: 11px; padding: 3px 8px; border-width: 1.5px; }
-            .genres-slide .genre-item .count { font-size: 9px; margin-left: 2px; }
+            .genres-wrapper { top: 60px; left: 12px; }
+            .genres-slide .genre-item { font-size: 13px; padding: 5px 12px; }
             .modal-content { max-width: 380px; max-height: 92vh; }
             .modal-content .modal-title { font-size: 18px; }
             .modal-content .modal-info { padding: 14px 16px 16px; }
@@ -659,12 +657,10 @@
             .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
             .logo-overlay img { height: 32px; }
             .logo-overlay { top: 8px; left: 8px; }
-            /* ===== ИСПРАВЛЕНИЕ ДЛЯ ЖАНРОВ НА ТЕЛЕФОНАХ ===== */
-            .genres-wrapper { top: 8px; left: 48px; height: 32px; max-width: calc(100% - 60px); }
-            .genres-slide { height: 30px; gap: 2px; }
-            .genres-slide.open { max-width: 55vw; padding: 0 4px; }
-            .genres-slide .genre-item { font-size: 9px; padding: 2px 6px; border-width: 1.5px; border-radius: 12px; }
-            .genres-slide .genre-item .count { font-size: 8px; margin-left: 1px; }
+            .genres-wrapper { top: 48px; left: 8px; max-width: 92vw; }
+            .genres-slide.open { padding: 10px 10px; }
+            .genres-slide .genre-item { font-size: 12px; padding: 4px 10px; border-width: 1.5px; }
+            .genres-slide .genre-item .count { font-size: 10px; margin-left: 4px; }
             .modal-overlay { padding: 10px; }
             .modal-content { max-width: 95%; max-height: 95vh; }
             .modal-content .modal-title { font-size: 16px; }
@@ -697,10 +693,9 @@
 
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
-        </div>
-
-        <div class="genres-wrapper">
-            <div class="genres-slide" id="genresSlide"></div>
+            <div class="genres-wrapper">
+                <div class="genres-slide" id="genresSlide"></div>
+            </div>
         </div>
     </div>
 
