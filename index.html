@@ -56,7 +56,6 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        /* ===== ЖАНРЫ — ВЫПАДАЮТ ВНИЗ ===== */
         .genres-wrapper {
             position: absolute;
             top: 70px;
@@ -746,7 +745,7 @@
     </footer>
 
     <script>
-        // ===== СПИСОК ФИЛЬМОВ (БЕЗ "Атхит - это я") =====
+        // ===== СПИСОК ФИЛЬМОВ =====
         const movies = [
             {
                 name: 'Завтра снова на работу!',
@@ -777,6 +776,16 @@
                 isSeries: true,
                 genre: 'мелодрама, комедия',
                 dramaId: 'drama3'
+            },
+            {
+                name: 'Атхит - это я',
+                year: 2022,
+                rating: 6.8,
+                poster: 'i.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, романтика',
+                dramaId: 'drama4'
             },
             {
                 name: 'Титаник',
@@ -1016,7 +1025,8 @@
                             <strong>Дата выхода:</strong> 22 июня 2026 года<br>
                             <strong>Жанр:</strong> мелодрама, комедия<br>
                             <strong>Страна:</strong> Республика Корея<br>
-                            <strong>Режиссёр:</strong> Чо Ын-соль                        `
+                            <strong>Режиссёр:</strong> Чо Ын-соль
+                        `
                     };
                 } else if (movie.dramaId === 'drama2') {
                     dramaData = {
@@ -1044,6 +1054,32 @@
                             <strong>Режиссёр:</strong> Тхэ Гон Ли<br>
                             <strong>Жанр:</strong> мелодрама, комедия<br>
                             <strong>Страна:</strong> Корея Южная
+                        `
+                    };
+                } else if (movie.dramaId === 'drama4') {
+                    dramaData = {
+                        name: 'Атхит - это я',
+                        year: 2022,
+                        rating: 6.8,
+                        poster: 'i.jpg',
+                        details: `
+                            <strong>Оригинальное название:</strong> Even Sun<br>
+                            <strong>Год:</strong> 2022<br>
+                            <strong>Страна:</strong> Таиланд<br>
+                            <strong>Жанр:</strong> комедия, романтика<br>
+                            <strong>В качестве:</strong> Full HD<br>
+                            <strong>В переводе:</strong> Озвучка, Субтитры<br>
+                            <strong>Серий:</strong> 6 из 6<br>
+                            <strong>Статус:</strong> Завершён<br>
+                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler<br>
+                            <strong>Актёры:</strong><br>
+                            • Nop Panut Guntachai — Атхит<br>
+                            • Prem Warut Chawalitrujiwong — Сун<br>
+                            • Parinya Angsanan — Мек<br>
+                            • Papungkorn Sakunsong — Най<br>
+                            • Nathas Tunjaroen — Манкон<br>
+                            • Weerapat Toemmaneerat — Тай<br>
+                            • Tanawat Hudchaleelaha — Немо
                         `
                     };
                 } else {
