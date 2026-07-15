@@ -736,7 +736,7 @@
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -788,6 +788,16 @@
                 dramaId: 'drama4'
             },
             {
+                name: 'Бойфренд по запросу',
+                year: 2026,
+                rating: 8.7,
+                poster: 'GT.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, мелодрама',
+                dramaId: 'drama5'
+            },
+            {
                 name: 'Титаник',
                 year: 1997,
                 rating: 8.3,
@@ -815,7 +825,7 @@
         function renderGenres() {
             const container = document.getElementById('genresSlide');
             const genres = getAllGenres();
-            let html = `<span class="genre-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></span>`;
+            let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
                 const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
                 html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
@@ -883,7 +893,7 @@
         function getMarqueeHTML() {
             let html = '';
             movies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
+                const badge = movie.isSeries ? '<span class="watch-badge">10 серий</span>' : '';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
                             <div class="title">${movie.name} ${badge}</div>
@@ -908,7 +918,7 @@
             grid.classList.add('active');
             let html = '';
             filteredMovies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge">6 серий</span>' : '';
+                const badge = movie.isSeries ? '<span class="watch-badge">10 серий</span>' : '';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
                             <div class="title">${movie.name} ${badge}</div>
@@ -1071,15 +1081,23 @@
                             <strong>В переводе:</strong> Озвучка, Субтитры<br>
                             <strong>Серий:</strong> 6 из 6<br>
                             <strong>Статус:</strong> Завершён<br>
-                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler<br>
-                            <strong>Актёры:</strong><br>
-                            • Nop Panut Guntachai — Атхит<br>
-                            • Prem Warut Chawalitrujiwong — Сун<br>
-                            • Parinya Angsanan — Мек<br>
-                            • Papungkorn Sakunsong — Най<br>
-                            • Nathas Tunjaroen — Манкон<br>
-                            • Weerapat Toemmaneerat — Тай<br>
-                            • Tanawat Hudchaleelaha — Немо
+                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler
+                        `
+                    };
+                } else if (movie.dramaId === 'drama5') {
+                    dramaData = {
+                        name: 'Бойфренд по запросу',
+                        year: 2026,
+                        rating: 8.7,
+                        poster: 'GT.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Ким Джон Щик<br>
+                            <strong>Жанр:</strong> Комедия, мелодрама<br>
+                            <strong>Страна:</strong> Южная Корея<br>
+                            <strong>Продолжительность:</strong> 00:55:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый<br>
+                            <strong>В ролях:</strong> Ким Джи Су, Со Ин Гук, Рю Абель, Ким Сон Чхоль, Пак Чи-ху, Кон Мин Чжон, Ко Гю Пхиль, Кан Мин У, Сон Ха-На, Ю Сон Хо, Хё Рим Со, Сон Хо Ён, Хун Ли, Ким А Ён, Пак Хэ-лин, Тинюй Лу
                         `
                     };
                 } else {
