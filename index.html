@@ -918,7 +918,7 @@
             grid.classList.add('active');
             let html = '';
             filteredMovies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge">10 серий</span>' : '';
+                const badge = movie.isSeries ? '<span class="watch-badge"> серий</span>' : '';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
                             <div class="title">${movie.name} ${badge}</div>
