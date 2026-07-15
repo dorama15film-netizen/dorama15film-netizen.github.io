@@ -13,9 +13,11 @@
 
         html, body {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background: #0b0e14;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .image-wrapper {
@@ -224,68 +226,23 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        .bottom-section {
+        /* ===== СЕТКА ФИЛЬМОВ (вместо карусели) ===== */
+        .movies-grid-wrapper {
             width: 100%;
-            height: calc(45vh - 4px);
+            flex: 1;
+            padding: 20px 20px 30px;
             background: #0b0e14;
-            display: flex;
-            align-items: flex-start;
-            overflow: hidden;
-            position: relative;
-            flex-shrink: 0;
-            padding: 20px 0;
-            margin-top: 5px;
         }
 
-        .marquee-container {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            position: relative;
-            padding-top: 10px;
-            cursor: grab;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .marquee-container:active {
-            cursor: grabbing;
-        }
-
-        .marquee-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .marquee-container::-webkit-scrollbar-track {
-            background: #1a212b;
-            border-radius: 10px;
-        }
-
-        .marquee-container::-webkit-scrollbar-thumb {
-            background: #f1c40f;
-            border-radius: 10px;
-        }
-
-        .marquee-container::-webkit-scrollbar-thumb:hover {
-            background: #f39c12;
-        }
-
-        .marquee {
-            display: flex;
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 25px;
-            padding: 0 20px;
-            width: max-content;
-            margin-top: 5px;
-            align-items: flex-start;
-        }
-
-        .marquee.hidden {
-            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .movie-card {
-            flex-shrink: 0;
-            width: 200px;
             background: #151b24;
             border-radius: 16px;
             overflow: hidden;
@@ -321,18 +278,6 @@
             text-overflow: ellipsis;
             background: #151b24;
             border-top: 1px solid #1f2631;
-        }
-
-        .movie-card .watch-badge {
-            display: inline-block;
-            background: #f1c40f;
-            color: #0b0e14;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 12px;
-            border-radius: 20px;
-            margin-top: 4px;
-            letter-spacing: 0.3px;
         }
 
         .search-results-grid {
@@ -609,8 +554,8 @@
 
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
-            .bottom-section { height: calc(55vh - 4px); }
-            .movie-card { width: 140px; }
+            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+            .movies-grid-wrapper { padding: 12px 12px 20px; }
             .movie-card .title { font-size: 12px; padding: 8px 10px; }
             .search-section { padding: 12px 16px 6px 16px; }
             .search-wrapper { width: 94%; }
@@ -625,12 +570,6 @@
             .modal-content .modal-info { padding: 14px 16px 16px; }
             .modal-content .modal-details { font-size: 13px; }
             .modal-content .modal-watch-link { font-size: 15px; padding: 10px 20px; }
-            .search-results-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 16px;
-                padding: 10px 10px;
-            }
-            .marquee-container::-webkit-scrollbar { height: 4px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -643,9 +582,9 @@
         }
 
         @media (max-width: 480px) {
-            .movie-card { width: 110px; }
+            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+            .movies-grid-wrapper { padding: 10px 8px 16px; }
             .movie-card .title { font-size: 10px; padding: 6px 8px; }
-            .marquee { gap: 15px; padding: 0 10px; }
             .search-wrapper { width: 96%; }
             .search-wrapper input { font-size: 14px; padding: 10px 16px; height: 44px; padding-right: 100px; }
             .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
@@ -662,12 +601,6 @@
             .modal-content .modal-close { width: 32px; height: 32px; font-size: 16px; top: 8px; right: 10px; }
             .modal-content .modal-watch-link { font-size: 14px; padding: 10px 16px; }
             .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
-            .search-results-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-                gap: 12px;
-                padding: 10px 8px;
-            }
-            .marquee-container::-webkit-scrollbar { height: 3px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -700,14 +633,13 @@
         </div>
     </div>
 
-    <div class="bottom-section">
-        <div class="marquee-container" id="marqueeContainer">
-            <div class="marquee" id="marquee"></div>
-            <div class="search-results-grid" id="searchResultsGrid"></div>
-            <div class="no-results" id="noResults">
-                <span>😕</span>
-                Ничего не найдено
-            </div>
+    <!-- ===== СЕТКА С ФИЛЬМАМИ (вместо карусели) ===== -->
+    <div class="movies-grid-wrapper">
+        <div class="movies-grid" id="moviesGrid"></div>
+        <div class="search-results-grid" id="searchResultsGrid"></div>
+        <div class="no-results" id="noResults">
+            <span>😕</span>
+            Ничего не найдено
         </div>
     </div>
 
@@ -736,7 +668,7 @@
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -791,7 +723,7 @@
                 name: 'Бойфренд по запросу',
                 year: 2026,
                 rating: 8.7,
-                poster: 'GT.jpg',
+                poster: 'Pr.jpg',
                 isDrama: true,
                 isSeries: true,
                 genre: 'комедия, мелодрама',
@@ -825,7 +757,7 @@
         function renderGenres() {
             const container = document.getElementById('genresSlide');
             const genres = getAllGenres();
-            let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
+            let html = `<span class="genre-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
                 const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
                 html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
@@ -883,44 +815,46 @@
             }
             if (query.trim() || genre !== 'all') {
                 renderSearchResults(filtered);
-                document.getElementById('marquee').classList.add('hidden');
+                document.getElementById('moviesGrid').style.display = 'none';
             } else {
                 resetSearch();
             }
         }
 
-               // ===== КАРУСЕЛЬ (ручная) =====
-                function getMarqueeHTML() {
-                   let html = '';
-                   movies.forEach(movie => {
-                       html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                                   <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                                   <div class="title">${movie.name}</div>
-                               </div>`;
-                   });
-                   return html;
-            }
+        // ===== ОТОБРАЖЕНИЕ СЕТКИ =====
+        function renderMoviesGrid() {
+            const grid = document.getElementById('moviesGrid');
+            let html = '';
+            movies.forEach(movie => {
+                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name}</div>
+                        </div>`;
+            });
+            grid.innerHTML = html;
+            attachCardClickHandlers();
+        }
 
         function renderSearchResults(filteredMovies) {
             const grid = document.getElementById('searchResultsGrid');
             const noResults = document.getElementById('noResults');
-            const marquee = document.getElementById('marquee');
+            const moviesGrid = document.getElementById('moviesGrid');
+            
             if (filteredMovies.length === 0) {
                 grid.classList.remove('active');
                 grid.innerHTML = '';
                 noResults.classList.add('active');
-                marquee.classList.add('hidden');
+                moviesGrid.style.display = 'none';
                 return;
             }
             noResults.classList.remove('active');
-            marquee.classList.add('hidden');
+            moviesGrid.style.display = 'none';
             grid.classList.add('active');
             let html = '';
             filteredMovies.forEach(movie => {
-                const badge = '';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name} ${badge}</div>
+                            <div class="title">${movie.name}</div>
                         </div>`;
             });
             grid.innerHTML = html;
@@ -930,25 +864,17 @@
         function resetSearch() {
             const grid = document.getElementById('searchResultsGrid');
             const noResults = document.getElementById('noResults');
-            const marquee = document.getElementById('marquee');
+            const moviesGrid = document.getElementById('moviesGrid');
             grid.classList.remove('active');
             grid.innerHTML = '';
             noResults.classList.remove('active');
-            marquee.classList.remove('hidden');
+            moviesGrid.style.display = 'grid';
             currentSearchQuery = '';
             document.getElementById('searchInput').value = '';
         }
 
-        document.getElementById('marquee').innerHTML = getMarqueeHTML();
-        attachCardClickHandlers();
+        renderMoviesGrid();
         renderGenres();
-
-        // ===== ПОДДЕРЖКА ПРОКРУТКИ КОЛЁСИКОМ =====
-        const marqueeContainer = document.getElementById('marqueeContainer');
-        marqueeContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            marqueeContainer.scrollLeft += e.deltaY;
-        });
 
         // ===== ПОИСК =====
         const searchInput = document.getElementById('searchInput');
@@ -975,7 +901,7 @@
                 }
 
                 if (filtered.length === 0) {
-                    document.getElementById('marquee').classList.add('hidden');
+                    document.getElementById('moviesGrid').style.display = 'none';
                     document.getElementById('searchResultsGrid').classList.remove('active');
                     document.getElementById('searchResultsGrid').innerHTML = '';
                     document.getElementById('noResults').classList.add('active');
@@ -1088,15 +1014,14 @@
                         name: 'Бойфренд по запросу',
                         year: 2026,
                         rating: 8.7,
-                        poster: 'GT.jpg',
+                        poster: 'Pr.jpg',
                         details: `
                             <strong>Год выпуска:</strong> 2026<br>
                             <strong>Режиссёр:</strong> Ким Джон Щик<br>
                             <strong>Жанр:</strong> Комедия, мелодрама<br>
                             <strong>Страна:</strong> Южная Корея<br>
                             <strong>Продолжительность:</strong> 00:55:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый<br>
-                            <strong>В ролях:</strong> Ким Джи Су, Со Ин Гук, Рю Абель, Ким Сон Чхоль, Пак Чи-ху, Кон Мин Чжон, Ко Гю Пхиль, Кан Мин У, Сон Ха-На, Ю Сон Хо, Хё Рим Со, Сон Хо Ён, Хун Ли, Ким А Ён, Пак Хэ-лин, Тинюй Лу
+                            <strong>Перевод:</strong> Профессиональный многоголосый
                         `
                     };
                 } else {
