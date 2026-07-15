@@ -204,6 +204,50 @@
                     5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239047&hash=b4099cd95d47ae91&hd=3',
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239048&hash=d9466f01ce9b0a00&hd=3'
                 }
+            },
+            drama5: {
+                name: 'Бойфренд по запросу',
+                episodes: 10,
+                storageKey: 'lastDramaEpisode5',
+                info: {
+                    year: '2026',
+                    director: 'Ким Джон Щик',
+                    genre: 'Комедия, мелодрама',
+                    country: 'Южная Корея',
+                    duration: '00:55:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Со Ми Рэ живёт работой. Продюсер вебтунов — звучит круто, да? На деле это бесконечные дедлайны, капризные авторы и постоянное ощущение, что времени катастрофически не хватает ни на что. Романтика? Да она про неё даже думать забыла. Свидания, цветы, бабочки в животе — всё это кажется какой-то сказкой из манхвы, которую она сама редактирует. И тут ей подсовывают новое приложение. "Парень по подписке". Виртуальная реальность, идеальные парни на любой вкус — красавцы, умницы, романтики. Со Ми Рэ сначала скептически фыркает, но... любопытство берёт своё. Надевает шлем — и погружается. Там всё не по-настоящему, конечно. Но чувства? О, чувства очень даже настоящие. Сердце колотится, щёки горят, хочется улыбаться без причины. Она будто заново учится влюбляться. Параллельно в офисе её достаёт коллега Пак Кён Нам. Амбициозный, успешный, вечно всех переплюнуть пытается. Они постоянно спорят, соревнуются, огрызаются друг на друга. Но с недавних пор... споры перестали раздражать. Более того — работа вообще стала легче как-то. Неужели виртуальные свидания настолько меняют настроение? Вопрос назревает сам собой: где кончается фантазия и где начинается реальность? И что если самый идеальный парень давно рядом — просто ты его не замечала? А если Кён Нам знает о приложении больше, чем кажется? Если он тоже играет в эту игру — но по своим правилам?',
+                    cast: [
+                        { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' },
+                        { name: 'Рю Абель', role: '', tag: '' },
+                        { name: 'Ким Сон Чхоль', role: '', tag: '' },
+                        { name: 'Пак Чи-ху', role: '', tag: '' },
+                        { name: 'Кон Мин Чжон', role: '', tag: '' },
+                        { name: 'Ко Гю Пхиль', role: '', tag: '' },
+                        { name: 'Кан Мин У', role: '', tag: '' },
+                        { name: 'Сон Ха-На', role: '', tag: '' },
+                        { name: 'Ю Сон Хо', role: '', tag: '' },
+                        { name: 'Хё Рим Со', role: '', tag: '' },
+                        { name: 'Сон Хо Ён', role: '', tag: '' },
+                        { name: 'Хун Ли', role: '', tag: '' },
+                        { name: 'Ким А Ён', role: '', tag: '' },
+                        { name: 'Пак Хэ-лин', role: '', tag: '' },
+                        { name: 'Тинюй Лу', role: '', tag: '' }
+                    ]
+                },
+                videos: {
+                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239049&hash=4e7aaaca66866200&hd=3',
+                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239050&hash=dbd8261600e7dfa1&hd=3',
+                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239051&hash=3d4e0c05d04ba423&hd=3',
+                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239052&hash=026b075dcff2723a&hd=3',
+                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239053&hash=bb79c2e519e5998b&hd=3',
+                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239054&hash=adb71c60c01a909b&hd=3',
+                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239055&hash=a8b1c91faf8e4d6d&hd=3',
+                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239056&hash=ae681bfa74c82000&hd=3',
+                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239057&hash=d45cd0f0e6bd26cc&hd=3',
+                   10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239058&hash=4cd0477c2a8825b2&hd=3'
+                }
             }
         };
 
@@ -233,7 +277,11 @@
             { number: 3, title: '' },
             { number: 4, title: '' },
             { number: 5, title: '' },
-            { number: 6, title: '' }
+            { number: 6, title: '' },
+            { number: 7, title: '' },
+            { number: 8, title: '' },
+            { number: 9, title: '' },
+            { number: 10, title: '' }
         ];
 
         const episodesList = document.getElementById('episodesList');
@@ -270,7 +318,7 @@
                     <div class="info-item"><span class="label"> Жанр:</span><span class="value">${info.genre}</span></div>
                     <div class="info-item"><span class="label"> Страна:</span><span class="value">${info.country}</span></div>
                     ${info.duration ? `<div class="info-item"><span class="label"> Продолжительность:</span><span class="value">${info.duration}</span></div>` : ''}
-                    ${info.translation ? `<div class="info-item"><span class="label">🔊 Перевод:</span><span class="value">${info.translation}</span></div>` : ''}
+                    ${info.translation ? `<div class="info-item"><span class="label"> Перевод:</span><span class="value">${info.translation}</span></div>` : ''}
                     ${info.plot ? `<div class="plot"><strong>Описание:</strong><br>${info.plot}</div>` : ''}
                 </div>
                 <div class="cast-section">
