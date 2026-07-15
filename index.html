@@ -889,18 +889,17 @@
             }
         }
 
-        // ===== КАРУСЕЛЬ (ручная) =====
-        function getMarqueeHTML() {
-            let html = '';
-            movies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge">10 серий</span>' : '';
-                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name} ${badge}</div>
-                        </div>`;
-            });
-            return html;
-        }
+               // ===== КАРУСЕЛЬ (ручная) =====
+                function getMarqueeHTML() {
+                   let html = '';
+                   movies.forEach(movie => {
+                       html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                                   <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                                   <div class="title">${movie.name}</div>
+                               </div>`;
+                   });
+                   return html;
+            }
 
         function renderSearchResults(filteredMovies) {
             const grid = document.getElementById('searchResultsGrid');
@@ -918,7 +917,7 @@
             grid.classList.add('active');
             let html = '';
             filteredMovies.forEach(movie => {
-                const badge = movie.isSeries ? '<span class="watch-badge"> серий</span>' : '';
+                const badge = '';
                 html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                             <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
                             <div class="title">${movie.name} ${badge}</div>
