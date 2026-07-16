@@ -1102,7 +1102,7 @@
                     currentYear = year;
                     applyFilters();
                     // Обновляем кнопку
-                    document.getElementById('yearsToggle').textContent = `📅 ${year}`;
+                    document.getElementById('yearsToggle').textContent = ` ${year}`;
                     // Делаем активным
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
@@ -1112,8 +1112,8 @@
                 });
             });
 
-            // Кнопка по умолчанию — "📅 Год"
-            document.getElementById('yearsToggle').textContent = '📅 Год';
+            // Кнопка по умолчанию — "Поиск по годам"
+            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
         }
 
         function toggleYears() {
@@ -1128,8 +1128,8 @@
             currentYear = 'all';
             // Снимаем активный класс со всех элементов
             dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
-            // Возвращаем на кнопку "📅 Год"
-            document.getElementById('yearsToggle').textContent = '📅 Год';
+            // Возвращаем на кнопку " Поиск по годам"
+            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
             // Применяем фильтры (без фильтра по году)
             applyFilters();
         }
