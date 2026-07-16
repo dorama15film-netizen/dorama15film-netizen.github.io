@@ -782,7 +782,7 @@
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle">📅 Год</div>
+            <div class="years-toggle" id="yearsToggle"> Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -839,7 +839,7 @@
             </div>
             <div class="footer-column">
                 <h4>Контакты</h4>
-                <a href="mailto:dorama15film@gmail.com" class="email-link">✉️ dorama15film@gmail.com</a>
+                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1031,7 +1031,7 @@
         function renderGenres() {
             const container = document.getElementById('genresSlide');
             const genres = getAllGenres();
-            let html = `<span class="genre-item active" data-genre="all">🎬 Все <span class="count">${movies.length}</span></span>`;
+            let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
                 const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
                 html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
