@@ -139,7 +139,7 @@
             color: #f1c40f;
         }
 
-        /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ ВВЕРХУ) ===== */
+        /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ ===== */
         .years-wrapper {
             position: absolute;
             top: 20px;
@@ -160,11 +160,11 @@
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 16px;
             font-weight: 700;
-            padding: 8px 24px;
+            padding: 8px 20px;
             cursor: pointer;
             transition: 0.3s ease;
             user-select: none;
-            min-width: 80px;
+            min-width: 70px;
             text-align: center;
         }
 
@@ -187,7 +187,7 @@
             border: 1px solid transparent;
             margin-top: 4px;
             width: 100%;
-            min-width: 80px;
+            min-width: 70px;
         }
 
         .years-dropdown.open {
@@ -221,7 +221,7 @@
             background: rgba(241, 196, 15, 0.1);
         }
 
-        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (СПРАВА) ===== */
+        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР ===== */
         .continue-wrapper {
             position: absolute;
             top: 20px;
@@ -790,7 +790,7 @@
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle">📅 Годы</div>
+            <div class="years-toggle" id="yearsToggle">2026</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -1095,9 +1095,9 @@
                 }
             });
             
-            const years = Array.from(yearsSet).sort();
+            const years = Array.from(yearsSet).sort((a, b) => b - a); // сортировка по убыванию
             
-            let html = `<span class="year-item active" data-year="all">Все</span>`;
+            let html = '';
             years.forEach(year => {
                 const count = movies.filter(m => m.year === year).length;
                 html += `<span class="year-item" data-year="${year}">${year}</span>`;
@@ -1111,16 +1111,26 @@
                     filterByYear(year);
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
-                    // Обновляем текст кнопки
-                    const toggle = document.getElementById('yearsToggle');
-                    if (year === 'all') {
-                        toggle.textContent = '📅 Годы';
-                    } else {
-                        toggle.textContent = `📅 ${year}`;
-                    }
+                    // Обновляем текст кнопки на выбранный год
+                    document.getElementById('yearsToggle').textContent = year;
                     closeYears();
                 });
             });
+
+            // Устанавливаем последний год на кнопку по умолчанию
+            if (years.length > 0) {
+                const latestYear = years[0];
+                document.getElementById('yearsToggle').textContent = latestYear;
+                // Автоматически применяем фильтр по последнему году
+                filterByYear(latestYear);
+                // Делаем этот год активным в списке
+                const items = container.querySelectorAll('.year-item');
+                items.forEach(item => {
+                    if (item.dataset.year == latestYear) {
+                        item.classList.add('active');
+                    }
+                });
+            }
         }
 
         function toggleYears() {
@@ -1131,6 +1141,12 @@
         function closeYears() {
             const dropdown = document.getElementById('yearsDropdown');
             dropdown.classList.remove('open');
+            // При закрытии меню показываем все фильмы
+            currentYear = 'all';
+            // Сбрасываем активный класс у всех элементов
+            dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
+            // Показываем все фильмы
+            applyFilters();
         }
 
         document.getElementById('yearsToggle').addEventListener('click', function(e) {
