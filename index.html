@@ -139,69 +139,92 @@
             color: #f1c40f;
         }
 
-        /* ===== ФИЛЬТР ПО ГОДАМ ===== */
+        /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ ВВЕРХУ) ===== */
         .years-wrapper {
             position: absolute;
-            top: 70px;
-            right: 30px;
-            z-index: 20;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            overflow: visible;
-            max-width: 90vw;
+            align-items: center;
         }
 
-        .years-slide {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 6px;
-            padding: 8px 12px;
+        .years-toggle {
             background: rgba(11, 14, 20, 0.85);
             backdrop-filter: blur(10px);
+            border: 2px solid #2a313f;
             border-radius: 12px;
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 8px 24px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            user-select: none;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .years-toggle:hover {
+            border-color: #f1c40f;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+        }
+
+        .years-dropdown {
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.3s ease,
+                        visibility 0.3s ease;
+            background: rgba(11, 14, 20, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            margin-top: 4px;
+            width: 100%;
+            min-width: 80px;
+        }
+
+        .years-dropdown.open {
+            max-height: 300px;
+            opacity: 1;
+            visibility: visible;
             border: 1px solid #2a313f;
+            padding: 6px 0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
         }
 
         .year-item {
             color: #8892a8;
             font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            padding: 4px 12px;
+            padding: 6px 20px;
             cursor: pointer;
             transition: 0.2s ease;
-            border-radius: 20px;
-            border: 2px solid transparent;
-            background: rgba(0, 0, 0, 0.2);
+            display: block;
+            text-align: center;
         }
 
         .year-item:hover {
             color: #f0f2f5;
-            border-color: #2a313f;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .year-item.active {
             color: #f1c40f;
-            border-color: #f1c40f;
             background: rgba(241, 196, 15, 0.1);
         }
 
-        .year-item .count {
-            color: #6a7288;
-            font-size: 11px;
-            margin-left: 4px;
-        }
-
-        .year-item.active .count {
-            color: #f1c40f;
-        }
-
-        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (НА БАННЕРЕ - СПРАВА, НА УРОВНЕ ЛОГОТИПА) ===== */
+        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (СПРАВА) ===== */
         .continue-wrapper {
             position: absolute;
-            top: 130px;
+            top: 20px;
             right: 30px;
             z-index: 15;
             max-width: 200px;
@@ -679,10 +702,8 @@
 
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
-            .years-wrapper { top: 60px; right: 15px; }
-            .years-slide { padding: 6px 10px; gap: 4px; }
-            .year-item { font-size: 11px; padding: 3px 8px; }
-            .continue-wrapper { top: 110px; right: 15px; max-width: 150px; min-width: 110px; }
+            .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 60px; }
+            .continue-wrapper { max-width: 150px; min-width: 110px; }
             .continue-name { font-size: 12px; }
             .continue-episode { font-size: 10px; }
             .continue-card { padding: 8px 8px 10px; border-radius: 12px; }
@@ -715,10 +736,11 @@
 
         @media (max-width: 480px) {
             .image-wrapper { height: 40vh; }
-            .years-wrapper { top: 50px; right: 10px; }
-            .years-slide { padding: 4px 8px; gap: 3px; }
-            .year-item { font-size: 9px; padding: 2px 6px; }
-            .continue-wrapper { top: 90px; right: 10px; max-width: 110px; min-width: 80px; }
+            .years-wrapper { top: 10px; }
+            .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 50px; }
+            .years-dropdown.open { padding: 4px 0; }
+            .year-item { font-size: 12px; padding: 4px 14px; }
+            .continue-wrapper { top: 10px; right: 10px; max-width: 110px; min-width: 80px; }
             .continue-name { font-size: 10px; }
             .continue-episode { font-size: 8px; }
             .continue-card { padding: 5px 5px 7px; border-radius: 10px; border-width: 1.5px; }
@@ -758,7 +780,21 @@
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Изображение" />
 
-        <!-- ===== ПРОДОЛЖИТЬ ПРОСМОТР (НА БАННЕРЕ - СПРАВА) ===== -->
+        <!-- ===== ЛОГОТИП (СЛЕВА) ===== -->
+        <div class="logo-overlay" id="logoWrapper">
+            <img src="Logo.jpeg" alt="Логотип" />
+            <div class="genres-wrapper">
+                <div class="genres-slide" id="genresSlide"></div>
+            </div>
+        </div>
+
+        <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
+        <div class="years-wrapper" id="yearsWrapper">
+            <div class="years-toggle" id="yearsToggle">📅 Годы</div>
+            <div class="years-dropdown" id="yearsDropdown"></div>
+        </div>
+
+        <!-- ===== ПРОДОЛЖИТЬ ПРОСМОТР (СПРАВА) ===== -->
         <div class="continue-wrapper" id="continueWrapper">
             <div class="continue-card" id="continueCard">
                 <img class="continue-poster" id="continuePoster" src="" alt="Постер" />
@@ -767,19 +803,6 @@
                     <div class="continue-episode" id="continueEpisode">Серия 1</div>
                 </div>
             </div>
-        </div>
-
-        <!-- ===== ЖАНРЫ (СЛЕВА) ===== -->
-        <div class="logo-overlay" id="logoWrapper">
-            <img src="Logo.jpeg" alt="Логотип" />
-            <div class="genres-wrapper">
-                <div class="genres-slide" id="genresSlide"></div>
-            </div>
-        </div>
-
-        <!-- ===== ГОДЫ (СПРАВА) ===== -->
-        <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-slide" id="yearsSlide"></div>
         </div>
     </div>
 
@@ -1059,11 +1082,11 @@
             }
         });
 
-        // ===== ФИЛЬТР ПО ГОДАМ =====
+        // ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ =====
         let currentYear = 'all';
 
         function renderYears() {
-            const container = document.getElementById('yearsSlide');
+            const container = document.getElementById('yearsDropdown');
             const yearsSet = new Set();
             
             movies.forEach(movie => {
@@ -1074,10 +1097,10 @@
             
             const years = Array.from(yearsSet).sort();
             
-            let html = `<span class="year-item active" data-year="all">📅 Все <span class="count">${movies.length}</span></span>`;
+            let html = `<span class="year-item active" data-year="all">Все</span>`;
             years.forEach(year => {
                 const count = movies.filter(m => m.year === year).length;
-                html += `<span class="year-item" data-year="${year}">${year} <span class="count">${count}</span></span>`;
+                html += `<span class="year-item" data-year="${year}">${year}</span>`;
             });
             container.innerHTML = html;
 
@@ -1088,9 +1111,39 @@
                     filterByYear(year);
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
+                    // Обновляем текст кнопки
+                    const toggle = document.getElementById('yearsToggle');
+                    if (year === 'all') {
+                        toggle.textContent = '📅 Годы';
+                    } else {
+                        toggle.textContent = `📅 ${year}`;
+                    }
+                    closeYears();
                 });
             });
         }
+
+        function toggleYears() {
+            const dropdown = document.getElementById('yearsDropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        function closeYears() {
+            const dropdown = document.getElementById('yearsDropdown');
+            dropdown.classList.remove('open');
+        }
+
+        document.getElementById('yearsToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleYears();
+        });
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('yearsWrapper');
+            if (!wrapper.contains(e.target)) {
+                closeYears();
+            }
+        });
 
         function filterByYear(year) {
             currentYear = year;
@@ -1105,17 +1158,14 @@
             const query = currentSearchQuery;
             let filtered = movies;
             
-            // Фильтр по жанру
             if (currentGenre !== 'all') {
                 filtered = filtered.filter(m => m.genre && m.genre.includes(currentGenre));
             }
             
-            // Фильтр по году
             if (currentYear !== 'all') {
                 filtered = filtered.filter(m => m.year === parseInt(currentYear));
             }
             
-            // Фильтр по поиску
             if (query.trim()) {
                 const lowerQuery = query.toLowerCase().trim();
                 filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
