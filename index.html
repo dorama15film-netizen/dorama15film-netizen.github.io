@@ -164,7 +164,7 @@
             cursor: pointer;
             transition: 0.3s ease;
             user-select: none;
-            min-width: 70px;
+            min-width: 80px;
             text-align: center;
         }
 
@@ -187,7 +187,7 @@
             border: 1px solid transparent;
             margin-top: 4px;
             width: 100%;
-            min-width: 70px;
+            min-width: 80px;
         }
 
         .years-dropdown.open {
@@ -391,6 +391,10 @@
             margin: 0 auto;
         }
 
+        .movies-grid.hidden {
+            display: none;
+        }
+
         .movie-card {
             background: #151b24;
             border-radius: 16px;
@@ -429,25 +433,12 @@
             border-top: 1px solid #1f2631;
         }
 
-        .search-results-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-            padding: 10px 20px;
-            width: 100%;
-        }
-
-        .search-results-grid.active {
-            display: grid;
-        }
-
         .no-results {
             display: none;
             text-align: center;
             padding: 40px 20px;
             color: #8892a8;
             font-size: 20px;
-            grid-column: 1 / -1;
         }
 
         .no-results.active {
@@ -703,7 +694,7 @@
 
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
-            .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 60px; }
+            .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 70px; }
             .continue-wrapper { max-width: 150px; min-width: 110px; right: 20px; }
             .continue-name { font-size: 12px; }
             .continue-episode { font-size: 10px; }
@@ -738,7 +729,7 @@
         @media (max-width: 480px) {
             .image-wrapper { height: 40vh; }
             .years-wrapper { top: 10px; }
-            .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 50px; }
+            .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 60px; }
             .years-dropdown.open { padding: 4px 0; }
             .year-item { font-size: 12px; padding: 4px 14px; }
             .continue-wrapper { right: 10px; max-width: 110px; min-width: 80px; }
@@ -791,7 +782,7 @@
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle">Год</div>
+            <div class="years-toggle" id="yearsToggle">📅 Год</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -817,7 +808,6 @@
     <!-- ===== СЕТКА С ФИЛЬМАМИ ===== -->
     <div class="movies-grid-wrapper">
         <div class="movies-grid" id="moviesGrid"></div>
-        <div class="search-results-grid" id="searchResultsGrid"></div>
         <div class="no-results" id="noResults">
             <span>😕</span>
             Ничего не найдено
@@ -1112,7 +1102,7 @@
                     currentYear = year;
                     applyFilters();
                     // Обновляем кнопку
-                    document.getElementById('yearsToggle').textContent = year;
+                    document.getElementById('yearsToggle').textContent = `📅 ${year}`;
                     // Делаем активным
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
@@ -1122,8 +1112,8 @@
                 });
             });
 
-            // Кнопка по умолчанию — "Год"
-            document.getElementById('yearsToggle').textContent = 'Год';
+            // Кнопка по умолчанию — "📅 Год"
+            document.getElementById('yearsToggle').textContent = '📅 Год';
         }
 
         function toggleYears() {
@@ -1138,8 +1128,8 @@
             currentYear = 'all';
             // Снимаем активный класс со всех элементов
             dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
-            // Возвращаем на кнопку "Год"
-            document.getElementById('yearsToggle').textContent = 'Год';
+            // Возвращаем на кнопку "📅 Год"
+            document.getElementById('yearsToggle').textContent = '📅 Год';
             // Применяем фильтры (без фильтра по году)
             applyFilters();
         }
@@ -1182,12 +1172,29 @@
                 filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
             }
             
-            if (query.trim() || currentYear !== 'all' || currentGenre !== 'all') {
-                renderSearchResults(filtered);
-                document.getElementById('moviesGrid').style.display = 'none';
-            } else {
-                resetSearch();
+            // Обновляем сетку
+            const grid = document.getElementById('moviesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                noResults.classList.add('active');
+                return;
             }
+            
+            noResults.classList.remove('active');
+            grid.classList.remove('hidden');
+            
+            let html = '';
+            filtered.forEach(movie => {
+                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name}</div>
+                        </div>`;
+            });
+            grid.innerHTML = html;
+            attachCardClickHandlers();
         }
 
         function filterByGenre(genre) {
@@ -1209,42 +1216,14 @@
             attachCardClickHandlers();
         }
 
-        function renderSearchResults(filteredMovies) {
-            const grid = document.getElementById('searchResultsGrid');
-            const noResults = document.getElementById('noResults');
-            const moviesGrid = document.getElementById('moviesGrid');
-            
-            if (filteredMovies.length === 0) {
-                grid.classList.remove('active');
-                grid.innerHTML = '';
-                noResults.classList.add('active');
-                moviesGrid.style.display = 'none';
-                return;
-            }
-            noResults.classList.remove('active');
-            moviesGrid.style.display = 'none';
-            grid.classList.add('active');
-            let html = '';
-            filteredMovies.forEach(movie => {
-                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name}</div>
-                        </div>`;
-            });
-            grid.innerHTML = html;
-            attachCardClickHandlers();
-        }
-
         function resetSearch() {
-            const grid = document.getElementById('searchResultsGrid');
+            const grid = document.getElementById('moviesGrid');
             const noResults = document.getElementById('noResults');
-            const moviesGrid = document.getElementById('moviesGrid');
-            grid.classList.remove('active');
-            grid.innerHTML = '';
+            grid.classList.remove('hidden');
             noResults.classList.remove('active');
-            moviesGrid.style.display = 'grid';
             currentSearchQuery = '';
             document.getElementById('searchInput').value = '';
+            renderMoviesGrid();
         }
 
         renderMoviesGrid();
