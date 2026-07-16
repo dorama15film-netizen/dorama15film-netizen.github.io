@@ -226,7 +226,94 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        /* ===== СЕТКА ФИЛЬМОВ (вместо карусели) ===== */
+        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР ===== */
+        .continue-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 10px auto 0;
+            padding: 0 20px;
+            background: #0b0e14;
+        }
+
+        .continue-title {
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .continue-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #151b24;
+            border: 2px solid #f1c40f;
+            border-radius: 16px;
+            padding: 12px 20px 12px 12px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+            max-width: 400px;
+        }
+
+        .continue-card:hover {
+            transform: scale(1.02);
+            border-color: #f39c12;
+            box-shadow: 0 0 50px rgba(241, 196, 15, 0.25);
+        }
+
+        .continue-poster {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #1a212b;
+            flex-shrink: 0;
+        }
+
+        .continue-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .continue-name {
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .continue-episode {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: #f1c40f;
+            color: #0b0e14;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 20px;
+            border-radius: 30px;
+            margin-top: 6px;
+            transition: 0.2s;
+            text-align: center;
+            width: fit-content;
+        }
+
+        .continue-card:hover .continue-btn {
+            background: #f39c12;
+            transform: scale(0.98);
+        }
+
+        /* ===== СЕТКА ФИЛЬМОВ ===== */
         .movies-grid-wrapper {
             width: 100%;
             flex: 1;
@@ -570,6 +657,9 @@
             .modal-content .modal-info { padding: 14px 16px 16px; }
             .modal-content .modal-details { font-size: 13px; }
             .modal-content .modal-watch-link { font-size: 15px; padding: 10px 20px; }
+            .continue-card { max-width: 100%; }
+            .continue-poster { width: 60px; height: 90px; }
+            .continue-name { font-size: 15px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -601,6 +691,12 @@
             .modal-content .modal-close { width: 32px; height: 32px; font-size: 16px; top: 8px; right: 10px; }
             .modal-content .modal-watch-link { font-size: 14px; padding: 10px 16px; }
             .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
+            .continue-wrapper { padding: 0 10px; }
+            .continue-card { padding: 10px 14px 10px 10px; max-width: 100%; }
+            .continue-poster { width: 60px; height: 90px; }
+            .continue-name { font-size: 15px; }
+            .continue-episode { font-size: 12px; }
+            .continue-btn { font-size: 12px; padding: 4px 14px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -633,7 +729,20 @@
         </div>
     </div>
 
-    <!-- ===== СЕТКА С ФИЛЬМАМИ (вместо карусели) ===== -->
+    <!-- ===== ПРОДОЛЖИТЬ ПРОСМОТР ===== -->
+    <div class="continue-wrapper" id="continueWrapper">
+        <div class="continue-title">🎬 Продолжить просмотр</div>
+        <div class="continue-card" id="continueCard">
+            <img class="continue-poster" id="continuePoster" src="" alt="Постер" />
+            <div class="continue-info">
+                <div class="continue-name" id="continueName">Название дорамы</div>
+                <div class="continue-episode" id="continueEpisode">Серия 1</div>
+                <div class="continue-btn">▶ Смотреть</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== СЕТКА С ФИЛЬМАМИ ===== -->
     <div class="movies-grid-wrapper">
         <div class="movies-grid" id="moviesGrid"></div>
         <div class="search-results-grid" id="searchResultsGrid"></div>
@@ -677,6 +786,109 @@
     </footer>
 
     <script>
+        // ===== ДАННЫЕ О ДОРАМАХ (нужны для блока "Продолжить просмотр") =====
+        const DRAMAS = {
+            drama1: {
+                name: 'Завтра снова на работу!',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode1',
+                poster: 'DR.jpg',
+                info: {
+                    year: '2024',
+                    director: 'Чо Ын-соль',
+                    genre: 'мелодрама, комедия',
+                    country: 'Республика Корея',
+                    duration: '—',
+                    translation: '—',
+                    plot: 'Увлекательная история о жизни и любви.',
+                    cast: [
+                        { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
+                        { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
+                        { name: 'Кан Ми На', role: 'Юн Но А', tag: '' },
+                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: '' },
+                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
+                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
+                    ]
+                }
+            },
+            drama2: {
+                name: 'Лазурная весна',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode2',
+                poster: 'Wt.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Чон Хон-су',
+                    genre: 'Мелодрама',
+                    country: 'Корея Южная',
+                    duration: '00:40:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Говорят, море умеет слушать. Не отвечает, не осуждает — просто шумит...',
+                    cast: [
+                        { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' }
+                    ]
+                }
+            },
+            drama3: {
+                name: 'Абсолютная величина любви',
+                episodes: 14,
+                storageKey: 'lastDramaEpisode3',
+                poster: 'DD.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Тхэ Гон Ли',
+                    genre: 'мелодрама, комедия',
+                    country: 'Корея Южная',
+                    duration: '00:59:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Днём — серая мышка за последней партой...',
+                    cast: [
+                        { name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' },
+                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' }
+                    ]
+                }
+            },
+            drama4: {
+                name: 'Атхит - это я',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode4',
+                poster: 'i.jpg',
+                info: {
+                    year: '2022',
+                    director: 'Bhandit Thongdee, Simon Kessler',
+                    genre: 'комедия, романтика',
+                    country: 'Таиланд',
+                    duration: '44 мин.',
+                    translation: 'Озвучка, Субтитры',
+                    plot: 'Сун работает сборщиком долгов...',
+                    cast: [
+                        { name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
+                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }
+                    ]
+                }
+            },
+            drama5: {
+                name: 'Бойфренд по запросу',
+                episodes: 10,
+                storageKey: 'lastDramaEpisode5',
+                poster: 'GT.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Ким Джон Щик',
+                    genre: 'Комедия, мелодрама',
+                    country: 'Южная Корея',
+                    duration: '00:55:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Со Ми Рэ живёт работой. Продюсер вебтунов — звучит круто, да? На деле это бесконечные дедлайны...',
+                    cast: [
+                        { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
+                    ]
+                }
+            }
+        };
+
         // ===== СПИСОК ФИЛЬМОВ =====
         const movies = [
             {
@@ -1079,6 +1291,45 @@
                 });
             });
         }
+
+        // ===== ПРОДОЛЖИТЬ ПРОСМОТР =====
+        function getLastWatchedDrama() {
+            const savedDramaId = localStorage.getItem('lastDramaId');
+            if (savedDramaId && DRAMAS[savedDramaId]) {
+                return savedDramaId;
+            }
+            return 'drama1';
+        }
+
+        function getLastEpisode(dramaId) {
+            const storageKey = DRAMAS[dramaId]?.storageKey;
+            if (storageKey) {
+                const saved = localStorage.getItem(storageKey);
+                if (saved) return parseInt(saved);
+            }
+            return 1;
+        }
+
+        function renderContinueWatching() {
+            const dramaId = getLastWatchedDrama();
+            const drama = DRAMAS[dramaId];
+            if (!drama) return;
+
+            const episode = getLastEpisode(dramaId);
+            const poster = drama.poster || 'DR.jpg';
+
+            document.getElementById('continuePoster').src = poster;
+            document.getElementById('continueName').textContent = drama.name;
+            document.getElementById('continueEpisode').textContent = `Серия ${episode}`;
+
+            const card = document.getElementById('continueCard');
+            card.addEventListener('click', function() {
+                window.location.href = `watch.html?drama=${dramaId}`;
+            });
+        }
+
+        // Запускаем после загрузки страницы
+        document.addEventListener('DOMContentLoaded', renderContinueWatching);
     </script>
 </body>
 </html>
