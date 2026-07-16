@@ -791,7 +791,7 @@
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle">2026</div>
+            <div class="years-toggle" id="yearsToggle">Год</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -1096,11 +1096,10 @@
                 }
             });
             
-            const years = Array.from(yearsSet).sort((a, b) => b - a); // сортировка по убыванию
+            const years = Array.from(yearsSet).sort((a, b) => b - a);
             
             let html = '';
             years.forEach(year => {
-                const count = movies.filter(m => m.year === year).length;
                 html += `<span class="year-item" data-year="${year}">${year}</span>`;
             });
             container.innerHTML = html;
@@ -1112,26 +1111,13 @@
                     filterByYear(year);
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
-                    // Обновляем текст кнопки на выбранный год
                     document.getElementById('yearsToggle').textContent = year;
                     closeYears();
                 });
             });
 
-            // Устанавливаем последний год на кнопку по умолчанию
-            if (years.length > 0) {
-                const latestYear = years[0];
-                document.getElementById('yearsToggle').textContent = latestYear;
-                // Автоматически применяем фильтр по последнему году
-                filterByYear(latestYear);
-                // Делаем этот год активным в списке
-                const items = container.querySelectorAll('.year-item');
-                items.forEach(item => {
-                    if (item.dataset.year == latestYear) {
-                        item.classList.add('active');
-                    }
-                });
-            }
+            // Кнопка по умолчанию — "Год"
+            document.getElementById('yearsToggle').textContent = 'Год';
         }
 
         function toggleYears() {
@@ -1146,19 +1132,10 @@
             currentYear = 'all';
             // Снимаем активный класс со всех элементов
             dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
+            // Возвращаем на кнопку "Год"
+            document.getElementById('yearsToggle').textContent = 'Год';
             // Применяем фильтры (без фильтра по году)
             applyFilters();
-            // Возвращаем на кнопку последний год
-            const yearsSet = new Set();
-            movies.forEach(movie => {
-                if (movie.year) {
-                    yearsSet.add(movie.year);
-                }
-            });
-            const years = Array.from(yearsSet).sort((a, b) => b - a);
-            if (years.length > 0) {
-                document.getElementById('yearsToggle').textContent = years[0];
-            }
         }
 
         document.getElementById('yearsToggle').addEventListener('click', function(e) {
