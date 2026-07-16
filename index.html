@@ -948,6 +948,31 @@
                         { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
                     ]
                 }
+            },
+            drama6: {
+                name: 'Жена принца XXI века',
+                episodes: 12,
+                storageKey: 'lastDramaEpisode6',
+                poster: 'GR.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Пак Джун Хва',
+                    genre: 'мелодрама',
+                    country: 'Корея Южная',
+                    duration: '01:14:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема. Небоскрёбы, смартфоны, пробки на хайвеях, и где-то над всем этим — королевский дворец, живой и настоящий, с флагом, гвардией и протоколом на каждый чих. Монархия здесь — не музейный экспонат, а работающий механизм. Со своими правилами, своими жертвами и своими играми. Сон Хи Джу умеет многое. Острый ум, внешность, которая заставляет оборачиваться, воля — хоть гвозди забивай. Дочь влиятельного чеболя, казалось бы, у неё есть всё. Но одно маленькое "но" перечёркивает многое: она незаконнорождённая. В мире, где статус — это воздух, это звучит как приговор. Шёпот за спиной она слышит давно, научилась не вздрагивать. Но внутри — накопилось. Принц Ли Ан — второй сын. Не наследник, не символ, почти тень. Старший брат получил всё: внимание, привилегии, будущее. Ли Ан существует на периферии собственной семьи — и устал от этого так, что иногда хочется просто исчезнуть. Оказаться обычным человеком, хотя бы на один день. Их встреча — случайная, нелепая, немного неловкая — могла бы ничем не кончиться. Но судьба, она такая: редко спрашивает разрешения. Предложение, которое Хи Джу решается сделать, звучит холодно и по-деловому: фиктивный брак. Ей — защита и статус, ему — видимость реальной роли. Всё просто. Всё под контролем. Так обычно говорят в самом начале истории, которая потом выходит из-под контроля полностью.',
+                    cast: [
+                        { name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' },
+                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' },
+                        { name: 'Стив Санхён Но', role: '', tag: '' },
+                        { name: 'Гон Сын Ён', role: '', tag: '' },
+                        { name: 'Ю Су Бин', role: '', tag: '' },
+                        { name: 'Ли Ён', role: '', tag: '' },
+                        { name: 'Пак Джун Мён', role: '', tag: '' },
+                        { name: 'Пён Со Юн', role: '', tag: '' }
+                    ]
+                }
             }
         };
 
@@ -1002,6 +1027,16 @@
                 isSeries: true,
                 genre: 'комедия, мелодрама',
                 dramaId: 'drama5'
+            },
+            {
+                name: 'Жена принца XXI века',
+                year: 2026,
+                rating: 8.9,
+                poster: 'GR.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама',
+                dramaId: 'drama6'
             },
             {
                 name: 'Титаник',
@@ -1098,21 +1133,16 @@
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const year = this.dataset.year;
-                    // Фильтруем по году
                     currentYear = year;
                     applyFilters();
-                    // Обновляем кнопку
                     document.getElementById('yearsToggle').textContent = ` ${year}`;
-                    // Делаем активным
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
-                    // Закрываем меню (без сброса фильтра!)
                     const dropdown = document.getElementById('yearsDropdown');
                     dropdown.classList.remove('open');
                 });
             });
 
-            // Кнопка по умолчанию — "Поиск по годам"
             document.getElementById('yearsToggle').textContent = ' Поиск по годам';
         }
 
@@ -1124,13 +1154,9 @@
         function closeYears() {
             const dropdown = document.getElementById('yearsDropdown');
             dropdown.classList.remove('open');
-            // Сбрасываем фильтр по году — показываем все фильмы
             currentYear = 'all';
-            // Снимаем активный класс со всех элементов
             dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
-            // Возвращаем на кнопку " Поиск по годам"
             document.getElementById('yearsToggle').textContent = ' Поиск по годам';
-            // Применяем фильтры (без фильтра по году)
             applyFilters();
         }
 
@@ -1172,7 +1198,6 @@
                 filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
             }
             
-            // Обновляем сетку
             const grid = document.getElementById('moviesGrid');
             const noResults = document.getElementById('noResults');
             
@@ -1361,6 +1386,22 @@
                             <strong>Перевод:</strong> Профессиональный многоголосый
                         `
                     };
+                } else if (movie.dramaId === 'drama6') {
+                    dramaData = {
+                        name: 'Жена принца XXI века',
+                        year: 2026,
+                        rating: 8.9,
+                        poster: 'GR.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Пак Джун Хва<br>
+                            <strong>Жанр:</strong> мелодрама<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 01:14:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый<br>
+                            <strong>В ролях:</strong> АйЮ, Пён Усок, Стив Санхён Но, Гон Сын Ён, Ю Су Бин, Ли Ён, Пак Джун Мён, Пён Со Юн
+                        `
+                    };
                 } else {
                     dramaData = {
                         name: movie.name,
@@ -1453,7 +1494,6 @@
             });
         }
 
-        // Запускаем после загрузки страницы
         document.addEventListener('DOMContentLoaded', renderContinueWatching);
     </script>
 </body>
