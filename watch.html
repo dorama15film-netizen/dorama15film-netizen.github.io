@@ -8,37 +8,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0b0e14; color: #f0f2f5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
         .header { padding: 16px 30px; background: #0f141c; border-bottom: 1px solid #1f2631; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .header .back-btn { 
-            color: #f0f2f5; 
-            text-decoration: none; 
-            font-size: 16px; 
-            font-weight: 600; 
-            padding: 10px 24px;
-            background: #1a4d2e;
-            border: 2px solid #f1c40f;
-            border-radius: 30px;
-            transition: 0.3s ease;
-            display: inline-block;
-        }
-        .header .back-btn:hover { 
-            background: #2a6d3e;
-            border-color: #f39c12;
-            transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
-        }
+        .header .back-btn { color: #8892a8; text-decoration: none; font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 500; }
+        .header .back-btn:hover { color: #f1c40f; }
         .header .title { 
             font-size: 22px; 
             font-weight: 700; 
-            color: #1a4d2e;
+            color: #1a4d2e;        /* тёмно-зелёный */
             text-shadow: 
                 0 0 10px rgba(241, 196, 15, 0.5),
                 0 0 20px rgba(241, 196, 15, 0.3),
                 0 0 40px rgba(241, 196, 15, 0.1);
-            -webkit-text-stroke: 1px #f1c40f;
+            -webkit-text-stroke: 1px #f1c40f;  /* золотая обводка */
             text-stroke: 1px #f1c40f;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
+        .header .title span { color: #8892a8; font-weight: 400; font-size: 16px; margin-left: 10px; }
         .main-content { flex: 1; padding: 20px 30px 30px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; }
         .player-wrapper { width: 100%; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid #1f2631; position: relative; aspect-ratio: 16 / 9; }
         .player-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
@@ -72,6 +55,7 @@
         }
         @media (max-width: 480px) {
             .header .title { font-size: 15px; }
+            .header .title span { font-size: 13px; display: block; margin-left: 0; }
             .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .cast-item { padding: 10px 12px; }
             .drama-description .info-item { flex-direction: column; gap: 2px; }
@@ -83,7 +67,7 @@
 <body>
     <header class="header">
         <a href="index.html" class="back-btn"> На главную</a>
-        <div class="title"><span id="dramaTitle">Завтра снова на работу!</span></div>
+        <div class="title"> <span id="dramaTitle">Завтра снова на работу!</span> <span id="dramaEpisodes">6 серий</span></div>
     </header>
 
     <main class="main-content">
