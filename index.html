@@ -1108,11 +1108,17 @@
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const year = this.dataset.year;
-                    filterByYear(year);
+                    // Фильтруем по году
+                    currentYear = year;
+                    applyFilters();
+                    // Обновляем кнопку
+                    document.getElementById('yearsToggle').textContent = year;
+                    // Делаем активным
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
-                    document.getElementById('yearsToggle').textContent = year;
-                    closeYears();
+                    // Закрываем меню (без сброса фильтра!)
+                    const dropdown = document.getElementById('yearsDropdown');
+                    dropdown.classList.remove('open');
                 });
             });
 
