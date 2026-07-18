@@ -18,6 +18,7 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            scroll-behavior: smooth;
         }
 
         .image-wrapper {
@@ -403,6 +404,41 @@
             transition: 0.3s ease;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .movie-card:nth-child(1) { animation-delay: 0.05s; }
+        .movie-card:nth-child(2) { animation-delay: 0.10s; }
+        .movie-card:nth-child(3) { animation-delay: 0.15s; }
+        .movie-card:nth-child(4) { animation-delay: 0.20s; }
+        .movie-card:nth-child(5) { animation-delay: 0.25s; }
+        .movie-card:nth-child(6) { animation-delay: 0.30s; }
+        .movie-card:nth-child(7) { animation-delay: 0.35s; }
+        .movie-card:nth-child(8) { animation-delay: 0.40s; }
+        .movie-card:nth-child(9) { animation-delay: 0.45s; }
+        .movie-card:nth-child(10) { animation-delay: 0.50s; }
+        .movie-card:nth-child(11) { animation-delay: 0.55s; }
+        .movie-card:nth-child(12) { animation-delay: 0.60s; }
+        .movie-card:nth-child(13) { animation-delay: 0.65s; }
+        .movie-card:nth-child(14) { animation-delay: 0.70s; }
+        .movie-card:nth-child(15) { animation-delay: 0.75s; }
+        .movie-card:nth-child(16) { animation-delay: 0.80s; }
+        .movie-card:nth-child(17) { animation-delay: 0.85s; }
+        .movie-card:nth-child(18) { animation-delay: 0.90s; }
+        .movie-card:nth-child(19) { animation-delay: 0.95s; }
+        .movie-card:nth-child(20) { animation-delay: 1.00s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .movie-card:hover {
@@ -583,6 +619,43 @@
             transform: rotate(90deg);
         }
 
+        /* ===== КНОПКА "НАВЕРХ" ===== */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background: #1a4d2e;
+            border: 2px solid #f1c40f;
+            color: #f0f2f5;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .scroll-top-btn:hover {
+            background: #2a6d3e;
+            border-color: #f39c12;
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(241, 196, 15, 0.3);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -715,6 +788,7 @@
             .modal-content .modal-info { padding: 14px 16px 16px; }
             .modal-content .modal-details { font-size: 13px; }
             .modal-content .modal-watch-link { font-size: 15px; padding: 10px 20px; }
+            .scroll-top-btn { width: 45px; height: 45px; font-size: 20px; bottom: 20px; right: 20px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -755,6 +829,7 @@
             .modal-content .modal-close { width: 32px; height: 32px; font-size: 16px; top: 8px; right: 10px; }
             .modal-content .modal-watch-link { font-size: 14px; padding: 10px 16px; }
             .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
+            .scroll-top-btn { width: 40px; height: 40px; font-size: 18px; bottom: 15px; right: 15px; }
             .footer-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -813,6 +888,9 @@
             Ничего не найдено
         </div>
     </div>
+
+    <!-- ===== КНОПКА "НАВЕРХ" ===== -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
@@ -999,18 +1077,10 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун» — человек, который создавал это дело с нуля. А его сын Кан Тхэ-пун (имя буквально значит «тайфун») всю жизнь был беззаботным наследником. Деньги, тусовки, никакой ответственности. И вот теперь — бац! — он вынужден возглавить компанию, которая на грани банкротства. Тхэ-пун садится в кресло генерального директора, но понятия не имеет, что делать. Он путает факс с телефоном, не знает, что такое просроченный платёж, усердно конспектирует на совещаниях, как первоклашка. Кредиторы требуют долги, поставщики разрывают контракты, сотрудники в панике. Особенно О Ми-сук из бухгалтерии — старшая дочь в бедной семье, которая годами тянет родных на себе. Для неё работа в «Тайфуне» — единственный источник дохода. И тут появляется этот неопытный босс со своими идеями? Но Тхэ-пун не сдаётся. Он меняет яркую одежду на строгий костюм и начинает учиться заново — с нуля, как отец когда-то. Предлагает рискованный план: искать клиентов среди мелких провинциальных магазинов, которых игнорируют большие корпорации. Стать посредником, помочь им выжить в кризис. Ми-сук, перфекционистка до мозга костей, видит в этом плане шанс. Она соглашается возглавить проект, хотя сомнения гложут изнутри. Команда раскалывается: Ми-сук уезжает по городам, сталкиваясь с отказами и недоверием. Тхэ-пун остаётся в Сеуле, ведёт переговоры с кредиторами... и узнаёт страшную правду: его отец заложил личное имущество ради бизнеса. Эта жертва меняет всё. Тхэ-пун понимает: «Тайфун» — это не просто компания. Это наследие, любовь, символ стихии, которая может как разрушить, так и очистить путь для нового начала. И если он не справится, всё рухнет окончательно.',
+                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун»...',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
-                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' },
-                        { name: 'Сон Дон-иль', role: '', tag: '' },
-                        { name: 'Ким Джи-ён', role: '', tag: '' },
-                        { name: 'Ким Мин-сок', role: '', tag: '' },
-                        { name: 'Му Джин-сон', role: '', tag: '' },
-                        { name: 'Квон Хан-соль', role: '', tag: '' },
-                        { name: 'Ли Чхан-хун', role: '', tag: '' },
-                        { name: 'Ким Джэ-хва', role: '', tag: '' },
-                        { name: 'Ким Сон-иль', role: '', tag: '' }
+                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
                     ]
                 }
             }
@@ -1488,8 +1558,7 @@
                             <strong>Жанр:</strong> Драма, семейный<br>
                             <strong>Страна:</strong> Корея Южная<br>
                             <strong>Продолжительность:</strong> 01:17:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый<br>
-                            <strong>В ролях:</strong> Ли Джун-хо, Ким Мин-ха, Сон Дон-иль, Ким Джи-ён, Ким Мин-сок, Му Джин-сон, Квон Хан-соль, Ли Чхан-хун, Ким Джэ-хва, Ким Сон-иль
+                            <strong>Перевод:</strong> Профессиональный многоголосый
                         `
                     };
                 } else {
@@ -1585,6 +1654,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', renderContinueWatching);
+
+        // ===== КНОПКА "НАВЕРХ" =====
+        const scrollBtn = document.getElementById('scrollTopBtn');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
+        scrollBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
