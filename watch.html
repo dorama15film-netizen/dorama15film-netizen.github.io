@@ -468,7 +468,6 @@
         localStorage.setItem('lastDramaId', dramaId);
 
         // ===== ЗАГРУЗКА ДОРАМЫ =====
-        // Динамически создаём массив episodes под количество серий
         const episodes = [];
         for (let i = 1; i <= drama.episodes; i++) {
             episodes.push({ number: i, title: '' });
