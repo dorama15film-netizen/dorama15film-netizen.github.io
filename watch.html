@@ -3,108 +3,928 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Смотреть дораму</title>
+    <title>Дорамы от Дианы</title>
     <link rel="icon" href="Log.png" type="image/png">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0b0e14; color: #f0f2f5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { padding: 16px 30px; background: #0f141c; border-bottom: 1px solid #1f2631; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .header .back-btn { 
-            color: #f0f2f5; 
-            text-decoration: none; 
-            font-size: 16px; 
-            font-weight: 600; 
-            padding: 10px 24px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background: #0b0e14;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+        }
+
+        .image-wrapper {
+            width: 100%;
+            height: 55vh;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+        }
+
+        .logo-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .logo-overlay img {
+            height: 50px;
+            width: auto;
+            border-radius: 10px;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-overlay img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
+        }
+
+        .genres-wrapper {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow: visible;
+            max-width: 90vw;
+        }
+
+        .genres-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.6s ease,
+                        visibility 0.6s ease;
+            padding: 0;
+            background: rgba(11, 14, 20, 0.92);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        .genres-slide.open {
+            max-height: 500px;
+            opacity: 1;
+            visibility: visible;
+            padding: 12px 14px;
+            border: 1px solid #2a313f;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .genres-slide .genre-item {
+            color: #f1c40f;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            border-radius: 20px;
+            white-space: nowrap;
+            width: 100%;
+            border: 2px solid #ff0000;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        .genres-slide .genre-item:hover {
+            color: #ffffff;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff3333;
+            transform: scale(1.02);
+        }
+
+        .genres-slide .genre-item.active {
+            color: #f1c40f;
+            background: rgba(255, 0, 0, 0.25);
+            border-color: #ff3333;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .genres-slide .genre-item .count {
+            color: #ff6666;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .genres-slide .genre-item.active .count {
+            color: #f1c40f;
+        }
+
+        /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ ВВЕРХУ) ===== */
+        .years-wrapper {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .years-toggle {
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid #2a313f;
+            border-radius: 12px;
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            user-select: none;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .years-toggle:hover {
+            border-color: #f1c40f;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+        }
+
+        .years-dropdown {
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.3s ease,
+                        visibility 0.3s ease;
+            background: rgba(11, 14, 20, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            margin-top: 4px;
+            width: 100%;
+            min-width: 80px;
+        }
+
+        .years-dropdown.open {
+            max-height: 300px;
+            opacity: 1;
+            visibility: visible;
+            border: 1px solid #2a313f;
+            padding: 6px 0;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .year-item {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 20px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: block;
+            text-align: center;
+        }
+
+        .year-item:hover {
+            color: #f0f2f5;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .year-item.active {
+            color: #f1c40f;
+            background: rgba(241, 196, 15, 0.1);
+        }
+
+        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (ПО ЦЕНТРУ ВЕРТИКАЛИ, СПРАВА) ===== */
+        .continue-wrapper {
+            position: absolute;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            z-index: 15;
+            max-width: 200px;
+            width: auto;
+            min-width: 140px;
+        }
+
+        .continue-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(21, 27, 36, 0.92);
+            backdrop-filter: blur(8px);
+            border: 2px solid #f1c40f;
+            border-radius: 14px;
+            padding: 10px 10px 12px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+        }
+
+        .continue-card:hover {
+            transform: scale(1.05);
+            border-color: #f39c12;
+            box-shadow: 0 4px 30px rgba(241, 196, 15, 0.25);
+        }
+
+        .continue-poster {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #1a212b;
+            flex-shrink: 0;
+        }
+
+        .continue-info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .continue-name {
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .continue-episode {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 12px;
+        }
+
+        .search-section {
+            width: 100%;
+            padding: 15px 20px 8px 20px;
+            background: #0b0e14;
+            display: flex;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .search-wrapper {
+            width: 92%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 14px 28px;
+            background: #000000;
+            border: 3px solid #ff0000;
+            border-radius: 50px;
+            color: #f0f2f5;
+            font-size: 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+            outline: none;
+            transition: 0.3s ease;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
+            height: 58px;
+            padding-right: 140px;
+        }
+
+        .search-wrapper input::placeholder {
+            color: #6a7288;
+            font-size: 18px;
+        }
+
+        .search-wrapper input:focus {
+            border-color: #ff3333;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.25);
+            transform: scale(1.01);
+        }
+
+        .search-wrapper .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff0000;
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: system-ui, -apple-system, sans-serif;
+            letter-spacing: 0.5px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            white-space: nowrap;
+            transition: right 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                        background 0.5s ease,
+                        box-shadow 0.5s ease;
+        }
+
+        .search-wrapper .search-btn:hover {
+            background: #cc0000;
+            transform: translateY(-50%) scale(0.97);
+        }
+
+        .search-wrapper .search-btn.animating {
+            right: calc(100% - 140px);
+            background: #00cc44;
+            box-shadow: 0 0 40px rgba(0, 204, 68, 0.4);
+        }
+
+        .search-wrapper .search-btn.returning {
+            right: 8px;
+            background: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
+        }
+
+        /* ===== СЕТКА ФИЛЬМОВ ===== */
+        .movies-grid-wrapper {
+            width: 100%;
+            flex: 1;
+            padding: 20px 20px 30px;
+            background: #0b0e14;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .movies-grid.hidden {
+            display: none;
+        }
+
+        .movie-card {
+            background: #151b24;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a313f;
+            transition: 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .movie-card:nth-child(1) { animation-delay: 0.05s; }
+        .movie-card:nth-child(2) { animation-delay: 0.10s; }
+        .movie-card:nth-child(3) { animation-delay: 0.15s; }
+        .movie-card:nth-child(4) { animation-delay: 0.20s; }
+        .movie-card:nth-child(5) { animation-delay: 0.25s; }
+        .movie-card:nth-child(6) { animation-delay: 0.30s; }
+        .movie-card:nth-child(7) { animation-delay: 0.35s; }
+        .movie-card:nth-child(8) { animation-delay: 0.40s; }
+        .movie-card:nth-child(9) { animation-delay: 0.45s; }
+        .movie-card:nth-child(10) { animation-delay: 0.50s; }
+        .movie-card:nth-child(11) { animation-delay: 0.55s; }
+        .movie-card:nth-child(12) { animation-delay: 0.60s; }
+        .movie-card:nth-child(13) { animation-delay: 0.65s; }
+        .movie-card:nth-child(14) { animation-delay: 0.70s; }
+        .movie-card:nth-child(15) { animation-delay: 0.75s; }
+        .movie-card:nth-child(16) { animation-delay: 0.80s; }
+        .movie-card:nth-child(17) { animation-delay: 0.85s; }
+        .movie-card:nth-child(18) { animation-delay: 0.90s; }
+        .movie-card:nth-child(19) { animation-delay: 0.95s; }
+        .movie-card:nth-child(20) { animation-delay: 1.00s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            border-color: #f1c40f;
+            box-shadow: 0 12px 40px rgba(241, 196, 15, 0.15);
+        }
+
+        .movie-card .poster {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            display: block;
+            background: #1a212b;
+        }
+
+        .movie-card .title {
+            padding: 12px 14px 14px;
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #151b24;
+            border-top: 1px solid #1f2631;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: #8892a8;
+            font-size: 20px;
+        }
+
+        .no-results.active {
+            display: block;
+        }
+
+        .no-results span {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #151b24;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #f1c40f;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            animation: slideUp 0.4s ease;
+            position: relative;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: #1a212b;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #f1c40f;
+            border-radius: 10px;
+        }
+
+        .modal-content .modal-poster {
+            width: 100%;
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            display: block;
+            background: #1a212b;
+        }
+
+        .modal-content .modal-info {
+            padding: 16px 20px 20px;
+        }
+
+        .modal-content .modal-title {
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-content .modal-details {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .modal-content .modal-details strong {
+            color: #f0f2f5;
+        }
+
+        .modal-content .modal-rating {
+            color: #f1c40f;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .modal-content .modal-watch-link {
+            display: block;
+            width: 100%;
+            background: #f1c40f;
+            color: #0b0e14;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.2s;
+            font-family: system-ui, -apple-system, sans-serif;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .modal-content .modal-watch-link:hover {
+            background: #f39c12;
+            transform: scale(1.02);
+        }
+
+        .modal-content .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #2a313f;
+            color: #f0f2f5;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, sans-serif;
+            z-index: 10;
+        }
+
+        .modal-content .modal-close:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+            transform: rotate(90deg);
+        }
+
+        /* ===== КНОПКА "НАВЕРХ" ===== */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
             background: #1a4d2e;
             border: 2px solid #f1c40f;
-            border-radius: 30px;
+            color: #f0f2f5;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
             transition: 0.3s ease;
-            display: inline-block;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
         }
-        .header .back-btn:hover { 
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .scroll-top-btn:hover {
             background: #2a6d3e;
             border-color: #f39c12;
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(241, 196, 15, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .site-footer {
+            width: 100%;
+            background: #0f141c;
+            border-top: 1px solid #1f2631;
+            padding: 30px 20px 20px;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .footer-column h4 {
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-column p {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .footer-column a {
+            color: #f1c40f;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #f39c12;
+            text-decoration: underline;
+        }
+
+        .footer-column .email-link {
+            display: inline-block;
+            background: #1e232c;
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid #2a313f;
+            color: #f1c40f;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+
+        .footer-column .email-link:hover {
+            background: #2a313f;
+            border-color: #f1c40f;
+            text-decoration: none;
             transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
         }
-        .header .title { 
-            font-size: 22px; 
-            font-weight: 700; 
-            color: #1a4d2e;
-            text-shadow: 
-                0 0 10px rgba(241, 196, 15, 0.5),
-                0 0 20px rgba(241, 196, 15, 0.3),
-                0 0 40px rgba(241, 196, 15, 0.1);
-            -webkit-text-stroke: 1px #f1c40f;
-            text-stroke: 1px #f1c40f;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 16px;
+            border-top: 1px solid #1a212b;
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .header .title span { color: #8892a8; font-weight: 400; font-size: 16px; margin-left: 10px; }
-        .main-content { flex: 1; padding: 20px 30px 30px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; }
-        .player-wrapper { width: 100%; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid #1f2631; position: relative; aspect-ratio: 16 / 9; }
-        .player-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
-        .episode-info { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; flex-wrap: wrap; gap: 10px; }
-        .episode-info .current-episode { font-size: 20px; font-weight: 600; color: #f1c40f; }
-        .episode-info .episode-title { color: #8892a8; font-size: 16px; }
-        .episodes-list { display: flex; gap: 12px; flex-wrap: wrap; padding: 10px 0 20px; border-bottom: 1px solid #1f2631; margin-bottom: 20px; }
-        .episodes-list .episode-btn { background: #151b24; border: 2px solid #2a313f; color: #8892a8; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.25s ease; }
-        .episodes-list .episode-btn:hover { border-color: #f1c40f; color: #f0f2f5; }
-        .episodes-list .episode-btn.active { background: #f1c40f; border-color: #f1c40f; color: #0b0e14; }
-        .drama-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 10px; }
-        .drama-description { color: #8892a8; font-size: 15px; line-height: 1.8; }
-        .drama-description .info-item { display: flex; gap: 10px; margin-bottom: 6px; }
-        .drama-description .info-item .label { color: #6a7288; min-width: 120px; flex-shrink: 0; }
-        .drama-description .info-item .value { color: #f0f2f5; }
-        .drama-description .plot { color: #8892a8; font-size: 14px; line-height: 1.8; margin-top: 8px; }
-        .drama-description .plot strong { color: #f0f2f5; }
-        .cast-section .cast-title { color: #f0f2f5; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
-        .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-        .cast-item { background: #151b24; border: 1px solid #1f2631; border-radius: 12px; padding: 12px 16px; }
-        .cast-item .actor-name { color: #f0f2f5; font-size: 15px; font-weight: 600; }
-        .cast-item .actor-role { color: #8892a8; font-size: 13px; margin-top: 2px; }
-        .cast-item .actor-role-tag { background: #1e232c; color: #f1c40f; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+
+        .footer-bottom p {
+            color: #3c4557;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+        }
+
+        .footer-bottom .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bottom .social-links a {
+            color: #3c4557;
+            font-size: 18px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .footer-bottom .social-links a:hover {
+            color: #f1c40f;
+        }
+
         @media (max-width: 768px) {
-            .header { padding: 12px 16px; }
-            .header .title { font-size: 18px; }
-            .main-content { padding: 12px 16px 20px; }
-            .drama-info { grid-template-columns: 1fr; gap: 20px; }
-            .cast-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-            .drama-description .info-item .label { min-width: 90px; }
+            .image-wrapper { height: 45vh; }
+            .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 70px; }
+            .continue-wrapper { max-width: 150px; min-width: 110px; right: 20px; }
+            .continue-name { font-size: 12px; }
+            .continue-episode { font-size: 10px; }
+            .continue-card { padding: 8px 8px 10px; border-radius: 12px; }
+            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+            .movies-grid-wrapper { padding: 12px 12px 20px; }
+            .movie-card .title { font-size: 12px; padding: 8px 10px; }
+            .search-section { padding: 12px 16px 6px 16px; }
+            .search-wrapper { width: 94%; }
+            .search-wrapper input { height: 50px; font-size: 16px; padding: 12px 20px; padding-right: 120px; }
+            .search-wrapper .search-btn { padding: 8px 18px; font-size: 14px; height: 38px; }
+            .logo-overlay img { height: 38px; }
+            .logo-overlay { top: 12px; left: 12px; }
+            .genres-wrapper { top: 60px; left: 12px; }
+            .genres-slide .genre-item { font-size: 13px; padding: 5px 12px; }
+            .modal-content { max-width: 380px; max-height: 92vh; }
+            .modal-content .modal-title { font-size: 18px; }
+            .modal-content .modal-info { padding: 14px 16px 16px; }
+            .modal-content .modal-details { font-size: 13px; }
+            .modal-content .modal-watch-link { font-size: 15px; padding: 10px 20px; }
+            .scroll-top-btn { width: 45px; height: 45px; font-size: 20px; bottom: 20px; right: 20px; }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
+
         @media (max-width: 480px) {
-            .header .title { font-size: 15px; }
-            .header .title span { font-size: 13px; display: block; margin-left: 0; }
-            .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .cast-item { padding: 10px 12px; }
-            .drama-description .info-item { flex-direction: column; gap: 2px; }
-            .drama-description .info-item .label { min-width: auto; }
-            .drama-description .plot { font-size: 13px; }
+            .image-wrapper { height: 40vh; }
+            .years-wrapper { top: 10px; }
+            .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 60px; }
+            .years-dropdown.open { padding: 4px 0; }
+            .year-item { font-size: 12px; padding: 4px 14px; }
+            .continue-wrapper { right: 10px; max-width: 110px; min-width: 80px; }
+            .continue-name { font-size: 10px; }
+            .continue-episode { font-size: 8px; }
+            .continue-card { padding: 5px 5px 7px; border-radius: 10px; border-width: 1.5px; }
+            .movies-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+            .movies-grid-wrapper { padding: 10px 8px 16px; }
+            .movie-card .title { font-size: 10px; padding: 6px 8px; }
+            .search-wrapper { width: 96%; }
+            .search-wrapper input { font-size: 14px; padding: 10px 16px; height: 44px; padding-right: 100px; }
+            .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
+            .logo-overlay img { height: 32px; }
+            .logo-overlay { top: 8px; left: 8px; }
+            .genres-wrapper { top: 48px; left: 8px; max-width: 92vw; }
+            .genres-slide.open { padding: 10px 10px; }
+            .genres-slide .genre-item { font-size: 12px; padding: 4px 10px; border-width: 1.5px; }
+            .genres-slide .genre-item .count { font-size: 10px; margin-left: 4px; }
+            .modal-overlay { padding: 10px; }
+            .modal-content { max-width: 95%; max-height: 95vh; }
+            .modal-content .modal-title { font-size: 16px; }
+            .modal-content .modal-info { padding: 12px 14px 14px; }
+            .modal-content .modal-close { width: 32px; height: 32px; font-size: 16px; top: 8px; right: 10px; }
+            .modal-content .modal-watch-link { font-size: 14px; padding: 10px 16px; }
+            .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
+            .scroll-top-btn { width: 40px; height: 40px; font-size: 18px; bottom: 15px; right: 15px; }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                text-align: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="index.html" class="back-btn"> На главную</a>
-        <div class="title"> <span id="dramaTitle">Завтра снова на работу!</span> <span id="dramaEpisodes">6 серий</span></div>
-    </header>
 
-    <main class="main-content">
-        <div class="player-wrapper">
-            <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
-        </div>
+    <div class="image-wrapper">
+        <img src="Pr.jpeg" alt="Изображение" />
 
-        <div class="episode-info">
-            <div>
-                <span class="current-episode" id="currentEpisode">Серия 1</span>
-                <span class="episode-title" id="episodeTitle"> Начало истории</span>
+        <!-- ===== ЛОГОТИП (СЛЕВА) ===== -->
+        <div class="logo-overlay" id="logoWrapper">
+            <img src="Logo.jpeg" alt="Логотип" />
+            <div class="genres-wrapper">
+                <div class="genres-slide" id="genresSlide"></div>
             </div>
         </div>
 
-        <div class="episodes-list" id="episodesList"></div>
+        <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
+        <div class="years-wrapper" id="yearsWrapper">
+            <div class="years-toggle" id="yearsToggle"> Поиск по годам</div>
+            <div class="years-dropdown" id="yearsDropdown"></div>
+        </div>
 
-        <div class="drama-info" id="dramaInfo"></div>
-    </main>
+        <!-- ===== ПРОДОЛЖИТЬ ПРОСМОТР (ПО ЦЕНТРУ ВЕРТИКАЛИ, СПРАВА) ===== -->
+        <div class="continue-wrapper" id="continueWrapper">
+            <div class="continue-card" id="continueCard">
+                <img class="continue-poster" id="continuePoster" src="" alt="Постер" />
+                <div class="continue-info">
+                    <div class="continue-name" id="continueName">Название дорамы</div>
+                    <div class="continue-episode" id="continueEpisode">Серия 1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="Поиск фильмов..." autocomplete="off" />
+            <button class="search-btn" id="searchBtn">Найти</button>
+        </div>
+    </div>
+
+    <!-- ===== СЕТКА С ФИЛЬМАМИ ===== -->
+    <div class="movies-grid-wrapper">
+        <div class="movies-grid" id="moviesGrid"></div>
+        <div class="no-results" id="noResults">
+            <span>😕</span>
+            Ничего не найдено
+        </div>
+    </div>
+
+    <!-- ===== КНОПКА "НАВЕРХ" ===== -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <img class="modal-poster" id="modalPoster" src="" alt="Постер" />
+            <div class="modal-info">
+                <div class="modal-title" id="modalTitle">Название</div>
+                <div class="modal-details" id="modalDetails"></div>
+                <div class="modal-rating" id="modalRating">⭐ 9.5</div>
+                <a class="modal-watch-link" id="watchLink" href="watch.html?drama=drama1">▶ Смотреть все серии</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>О сайте</h4>
+                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Информация</h4>
+                <p>© 2026 Дорамы от Дианы</p>
+            </div>
+            <div class="footer-column">
+                <h4>Контакты</h4>
+                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
+        </div>
+    </footer>
 
     <script>
         // ===== ДАННЫЕ О ДОРАМАХ =====
@@ -113,6 +933,7 @@
                 name: 'Завтра снова на работу!',
                 episodes: 6,
                 storageKey: 'lastDramaEpisode1',
+                poster: 'DR.jpg',
                 info: {
                     year: '2024',
                     director: 'Чо Ын-соль',
@@ -129,20 +950,13 @@
                         { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
                         { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239017&hash=840fe3708e6631e2&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239018&hash=beca558dabab47be&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239019&hash=2d01bbbcca816411&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239020&hash=11e776e7ffbe1859&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239021&hash=3e2b94d232d22eef&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
                 }
             },
             drama2: {
                 name: 'Лазурная весна',
                 episodes: 6,
                 storageKey: 'lastDramaEpisode2',
+                poster: 'Wt.jpg',
                 info: {
                     year: '2026',
                     director: 'Чон Хон-су',
@@ -150,27 +964,18 @@
                     country: 'Корея Южная',
                     duration: '00:40:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Говорят, море умеет слушать. Не отвечает, не осуждает — просто шумит, перекатывая гальку, и ждёт. Именно к нему и приходят двое, каждый со своим грузом, каждый — на последнем издыхании в той жизни, которую уже не в силах тащить дальше. Юн Док Хён давно перестал ждать чего-то от будущего. Прошлое прилипло к нему, как морская соль к коже — незаметно, намертво, и уже не смыть. Со Ан На когда-то бежала вперёд быстрее всех, но однажды упала — и не просто разбила колено. Разбилась вся жизнь, которую она строила. Теперь тревога стала её постоянным спутником, тихим и удушающим, как туман над водой ранним утром. Они встречаются в маленьком прибрежном посёлке, где время течёт иначе. Без суеты. Без дедлайнов. Здесь рыбаки чинят сети, пахнет водорослями и жареной рыбой, и кажется, что мир снаружи — это просто сон, который никак не хочет заканчиваться. Нырять без снаряжения — странный выбор для людей, которые едва держатся на поверхности. Но именно под водой что-то меняется. Там нет голосов, нет воспоминаний, нет страха перед завтрашним днём. Только холод, темнота и собственное сердцебиение. И — странным образом — покой.',
+                    plot: 'Говорят, море умеет слушать...',
                     cast: [
                         { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
-                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' },
-                        { name: 'Ко Джу-хи', role: 'Второстепенная роль', tag: '' },
-                        { name: 'Чон Хён-мин', role: 'Второстепенная роль', tag: '' }
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239023&hash=ed3dfe7f49737604&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239024&hash=53ba059fa9ecb049&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239025&hash=65c706e3c5886f24&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239026&hash=679f21016c9672ec&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239027&hash=340f22a92d15b7b6&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239028&hash=77eede5363ac751f&hd=3'
                 }
             },
             drama3: {
                 name: 'Абсолютная величина любви',
                 episodes: 14,
                 storageKey: 'lastDramaEpisode3',
+                poster: 'DD.jpg',
                 info: {
                     year: '2026',
                     director: 'Тхэ Гон Ли',
@@ -178,35 +983,18 @@
                     country: 'Корея Южная',
                     duration: '00:59:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Днём — серая мышка за последней партой, та самая ученица, которую учителя путают с соседкой по парте. Ночью — автор бойких веб-романов, где слова льются куда смелее, чем в реальной жизни Е И-джу когда-либо получалось вести себя. Дома — мать с хваткой, не оставляющей пространства для своевольных решений. На бумаге же — свобода без границ. Вдохновением для нового хита становятся четверо молодых учителей, только-только переступивших порог школы: живые, настоящие, с разными голосами и разными взглядами. И вот тонкая грань между вымыслом и явью начинает плавиться, особенно когда в поле зрения попадает загадочный учитель математики — слишком спокойный, слишком наблюдательный, слишком похожий на героя из её собственных текстов. 14 серий нежной неловкости, первых румянцев и того особого корейского обаяния, когда комедия щекочет, а в следующую секунду внезапно сжимает сердце. Где кончается строка романа и начинается настоящее чувство — провести эту черту окажется куда сложнее, чем писать главы по ночам.',
+                    plot: 'Днём — серая мышка за последней партой...',
                     cast: [
                         { name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' },
-                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' },
-                        { name: 'Чха Хаг-ён', role: 'Чхве Су-мин', tag: '' },
-                        { name: 'Сон Джон-хёк', role: 'Ким Дон-гю', tag: '' }
+                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239029&hash=6c6a19280acdc9b0&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239030&hash=4664a0649228c5d8&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239031&hash=8de75c0d4759a3bc&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239032&hash=7354b81ccd682dc7&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239033&hash=b9cc2ab205910f58&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239034&hash=b6fb9a405a540b4f&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239035&hash=f57658a8a693c6c5&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239036&hash=20c151fdb24edc00&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239037&hash=d24dec94eae82be1&hd=3',
-                   10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239038&hash=6ef86bcc48e29c41&hd=3',
-                   11: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239039&hash=2e0a9e6fc04ea805&hd=3',
-                   12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239040&hash=0e0d1f9a015c84f2&hd=3',
-                   13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239041&hash=62bef765dc7c52b3&hd=3',
-                   14: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239042&hash=2c1c90e731a413de&hd=3'
                 }
             },
             drama4: {
                 name: 'Атхит - это я',
                 episodes: 6,
                 storageKey: 'lastDramaEpisode4',
+                poster: 'i.jpg',
                 info: {
                     year: '2022',
                     director: 'Bhandit Thongdee, Simon Kessler',
@@ -214,30 +1002,18 @@
                     country: 'Таиланд',
                     duration: '44 мин.',
                     translation: 'Озвучка, Субтитры',
-                    plot: 'Сун работает сборщиком долгов, но его успех в этой роли оставляет желать лучшего. Он часто сталкивается с трудностями при попытках возврата денежных средств от должников. Ситуация усугубляется тем, что его отец, стоящий на грани банкротства, настоятельно требует от Суна возвращения долга с одного из клиентов, молодого человека по имени Атхит. Суну нужно как можно скорее найти способ эффективно разрешить эту задачу, чтобы избежать финансового коллапса своей семьи и сохранить деловую репутацию. Однако его обычные методы работают плохо — подход с прямым давлением и угрозами не приносит ожидаемых результатов. Необходимо, чтобы Сун пересмотрел свои методы и возможно нашел более гуманный и эффективный подход к взысканию задолженностей, чтобы добиться положительных изменений и успеха в своей работе.',
+                    plot: 'Сун работает сборщиком долгов...',
                     cast: [
                         { name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
-                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' },
-                        { name: 'Parinya Angsanan', role: 'Мек (Mek)', tag: '' },
-                        { name: 'Papungkorn Sakunsong', role: 'Най (Nai)', tag: '' },
-                        { name: 'Nathas Tunjaroen', role: 'Манкон (Mangkorn)', tag: '' },
-                        { name: 'Weerapat Toemmaneerat', role: 'Тай (Thai)', tag: '' },
-                        { name: 'Tanawat Hudchaleelaha', role: 'Немо (Nemo)', tag: '' }
+                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239043&hash=db6392efde51ba6e&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239044&hash=5d903d8bf8d1f639&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239045&hash=d6ca323f6bf9b4a0&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239046&hash=71c8095d7d9d13f6&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239047&hash=b4099cd95d47ae91&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239048&hash=d9466f01ce9b0a00&hd=3'
                 }
             },
             drama5: {
                 name: 'Бойфренд по запросу',
                 episodes: 10,
                 storageKey: 'lastDramaEpisode5',
+                poster: 'GT.jpg',
                 info: {
                     year: '2026',
                     director: 'Ким Джон Щик',
@@ -245,43 +1021,18 @@
                     country: 'Южная Корея',
                     duration: '00:55:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Со Ми Рэ живёт работой. Продюсер вебтунов — звучит круто, да? На деле это бесконечные дедлайны, капризные авторы и постоянное ощущение, что времени катастрофически не хватает ни на что. Романтика? Да она про неё даже думать забыла. Свидания, цветы, бабочки в животе — всё это кажется какой-то сказкой из манхвы, которую она сама редактирует. И тут ей подсовывают новое приложение. "Парень по подписке". Виртуальная реальность, идеальные парни на любой вкус — красавцы, умницы, романтики. Со Ми Рэ сначала скептически фыркает, но... любопытство берёт своё. Надевает шлем — и погружается. Там всё не по-настоящему, конечно. Но чувства? О, чувства очень даже настоящие. Сердце колотится, щёки горят, хочется улыбаться без причины. Она будто заново учится влюбляться. Параллельно в офисе её достаёт коллега Пак Кён Нам. Амбициозный, успешный, вечно всех переплюнуть пытается. Они постоянно спорят, соревнуются, огрызаются друг на друга. Но с недавних пор... споры перестали раздражать. Более того — работа вообще стала легче как-то. Неужели виртуальные свидания настолько меняют настроение? Вопрос назревает сам собой: где кончается фантазия и где начинается реальность? И что если самый идеальный парень давно рядом — просто ты его не замечала? А если Кён Нам знает о приложении больше, чем кажется? Если он тоже играет в эту игру — но по своим правилам?',
+                    plot: 'Со Ми Рэ живёт работой...',
                     cast: [
                         { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
-                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' },
-                        { name: 'Рю Абель', role: '', tag: '' },
-                        { name: 'Ким Сон Чхоль', role: '', tag: '' },
-                        { name: 'Пак Чи-ху', role: '', tag: '' },
-                        { name: 'Кон Мин Чжон', role: '', tag: '' },
-                        { name: 'Ко Гю Пхиль', role: '', tag: '' },
-                        { name: 'Кан Мин У', role: '', tag: '' },
-                        { name: 'Сон Ха-На', role: '', tag: '' },
-                        { name: 'Ю Сон Хо', role: '', tag: '' },
-                        { name: 'Хё Рим Со', role: '', tag: '' },
-                        { name: 'Сон Хо Ён', role: '', tag: '' },
-                        { name: 'Хун Ли', role: '', tag: '' },
-                        { name: 'Ким А Ён', role: '', tag: '' },
-                        { name: 'Пак Хэ-лин', role: '', tag: '' },
-                        { name: 'Тинюй Лу', role: '', tag: '' }
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239049&hash=4e7aaaca66866200&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239050&hash=dbd8261600e7dfa1&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239051&hash=3d4e0c05d04ba423&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239052&hash=026b075dcff2723a&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239053&hash=bb79c2e519e5998b&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239054&hash=adb71c60c01a909b&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239055&hash=a8b1c91faf8e4d6d&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239056&hash=ae681bfa74c82000&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239057&hash=d45cd0f0e6bd26cc&hd=3',
-                   10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239058&hash=4cd0477c2a8825b2&hd=3'
                 }
             },
             drama6: {
                 name: 'Жена принца XXI века',
                 episodes: 12,
                 storageKey: 'lastDramaEpisode6',
+                poster: 'GR.jpg',
                 info: {
                     year: '2026',
                     director: 'Пак Джун Хва',
@@ -289,37 +1040,18 @@
                     country: 'Корея Южная',
                     duration: '01:14:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема. Небоскрёбы, смартфоны, пробки на хайвеях, и где-то над всем этим — королевский дворец, живой и настоящий, с флагом, гвардией и протоколом на каждый чих. Монархия здесь — не музейный экспонат, а работающий механизм. Со своими правилами, своими жертвами и своими играми. Сон Хи Джу умеет многое. Острый ум, внешность, которая заставляет оборачиваться, воля — хоть гвозди забивай. Дочь влиятельного чеболя, казалось бы, у неё есть всё. Но одно маленькое "но" перечёркивает многое: она незаконнорождённая. В мире, где статус — это воздух, это звучит как приговор. Шёпот за спиной она слышит давно, научилась не вздрагивать. Но внутри — накопилось. Принц Ли Ан — второй сын. Не наследник, не символ, почти тень. Старший брат получил всё: внимание, привилегии, будущее. Ли Ан существует на периферии собственной семьи — и устал от этого так, что иногда хочется просто исчезнуть. Оказаться обычным человеком, хотя бы на один день. Их встреча — случайная, нелепая, немного неловкая — могла бы ничем не кончиться. Но судьба, она такая: редко спрашивает разрешения. Предложение, которое Хи Джу решается сделать, звучит холодно и по-деловому: фиктивный брак. Ей — защита и статус, ему — видимость реальной роли. Всё просто. Всё под контролем. Так обычно говорят в самом начале истории, которая потом выходит из-под контроля полностью.',
+                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема...',
                     cast: [
                         { name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' },
-                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' },
-                        { name: 'Стив Санхён Но', role: '', tag: '' },
-                        { name: 'Гон Сын Ён', role: '', tag: '' },
-                        { name: 'Ю Су Бин', role: '', tag: '' },
-                        { name: 'Ли Ён', role: '', tag: '' },
-                        { name: 'Пак Джун Мён', role: '', tag: '' },
-                        { name: 'Пён Со Юн', role: '', tag: '' }
+                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239059&hash=cf794ae56194b893&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239060&hash=517ef06fbbb2a94d&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239061&hash=c1c648c29808d79a&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239062&hash=2941691fb6a25f9b&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239063&hash=fa830f1199d7af85&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239064&hash=b31279f9d43ad9bf&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239065&hash=3c05bbca0e069421&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239066&hash=2846faf658879e6f&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239067&hash=4417a787b580f884&hd=3',
-                   10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239068&hash=0dbfd19d803b5e2a&hd=3',
-                   11: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239069&hash=6d062085aa257253&hd=3',
-                   12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239070&hash=27d8c0f57c73886f&hd=3'
                 }
             },
             drama7: {
                 name: 'Весенняя лихорадка',
                 episodes: 12,
                 storageKey: 'lastDramaEpisode7',
+                poster: 'GN.jpg',
                 info: {
                     year: '2026',
                     director: 'Пак Вон-гук',
@@ -327,39 +1059,18 @@
                     country: 'Корея Южная',
                     duration: '01:02:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Юн Бом сбегает из Сеула. Ну то есть официально она просто берёт перевод по обмену в маленький городишко Шинсу, работать учителем. Но по факту — да, сбегает, от чего-то что болит так сильно, что молчать об этом легче чем объяснять. Приезжает, а там всё как в провинции обычно бывает: все всех знают, сплетни разносятся быстрее интернета, и новенькая учительница из столицы — это событие года, считай. Поначалу Юн Бом держит дистанцию. Холодная, замкнутая, делает свою работу и всё. Пытается построить стену между собой и этим миром где все лезут с вопросами. А потом в её жизни появляется Сон Джэ Гю. Дядя одного из учеников, местная знаменитость, причём не самого положительного толка — связан с криминалом, решает вопросы по своему, грубовато так. Но парадокс в том, что за этой грубостью прячется что-то настоящее. Искреннее, что ли. Сначала их общение — чисто по школьным делам. Но Джэ-гю видит как местные начинают "прижимать" новенькую учительницу намёками, сплетнями, давлением. И начинает вмешиваться. А Юн Бом — она же независимая, ей эта защита не нужна вообще! Пытается границы выстроить, но обстоятельства заставляют их всё чаще пересекаться. Конфликты с родителями учеников, старые долги Джэ-гю, прошлое Юн Бом которое не отпускает... Постепенно между ними что то возникает. Не сразу понятно что именно, но точно больше чем просто знакомство. И теперь Юн Бом стоит перед выбором: продолжать прятаться в спокойной жизни или наконец разобраться со своим прошлым и впустить кого-то по-настоящему близко.',
+                    plot: 'Юн Бом сбегает из Сеула...',
                     cast: [
                         { name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' },
-                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' },
-                        { name: 'Чха Со-вон', role: '', tag: '' },
-                        { name: 'Чо Джун-ён', role: '', tag: '' },
-                        { name: 'Ли Джэ-ин', role: '', tag: '' },
-                        { name: 'Чин Гён', role: '', tag: '' },
-                        { name: 'Пэ Джон-нам', role: '', tag: '' },
-                        { name: 'Ким Бён-чхун', role: '', tag: '' },
-                        { name: 'О Ман-сок', role: '', tag: '' },
-                        { name: 'Чон Ён-ги', role: '', tag: '' }
+                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239071&hash=1f27835192750df2&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239072&hash=9ac2444293c24df6&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239073&hash=9cb8d6c3b2c8f1ac&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239074&hash=712bd3006b17af03&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239075&hash=0f62c59adfbd0afb&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239076&hash=520bda7a0e46d32a&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239077&hash=27ec0c95a3875f59&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239078&hash=bce2a19f662241a1&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239079&hash=1cd418e8791d48ea&hd=3',
-                   10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239080&hash=a742725e8e4fcc74&hd=3',
-                   11: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239081&hash=1bf6f0ba4249601b&hd=3',
-                   12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239082&hash=60863793b7acf836&hd=3'
                 }
             },
             drama8: {
                 name: 'Босс компании «Тайфун»',
                 episodes: 16,
                 storageKey: 'lastDramaEpisode8',
+                poster: 'LL.jpg',
                 info: {
                     year: '2025',
                     director: 'Ли На-джон',
@@ -367,43 +1078,18 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун» — человек, который создавал это дело с нуля. А его сын Кан Тхэ-пун (имя буквально значит «тайфун») всю жизнь был беззаботным наследником. Деньги, тусовки, никакой ответственности. И вот теперь — бац! — он вынужден возглавить компанию, которая на грани банкротства. Тхэ-пун садится в кресло генерального директора, но понятия не имеет, что делать. Он путает факс с телефоном, не знает, что такое просроченный платёж, усердно конспектирует на совещаниях, как первоклашка. Кредиторы требуют долги, поставщики разрывают контракты, сотрудники в панике. Особенно О Ми-сук из бухгалтерии — старшая дочь в бедной семье, которая годами тянет родных на себе. Для неё работа в «Тайфуне» — единственный источник дохода. И тут появляется этот неопытный босс со своими идеями? Но Тхэ-пун не сдаётся. Он меняет яркую одежду на строгий костюм и начинает учиться заново — с нуля, как отец когда-то. Предлагает рискованный план: искать клиентов среди мелких провинциальных магазинов, которых игнорируют большие корпорации. Стать посредником, помочь им выжить в кризис. Ми-сук, перфекционистка до мозга костей, видит в этом плане шанс. Она соглашается возглавить проект, хотя сомнения гложут изнутри. Команда раскалывается: Ми-сук уезжает по городам, сталкиваясь с отказами и недоверием. Тхэ-пун остаётся в Сеуле, ведёт переговоры с кредиторами... и узнаёт страшную правду: его отец заложил личное имущество ради бизнеса. Эта жертва меняет всё. Тхэ-пун понимает: «Тайфун» — это не просто компания. Это наследие, любовь, символ стихии, которая может как разрушить, так и очистить путь для нового начала. И если он не справится, всё рухнет окончательно.',
+                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун»...',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
-                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' },
-                        { name: 'Сон Дон-иль', role: '', tag: '' },
-                        { name: 'Ким Джи-ён', role: '', tag: '' },
-                        { name: 'Ким Мин-сок', role: '', tag: '' },
-                        { name: 'Му Джин-сон', role: '', tag: '' },
-                        { name: 'Квон Хан-соль', role: '', tag: '' },
-                        { name: 'Ли Чхан-хун', role: '', tag: '' },
-                        { name: 'Ким Джэ-хва', role: '', tag: '' },
-                        { name: 'Ким Сон-иль', role: '', tag: '' }
+                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239098&hash=df1b685200f0eccf&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239097&hash=4d88fe8c0df2f486&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239096&hash=11342c59a1841e02&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239095&hash=47030ae0c2488b65&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239094&hash=af96406ed60002be&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239093&hash=38d542511f7eab5c&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239092&hash=32425b259717ff32&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239091&hash=0bd0e7e8b6f12a20&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239090&hash=f71ebf5a1647b087&hd=3',
-                    10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239089&hash=28caf8979d1e9b8a&hd=3',
-                    11: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239088&hash=a8d66aa6156e00df&hd=3',
-                    12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239087&hash=f33be513208a2258&hd=3',
-                    13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239086&hash=791c3f2ebef9fd62&hd=3',
-                    14: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239085&hash=730c620b365533ef&hd=3',
-                    15: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239084&hash=7797ba5269d7c3a9&hd=3',
-                    16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239083&hash=bd27462a88e0354c&hd=3'
                 }
             },
             drama9: {
                 name: 'Все твои желания исполнятся',
                 episodes: 13,
                 storageKey: 'lastDramaEpisode9',
+                poster: 'FQ.jpg',
                 info: {
                     year: '2025',
                     director: 'Бён Хон Ли (II), Гиль Хо Ан',
@@ -429,141 +1115,669 @@
                         { name: 'Хё Кё Сон', role: '', tag: '' },
                         { name: 'Му Сэн Ли', role: '', tag: '' }
                     ]
-                },
-                videos: {
-                    1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239111&hash=63a2d406a8ca07b0&hd=3',
-                    2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239110&hash=f65f4abbfaafbebf&hd=3',
-                    3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239109&hash=29dcc9316a0a909e&hd=3',
-                    4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239108&hash=4775ba3ec3da169d&hd=3',
-                    5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239107&hash=6858f75c0e5a034b&hd=3',
-                    6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239106&hash=0decc27f536f9f4c&hd=3',
-                    7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239105&hash=aef458729453cba8&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239104&hash=4ed9086fa70c0184&hd=3',
-                    9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239103&hash=33fb485fe4a81512&hd=3',
-                    10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239102&hash=024e831dcc26c254&hd=3',
-                    11: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239101&hash=3ba69a009ef2af1b&hd=3',
-                    12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239100&hash=112512a5175f23e2&hd=3',
-                    13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239099&hash=6cabc9bafeaebb9c&hd=3'
+                }
+            },
+            drama10: {
+                name: 'Полярная звезда',
+                episodes: 9,
+                storageKey: 'lastDramaEpisode10',
+                poster: 'RR.jpg',
+                info: {
+                    year: '2025',
+                    director: 'Ким Хи-вон, Хо Мён-хэн',
+                    genre: 'триллер, мелодрама, боевик',
+                    country: 'Корея Южная',
+                    duration: '00:53:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона — умная, решительная, безупречная в каждом жесте и слове. Её уважали коллеги, ею гордилась страна. Казалось, ей по плечу любые международные переговоры и самые запутанные политические интриги. Но одно убийство способно разрушить даже самую блестящую карьеру. Влиятельный чиновник найден мёртвым, а все улики ведут в такие дебри, где дипломатический иммунитет не поможет. Между Севером и Югом разгорается игра, ставки в которой — человеческие жизни. В центре этого водоворота появляется Сан Хо — человек без прошлого, имени и, кажется, совести. Наёмник, который умеет решать проблемы радикально и бесшумно. Его руки помнят запах пороха, а глаза видели столько крови, что уже ничему не удивляются. Теперь Мун Джу и этот загадочный незнакомец должны работать в паре. Она — с её дипломатической мудростью, он — с его жестокими методами. Правда где-то рядом, но за неё придётся заплатить такую цену, которая может оказаться слишком высокой даже для закалённых в боях сердец.',
+                    cast: [
+                        { name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' },
+                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' },
+                        { name: 'Джон Чо', role: '', tag: '' },
+                        { name: 'Ли Ми-сук', role: '', tag: '' },
+                        { name: 'Пак Хэ-джун', role: '', tag: '' },
+                        { name: 'Ким Хэ-сук', role: '', tag: '' },
+                        { name: 'О Джон-сэ', role: '', tag: '' },
+                        { name: 'Ли Сан-хи', role: '', tag: '' },
+                        { name: 'Чу Джон-хёк', role: '', tag: '' },
+                        { name: 'Вон Джи-ан', role: '', tag: '' }
+                    ]
                 }
             }
         };
 
-        // ===== ОПРЕДЕЛЯЕМ КАКУЮ ДОРАМУ ПОКАЗЫВАТЬ =====
-        const urlParams = new URLSearchParams(window.location.search);
-        let dramaId = urlParams.get('drama') || 'drama1';
-
-        if (!urlParams.has('drama')) {
-            const saved = localStorage.getItem('lastDramaId');
-            if (saved && DRAMAS[saved]) {
-                dramaId = saved;
+        // ===== СПИСОК ФИЛЬМОВ =====
+        const movies = [
+            {
+                name: 'Завтра снова на работу!',
+                year: 2024,
+                rating: 9.5,
+                poster: 'DR.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама, комедия',
+                dramaId: 'drama1'
+            },
+            {
+                name: 'Лазурная весна',
+                year: 2026,
+                rating: 8.5,
+                poster: 'Wt.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама',
+                dramaId: 'drama2'
+            },
+            {
+                name: 'Абсолютная величина любви',
+                year: 2026,
+                rating: 7.6,
+                poster: 'DD.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама, комедия',
+                dramaId: 'drama3'
+            },
+            {
+                name: 'Атхит - это я',
+                year: 2022,
+                rating: 6.8,
+                poster: 'i.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, романтика',
+                dramaId: 'drama4'
+            },
+            {
+                name: 'Бойфренд по запросу',
+                year: 2026,
+                rating: 8.7,
+                poster: 'GT.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, мелодрама',
+                dramaId: 'drama5'
+            },
+            {
+                name: 'Жена принца XXI века',
+                year: 2026,
+                rating: 8.9,
+                poster: 'GR.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама',
+                dramaId: 'drama6'
+            },
+            {
+                name: 'Весенняя лихорадка',
+                year: 2026,
+                rating: 8.6,
+                poster: 'GN.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'мелодрама, комедия',
+                dramaId: 'drama7'
+            },
+            {
+                name: 'Босс компании «Тайфун»',
+                year: 2025,
+                rating: 8.4,
+                poster: 'LL.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'Драма, семейный',
+                dramaId: 'drama8'
+            },
+            {
+                name: 'Все твои желания исполнятся',
+                year: 2025,
+                rating: 8.4,
+                poster: 'FQ.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'комедия, мелодрама, фэнтези',
+                dramaId: 'drama9'
+            },
+            {
+                name: 'Полярная звезда',
+                year: 2025,
+                rating: 8.6,
+                poster: 'RR.jpg',
+                isDrama: true,
+                isSeries: true,
+                genre: 'триллер, мелодрама, боевик',
+                dramaId: 'drama10'
+            },
+            {
+                name: 'Титаник',
+                year: 1997,
+                rating: 8.3,
+                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg',
+                genre: 'драма, мелодрама'
             }
-        }
+        ];
 
-        const drama = DRAMAS[dramaId];
-        if (!drama) {
-            window.location.href = 'index.html';
-            throw new Error('Дорама не найдена');
-        }
-
-        localStorage.setItem('lastDramaId', dramaId);
-
-        // ===== ЗАГРУЗКА ДОРАМЫ =====
-        const episodes = [];
-        for (let i = 1; i <= drama.episodes; i++) {
-            episodes.push({ number: i, title: '' });
-        }
-
-        const episodesList = document.getElementById('episodesList');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const currentEpisodeSpan = document.getElementById('currentEpisode');
-        const episodeTitleSpan = document.getElementById('episodeTitle');
-        const dramaTitle = document.getElementById('dramaTitle');
-        const dramaEpisodes = document.getElementById('dramaEpisodes');
-        const dramaInfoDiv = document.getElementById('dramaInfo');
-
-        let currentEpisode = 1;
-
-        function renderInfo() {
-            const info = drama.info;
-            dramaTitle.textContent = drama.name;
-            dramaEpisodes.textContent = `${drama.episodes} серий`;
-
-            let castHtml = '';
-            info.cast.forEach(actor => {
-                const tag = actor.tag ? `<span class="actor-role-tag">${actor.tag}</span>` : '';
-                castHtml += `
-                    <div class="cast-item">
-                        <div class="actor-name">${actor.name}</div>
-                        <div class="actor-role">${actor.role}</div>
-                        ${tag}
-                    </div>
-                `;
+        // ===== ЖАНРЫ =====
+        function getAllGenres() {
+            const genresSet = new Set();
+            movies.forEach(movie => {
+                if (movie.genre) {
+                    movie.genre.split(',').forEach(g => {
+                        const trimmed = g.trim();
+                        if (trimmed.toLowerCase() !== 'триллер') {
+                            genresSet.add(trimmed);
+                        }
+                    });
+                }
             });
-
-            dramaInfoDiv.innerHTML = `
-                <div class="drama-description">
-                    <div class="info-item"><span class="label"> Год выпуска:</span><span class="value">${info.year}</span></div>
-                    <div class="info-item"><span class="label"> Режиссёр:</span><span class="value">${info.director}</span></div>
-                    <div class="info-item"><span class="label"> Жанр:</span><span class="value">${info.genre}</span></div>
-                    <div class="info-item"><span class="label"> Страна:</span><span class="value">${info.country}</span></div>
-                    ${info.duration ? `<div class="info-item"><span class="label"> Продолжительность:</span><span class="value">${info.duration}</span></div>` : ''}
-                    ${info.translation ? `<div class="info-item"><span class="label"> Перевод:</span><span class="value">${info.translation}</span></div>` : ''}
-                    ${info.plot ? `<div class="plot"><strong>Описание:</strong><br>${info.plot}</div>` : ''}
-                </div>
-                <div class="cast-section">
-                    <div class="cast-title"> Актёрский состав</div>
-                    <div class="cast-grid">${castHtml}</div>
-                </div>
-            `;
+            return Array.from(genresSet).sort();
         }
 
-        function renderEpisodes() {
-            episodesList.innerHTML = '';
-            for (let i = 1; i <= drama.episodes; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'episode-btn' + (i === currentEpisode ? ' active' : '');
-                btn.textContent = `Серия ${i}`;
-                btn.dataset.number = i;
-                btn.addEventListener('click', () => loadEpisode(i));
-                episodesList.appendChild(btn);
-            }
-        }
-
-        function loadEpisode(number) {
-            currentEpisode = number;
-            const episode = episodes.find(e => e.number === number);
-            currentEpisodeSpan.textContent = `Серия ${number}`;
-            episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
-            document.querySelectorAll('.episode-btn').forEach(btn => {
-                btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
+        function renderGenres() {
+            const container = document.getElementById('genresSlide');
+            const genres = getAllGenres();
+            let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
+            genres.forEach(genre => {
+                const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
+                html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
             });
+            container.innerHTML = html;
 
-            const videoUrl = drama.videos[number];
-            if (videoUrl) {
-                videoPlayer.src = videoUrl;
-            }
+            container.querySelectorAll('.genre-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const genre = this.dataset.genre;
+                    filterByGenre(genre);
+                    container.querySelectorAll('.genre-item').forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    closeGenres();
+                });
+            });
         }
 
-        function saveLastEpisode(number) {
-            try { localStorage.setItem(drama.storageKey, number); } catch(e) {}
+        function toggleGenres() {
+            const slide = document.getElementById('genresSlide');
+            slide.classList.toggle('open');
         }
 
-        function getLastEpisode() {
-            try { return parseInt(localStorage.getItem(drama.storageKey)) || 1; } catch(e) { return 1; }
+        function closeGenres() {
+            const slide = document.getElementById('genresSlide');
+            slide.classList.remove('open');
         }
 
-        renderInfo();
-        renderEpisodes();
-        loadEpisode(getLastEpisode());
-
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.episode-btn');
-            if (btn) saveLastEpisode(parseInt(btn.dataset.number));
+        document.getElementById('logoWrapper').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleGenres();
         });
 
-        window.addEventListener('load', () => {
-            const saved = getLastEpisode();
-            if (saved !== currentEpisode) loadEpisode(saved);
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('logoWrapper');
+            const slide = document.getElementById('genresSlide');
+            if (!wrapper.contains(e.target) && !slide.contains(e.target)) {
+                closeGenres();
+            }
+        });
+
+        // ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ =====
+        let currentYear = 'all';
+
+        function renderYears() {
+            const container = document.getElementById('yearsDropdown');
+            const yearsSet = new Set();
+            
+            movies.forEach(movie => {
+                if (movie.year) {
+                    yearsSet.add(movie.year);
+                }
+            });
+            
+            const years = Array.from(yearsSet).sort((a, b) => b - a);
+            
+            let html = '';
+            years.forEach(year => {
+                html += `<span class="year-item" data-year="${year}">${year}</span>`;
+            });
+            container.innerHTML = html;
+
+            container.querySelectorAll('.year-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const year = this.dataset.year;
+                    currentYear = year;
+                    applyFilters();
+                    document.getElementById('yearsToggle').textContent = ` ${year}`;
+                    container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    const dropdown = document.getElementById('yearsDropdown');
+                    dropdown.classList.remove('open');
+                });
+            });
+
+            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
+        }
+
+        function toggleYears() {
+            const dropdown = document.getElementById('yearsDropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        function closeYears() {
+            const dropdown = document.getElementById('yearsDropdown');
+            dropdown.classList.remove('open');
+            currentYear = 'all';
+            dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
+            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
+            applyFilters();
+        }
+
+        document.getElementById('yearsToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleYears();
+        });
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('yearsWrapper');
+            if (!wrapper.contains(e.target)) {
+                closeYears();
+            }
+        });
+
+        function filterByYear(year) {
+            currentYear = year;
+            applyFilters();
+        }
+
+        // ===== ОБЩАЯ ФИЛЬТРАЦИЯ =====
+        let currentGenre = 'all';
+        let currentSearchQuery = '';
+
+        function applyFilters() {
+            const query = currentSearchQuery;
+            let filtered = movies;
+            
+            if (currentGenre !== 'all') {
+                filtered = filtered.filter(m => m.genre && m.genre.includes(currentGenre));
+            }
+            
+            if (currentYear !== 'all') {
+                filtered = filtered.filter(m => m.year === parseInt(currentYear));
+            }
+            
+            if (query.trim()) {
+                const lowerQuery = query.toLowerCase().trim();
+                filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
+            }
+            
+            const grid = document.getElementById('moviesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                noResults.classList.add('active');
+                return;
+            }
+            
+            noResults.classList.remove('active');
+            grid.classList.remove('hidden');
+            
+            let html = '';
+            filtered.forEach(movie => {
+                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name}</div>
+                        </div>`;
+            });
+            grid.innerHTML = html;
+            attachCardClickHandlers();
+        }
+
+        function filterByGenre(genre) {
+            currentGenre = genre;
+            applyFilters();
+        }
+
+        // ===== ОТОБРАЖЕНИЕ СЕТКИ =====
+        function renderMoviesGrid() {
+            const grid = document.getElementById('moviesGrid');
+            let html = '';
+            movies.forEach(movie => {
+                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                            <div class="title">${movie.name}</div>
+                        </div>`;
+            });
+            grid.innerHTML = html;
+            attachCardClickHandlers();
+        }
+
+        function resetSearch() {
+            const grid = document.getElementById('moviesGrid');
+            const noResults = document.getElementById('noResults');
+            grid.classList.remove('hidden');
+            noResults.classList.remove('active');
+            currentSearchQuery = '';
+            document.getElementById('searchInput').value = '';
+            renderMoviesGrid();
+        }
+
+        renderMoviesGrid();
+        renderGenres();
+        renderYears();
+
+        // ===== ПОИСК =====
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        let isAnimating = false;
+
+        function performSearch() {
+            if (isAnimating) return;
+
+            const query = searchInput.value;
+            isAnimating = true;
+            currentSearchQuery = query;
+            searchBtn.classList.remove('returning');
+            searchBtn.classList.add('animating');
+
+            setTimeout(() => {
+                applyFilters();
+
+                searchBtn.classList.remove('animating');
+                searchBtn.classList.add('returning');
+
+                setTimeout(() => {
+                    searchBtn.classList.remove('returning');
+                    isAnimating = false;
+                }, 900);
+            }, 900);
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+
+        searchInput.addEventListener('input', function() {
+            if (this.value.trim() === '' && currentGenre === 'all' && currentYear === 'all') {
+                resetSearch();
+            } else if (this.value.trim() === '') {
+                currentSearchQuery = '';
+                applyFilters();
+            }
+        });
+
+        // ===== МОДАЛЬНОЕ ОКНО =====
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalPoster = document.getElementById('modalPoster');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDetails = document.getElementById('modalDetails');
+        const modalRating = document.getElementById('modalRating');
+        const watchLink = document.getElementById('watchLink');
+
+        function openModal(movie) {
+            if (movie.isDrama) {
+                let dramaData = {};
+                
+                if (movie.dramaId === 'drama1') {
+                    dramaData = {
+                        name: 'Завтра снова на работу!',
+                        year: 2024,
+                        rating: 9.5,
+                        poster: 'DR.jpg',
+                        details: `
+                            <strong>Дата выхода:</strong> 22 июня 2026 года<br>
+                            <strong>Жанр:</strong> мелодрама, комедия<br>
+                            <strong>Страна:</strong> Республика Корея<br>
+                            <strong>Режиссёр:</strong> Чо Ын-соль
+                        `
+                    };
+                } else if (movie.dramaId === 'drama2') {
+                    dramaData = {
+                        name: 'Лазурная весна',
+                        year: 2026,
+                        rating: 8.5,
+                        poster: 'Wt.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Чон Хон-су<br>
+                            <strong>Жанр:</strong> Мелодрама<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 00:40:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama3') {
+                    dramaData = {
+                        name: 'Абсолютная величина любви',
+                        year: 2026,
+                        rating: 7.6,
+                        poster: 'DD.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Тхэ Гон Ли<br>
+                            <strong>Жанр:</strong> мелодрама, комедия<br>
+                            <strong>Страна:</strong> Корея Южная
+                        `
+                    };
+                } else if (movie.dramaId === 'drama4') {
+                    dramaData = {
+                        name: 'Атхит - это я',
+                        year: 2022,
+                        rating: 6.8,
+                        poster: 'i.jpg',
+                        details: `
+                            <strong>Оригинальное название:</strong> Even Sun<br>
+                            <strong>Год:</strong> 2022<br>
+                            <strong>Страна:</strong> Таиланд<br>
+                            <strong>Жанр:</strong> комедия, романтика<br>
+                            <strong>В качестве:</strong> Full HD<br>
+                            <strong>В переводе:</strong> Озвучка, Субтитры<br>
+                            <strong>Серий:</strong> 6 из 6<br>
+                            <strong>Статус:</strong> Завершён<br>
+                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler
+                        `
+                    };
+                } else if (movie.dramaId === 'drama5') {
+                    dramaData = {
+                        name: 'Бойфренд по запросу',
+                        year: 2026,
+                        rating: 8.7,
+                        poster: 'GT.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Ким Джон Щик<br>
+                            <strong>Жанр:</strong> Комедия, мелодрама<br>
+                            <strong>Страна:</strong> Южная Корея<br>
+                            <strong>Продолжительность:</strong> 00:55:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama6') {
+                    dramaData = {
+                        name: 'Жена принца XXI века',
+                        year: 2026,
+                        rating: 8.9,
+                        poster: 'GR.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Пак Джун Хва<br>
+                            <strong>Жанр:</strong> мелодрама<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 01:14:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama7') {
+                    dramaData = {
+                        name: 'Весенняя лихорадка',
+                        year: 2026,
+                        rating: 8.6,
+                        poster: 'GN.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Пак Вон-гук<br>
+                            <strong>Жанр:</strong> мелодрама, комедия<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 01:02:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama8') {
+                    dramaData = {
+                        name: 'Босс компании «Тайфун»',
+                        year: 2025,
+                        rating: 8.4,
+                        poster: 'LL.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2025<br>
+                            <strong>Режиссёр:</strong> Ли На-джон<br>
+                            <strong>Жанр:</strong> Драма, семейный<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 01:17:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama9') {
+                    dramaData = {
+                        name: 'Все твои желания исполнятся',
+                        year: 2025,
+                        rating: 8.4,
+                        poster: 'FQ.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2025<br>
+                            <strong>Режиссёр:</strong> Бён Хон Ли (II), Гиль Хо Ан<br>
+                            <strong>Жанр:</strong> комедия, мелодрама, фэнтези<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 00:55:00<br>
+                            <strong>Перевод:</strong> Любительский многоголосый
+                        `
+                    };
+                } else if (movie.dramaId === 'drama10') {
+                    dramaData = {
+                        name: 'Полярная звезда',
+                        year: 2025,
+                        rating: 8.6,
+                        poster: 'RR.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2025<br>
+                            <strong>Режиссёр:</strong> Ким Хи-вон, Хо Мён-хэн<br>
+                            <strong>Жанр:</strong> триллер, мелодрама, боевик<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 00:53:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
+                } else {
+                    dramaData = {
+                        name: movie.name,
+                        year: movie.year,
+                        rating: movie.rating,
+                        poster: movie.poster,
+                        details: `<strong>Год:</strong> ${movie.year || '—'}`
+                    };
+                }
+
+                modalPoster.src = dramaData.poster;
+                modalTitle.textContent = dramaData.name;
+                modalDetails.innerHTML = dramaData.details;
+                modalRating.textContent = `⭐ ${dramaData.rating}`;
+                watchLink.style.display = 'block';
+                watchLink.href = `watch.html?drama=${movie.dramaId || 'drama1'}`;
+            } else {
+                modalPoster.src = movie.poster;
+                modalTitle.textContent = movie.name;
+                modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
+                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
+                watchLink.style.display = 'none';
+            }
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function attachCardClickHandlers() {
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const movieData = this.dataset.movie;
+                    if (movieData) {
+                        try {
+                            const movie = JSON.parse(movieData);
+                            openModal(movie);
+                        } catch (e) {
+                            console.error('Ошибка парсинга:', e);
+                        }
+                    }
+                });
+            });
+        }
+
+        // ===== ПРОДОЛЖИТЬ ПРОСМОТР =====
+        function getLastWatchedDrama() {
+            const savedDramaId = localStorage.getItem('lastDramaId');
+            if (savedDramaId && DRAMAS[savedDramaId]) {
+                return savedDramaId;
+            }
+            return 'drama1';
+        }
+
+        function getLastEpisode(dramaId) {
+            const storageKey = DRAMAS[dramaId]?.storageKey;
+            if (storageKey) {
+                const saved = localStorage.getItem(storageKey);
+                if (saved) return parseInt(saved);
+            }
+            return 1;
+        }
+
+        function renderContinueWatching() {
+            const dramaId = getLastWatchedDrama();
+            const drama = DRAMAS[dramaId];
+            if (!drama) return;
+
+            const episode = getLastEpisode(dramaId);
+            const poster = drama.poster || 'DR.jpg';
+
+            document.getElementById('continuePoster').src = poster;
+            document.getElementById('continueName').textContent = drama.name;
+            document.getElementById('continueEpisode').textContent = `Серия ${episode}`;
+
+            const card = document.getElementById('continueCard');
+            card.addEventListener('click', function() {
+                window.location.href = `watch.html?drama=${dramaId}`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderContinueWatching);
+
+        // ===== КНОПКА "НАВЕРХ" =====
+        const scrollBtn = document.getElementById('scrollTopBtn');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
+        scrollBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
