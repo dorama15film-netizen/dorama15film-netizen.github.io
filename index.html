@@ -295,6 +295,123 @@
             font-size: 12px;
         }
 
+        /* ===== ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + КНОПКИ) ===== */
+        .controls-bar {
+            width: 100%;
+            padding: 12px 20px 8px 20px;
+            background: #0b0e14;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .controls-bar .controls-inner {
+            width: 92%;
+            max-width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sort-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sort-wrapper label {
+            color: #8892a8;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .sort-wrapper select {
+            background: #151b24;
+            border: 2px solid #2a313f;
+            border-radius: 30px;
+            color: #f0f2f5;
+            padding: 8px 16px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        .sort-wrapper select:hover {
+            border-color: #f1c40f;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: #151b24;
+            border: 2px solid #2a313f;
+            border-radius: 30px;
+            color: #f0f2f5;
+            padding: 8px 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            border-color: #f1c40f;
+            transform: scale(1.02);
+        }
+
+        .action-btn.favorite-btn {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .action-btn.favorite-btn:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .action-btn.favorite-btn.active {
+            background: #e74c3c;
+            color: #fff;
+            border-color: #e74c3c;
+        }
+
+        .action-btn.random-btn {
+            border-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        .action-btn.random-btn:hover {
+            background: #2ecc71;
+            color: #fff;
+        }
+
+        .action-btn .badge {
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            padding: 0 6px;
+            font-size: 11px;
+            min-width: 18px;
+            text-align: center;
+        }
+
         .search-section {
             width: 100%;
             padding: 15px 20px 8px 20px;
@@ -413,6 +530,7 @@
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 0.6s ease forwards;
+            position: relative;
         }
 
         .movie-card:nth-child(1) { animation-delay: 0.05s; }
@@ -475,6 +593,49 @@
             border-top: 1px solid #1f2631;
         }
 
+        .movie-card .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #2a313f;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            z-index: 5;
+            color: #8892a8;
+        }
+
+        .movie-card .favorite-icon:hover {
+            transform: scale(1.15);
+        }
+
+        .movie-card .favorite-icon.favorited {
+            color: #e74c3c;
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        .movie-card .rating-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #f1c40f;
+            border-radius: 20px;
+            padding: 2px 10px;
+            color: #f1c40f;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
         .no-results {
             display: none;
             text-align: center;
@@ -493,6 +654,7 @@
             margin-bottom: 12px;
         }
 
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -623,6 +785,110 @@
             background: #c0392b;
             border-color: #c0392b;
             transform: rotate(90deg);
+        }
+
+        /* ===== РЕЙТИНГ В МОДАЛКЕ ===== */
+        .modal-rating-section {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-rating-section .stars {
+            display: flex;
+            gap: 4px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .modal-rating-section .stars span {
+            transition: 0.2s ease;
+            color: #2a313f;
+        }
+
+        .modal-rating-section .stars span.active {
+            color: #f1c40f;
+        }
+
+        .modal-rating-section .stars span:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-rating-section .rating-text {
+            color: #8892a8;
+            font-size: 14px;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .modal-rating-section .rating-text strong {
+            color: #f1c40f;
+        }
+
+        /* ===== TOAST УВЕДОМЛЕНИЯ ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+
+        .toast {
+            background: #151b24;
+            border: 2px solid #f1c40f;
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: #f0f2f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+            animation: slideInRight 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.success {
+            border-color: #2ecc71;
+        }
+
+        .toast.error {
+            border-color: #e74c3c;
+        }
+
+        .toast.info {
+            border-color: #3498db;
+        }
+
+        .toast .toast-icon {
+            font-size: 20px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(50px);
+            }
         }
 
         /* ===== КНОПКА "НАВЕРХ" ===== */
@@ -789,6 +1055,9 @@
             .logo-overlay { top: 12px; left: 12px; }
             .genres-wrapper { top: 58px; left: 0px; }
             .genres-slide .genre-item { font-size: 13px; padding: 5px 12px; }
+            .controls-bar .controls-inner { flex-direction: column; align-items: stretch; }
+            .sort-wrapper { justify-content: center; }
+            .action-buttons { justify-content: center; }
             .modal-content { max-width: 380px; max-height: 92vh; }
             .modal-content .modal-title { font-size: 18px; }
             .modal-content .modal-info { padding: 14px 16px 16px; }
@@ -803,6 +1072,11 @@
             .footer-bottom {
                 flex-direction: column;
                 text-align: center;
+            }
+            .toast-container {
+                bottom: 80px;
+                right: 15px;
+                max-width: 280px;
             }
         }
 
@@ -828,6 +1102,9 @@
             .genres-slide.open { padding: 10px 10px; }
             .genres-slide .genre-item { font-size: 12px; padding: 4px 10px; border-width: 1.5px; }
             .genres-slide .genre-item .count { font-size: 10px; margin-left: 4px; }
+            .controls-bar { padding: 8px 10px 4px 10px; }
+            .sort-wrapper select { font-size: 12px; padding: 6px 12px; }
+            .action-btn { font-size: 12px; padding: 6px 14px; }
             .modal-overlay { padding: 10px; }
             .modal-content { max-width: 95%; max-height: 95vh; }
             .modal-content .modal-title { font-size: 16px; }
@@ -835,6 +1112,7 @@
             .modal-content .modal-close { width: 32px; height: 32px; font-size: 16px; top: 8px; right: 10px; }
             .modal-content .modal-watch-link { font-size: 14px; padding: 10px 16px; }
             .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
+            .modal-rating-section .stars { font-size: 22px; }
             .scroll-top-btn { width: 40px; height: 40px; font-size: 18px; bottom: 15px; right: 15px; }
             .footer-content {
                 grid-template-columns: 1fr;
@@ -845,6 +1123,12 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .toast-container {
+                bottom: 70px;
+                right: 10px;
+                max-width: 240px;
+            }
+            .toast { font-size: 12px; padding: 10px 14px; }
         }
     </style>
 </head>
@@ -879,6 +1163,31 @@
         </div>
     </div>
 
+    <!-- ===== ПАНЕЛЬ УПРАВЛЕНИЯ ===== -->
+    <div class="controls-bar">
+        <div class="controls-inner">
+            <div class="sort-wrapper">
+                <label for="sortSelect">📊 Сортировка:</label>
+                <select id="sortSelect">
+                    <option value="default">По умолчанию</option>
+                    <option value="rating">По рейтингу ↓</option>
+                    <option value="rating-asc">По рейтингу ↑</option>
+                    <option value="year">По году ↓</option>
+                    <option value="year-asc">По году ↑</option>
+                    <option value="name">По названию А-Я</option>
+                </select>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn favorite-btn" id="favoritesToggle">
+                    ❤️ Избранное <span class="badge" id="favoritesCount">0</span>
+                </button>
+                <button class="action-btn random-btn" id="randomBtn">
+                    🎲 Случайная
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="search-section">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="Поиск фильмов..." autocomplete="off" />
@@ -898,6 +1207,7 @@
     <!-- ===== КНОПКА "НАВЕРХ" ===== -->
     <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
+    <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">✕</button>
@@ -905,11 +1215,23 @@
             <div class="modal-info">
                 <div class="modal-title" id="modalTitle">Название</div>
                 <div class="modal-details" id="modalDetails"></div>
-                <div class="modal-rating" id="modalRating">⭐ 9.5</div>
+                <div class="modal-rating-section">
+                    <div class="stars" id="starRating">
+                        <span data-star="1">☆</span>
+                        <span data-star="2">☆</span>
+                        <span data-star="3">☆</span>
+                        <span data-star="4">☆</span>
+                        <span data-star="5">☆</span>
+                    </div>
+                    <div class="rating-text">Средний: <strong id="modalAvgRating">0</strong> (<span id="modalVotesCount">0</span> оценок)</div>
+                </div>
                 <a class="modal-watch-link" id="watchLink" href="watch.html?drama=drama1">▶ Смотреть все серии</a>
             </div>
         </div>
     </div>
+
+    <!-- ===== TOAST КОНТЕЙНЕР ===== -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <footer class="site-footer">
         <div class="footer-content">
@@ -932,7 +1254,9 @@
     </footer>
 
     <script>
-        // ===== ДАННЫЕ О ДОРАМАХ =====
+        // =====================================================
+        // ===== ДАННЫЕ О ДОРАМАХ (полные данные) =====
+        // =====================================================
         const DRAMAS = {
             drama1: {
                 name: 'Завтра снова на работу!',
@@ -1188,148 +1512,100 @@
             }
         };
 
+        // =====================================================
         // ===== СПИСОК ФИЛЬМОВ =====
+        // =====================================================
         const movies = [
-            {
-                name: 'Завтра снова на работу!',
-                year: 2024,
-                rating: 9.5,
-                poster: 'DR.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама, комедия',
-                dramaId: 'drama1'
-            },
-            {
-                name: 'Лазурная весна',
-                year: 2026,
-                rating: 8.5,
-                poster: 'Wt.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама',
-                dramaId: 'drama2'
-            },
-            {
-                name: 'Абсолютная величина любви',
-                year: 2026,
-                rating: 7.6,
-                poster: 'DD.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама, комедия',
-                dramaId: 'drama3'
-            },
-            {
-                name: 'Атхит - это я',
-                year: 2022,
-                rating: 6.8,
-                poster: 'i.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'комедия, романтика',
-                dramaId: 'drama4'
-            },
-            {
-                name: 'Бойфренд по запросу',
-                year: 2026,
-                rating: 8.7,
-                poster: 'GT.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'комедия, мелодрама',
-                dramaId: 'drama5'
-            },
-            {
-                name: 'Жена принца XXI века',
-                year: 2026,
-                rating: 8.9,
-                poster: 'GR.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама',
-                dramaId: 'drama6'
-            },
-            {
-                name: 'Весенняя лихорадка',
-                year: 2026,
-                rating: 8.6,
-                poster: 'GN.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'мелодрама, комедия',
-                dramaId: 'drama7'
-            },
-            {
-                name: 'Босс компании «Тайфун»',
-                year: 2025,
-                rating: 8.4,
-                poster: 'LL.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'Драма, семейный',
-                dramaId: 'drama8'
-            },
-            {
-                name: 'Все твои желания исполнятся',
-                year: 2025,
-                rating: 8.4,
-                poster: 'FQ.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'комедия, мелодрама, фэнтези',
-                dramaId: 'drama9'
-            },
-            {
-                name: 'Полярная звезда',
-                year: 2025,
-                rating: 8.6,
-                poster: 'RR.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'триллер, мелодрама, боевик',
-                dramaId: 'drama10'
-            },
-            {
-                name: 'В погоне за нефритом',
-                year: 2026,
-                rating: 8.2,
-                poster: 'KK.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'драма, мелодрама',
-                dramaId: 'drama11'
-            },
-            {
-                name: '50-летние профи',
-                year: 2026,
-                rating: 8.5,
-                poster: 'God.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'комедия, боевик, криминал',
-                dramaId: 'drama12'
-            },
-            {
-                name: 'Клетки эмпатии',
-                year: 2026,
-                rating: 8.3,
-                poster: 'AA.jpg',
-                isDrama: true,
-                isSeries: true,
-                genre: 'Мелодрама, Фэнтези',
-                dramaId: 'drama13'
-            },
-            {
-                name: 'Титаник',
-                year: 1997,
-                rating: 8.3,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg',
-                genre: 'драма, мелодрама'
-            }
+            { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия', dramaId: 'drama1' },
+            { name: 'Лазурная весна', year: 2026, rating: 8.5, poster: 'Wt.jpg', isDrama: true, isSeries: true, genre: 'мелодрама', dramaId: 'drama2' },
+            { name: 'Абсолютная величина любви', year: 2026, rating: 7.6, poster: 'DD.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия', dramaId: 'drama3' },
+            { name: 'Атхит - это я', year: 2022, rating: 6.8, poster: 'i.jpg', isDrama: true, isSeries: true, genre: 'комедия, романтика', dramaId: 'drama4' },
+            { name: 'Бойфренд по запросу', year: 2026, rating: 8.7, poster: 'GT.jpg', isDrama: true, isSeries: true, genre: 'комедия, мелодрама', dramaId: 'drama5' },
+            { name: 'Жена принца XXI века', year: 2026, rating: 8.9, poster: 'GR.jpg', isDrama: true, isSeries: true, genre: 'мелодрама', dramaId: 'drama6' },
+            { name: 'Весенняя лихорадка', year: 2026, rating: 8.6, poster: 'GN.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия', dramaId: 'drama7' },
+            { name: 'Босс компании «Тайфун»', year: 2025, rating: 8.4, poster: 'LL.jpg', isDrama: true, isSeries: true, genre: 'Драма, семейный', dramaId: 'drama8' },
+            { name: 'Все твои желания исполнятся', year: 2025, rating: 8.4, poster: 'FQ.jpg', isDrama: true, isSeries: true, genre: 'комедия, мелодрама, фэнтези', dramaId: 'drama9' },
+            { name: 'Полярная звезда', year: 2025, rating: 8.6, poster: 'RR.jpg', isDrama: true, isSeries: true, genre: 'триллер, мелодрама, боевик', dramaId: 'drama10' },
+            { name: 'В погоне за нефритом', year: 2026, rating: 8.2, poster: 'KK.jpg', isDrama: true, isSeries: true, genre: 'драма, мелодрама', dramaId: 'drama11' },
+            { name: '50-летние профи', year: 2026, rating: 8.5, poster: 'God.jpg', isDrama: true, isSeries: true, genre: 'комедия, боевик, криминал', dramaId: 'drama12' },
+            { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg', isDrama: true, isSeries: true, genre: 'Мелодрама, Фэнтези', dramaId: 'drama13' },
+            { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
         ];
 
-        // ===== ЖАНРЫ =====
+        // =====================================================
+        // ===== ИЗБРАННОЕ =====
+        // =====================================================
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let showFavoritesOnly = false;
+
+        function toggleFavorite(movieName) {
+            const index = favorites.indexOf(movieName);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('Удалено из избранного', '💔', 'error');
+            } else {
+                favorites.push(movieName);
+                showToast('Добавлено в избранное!', '❤️', 'success');
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavoritesCount();
+            if (showFavoritesOnly) applyFilters();
+            else renderMoviesGrid();
+        }
+
+        function isFavorite(movieName) {
+            return favorites.includes(movieName);
+        }
+
+        function updateFavoritesCount() {
+            document.getElementById('favoritesCount').textContent = favorites.length;
+        }
+
+        // =====================================================
+        // ===== TOAST УВЕДОМЛЕНИЯ =====
+        // =====================================================
+        function showToast(message, icon = '📢', type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 3000);
+        }
+
+        // =====================================================
+        // ===== РЕЙТИНГИ (в localStorage) =====
+        // =====================================================
+        let ratings = JSON.parse(localStorage.getItem('movieRatings')) || {};
+
+        function saveRating(movieName, stars) {
+            if (!ratings[movieName]) {
+                ratings[movieName] = { total: 0, count: 0 };
+            }
+            ratings[movieName].total += stars;
+            ratings[movieName].count += 1;
+            localStorage.setItem('movieRatings', JSON.stringify(ratings));
+            updateModalRating(movieName);
+            showToast(`Оценка ${stars}⭐ поставлена!`, '⭐', 'success');
+        }
+
+        function getMovieRating(movieName) {
+            const data = ratings[movieName];
+            if (!data || data.count === 0) return { avg: 0, count: 0 };
+            return { avg: (data.total / data.count).toFixed(1), count: data.count };
+        }
+
+        function updateModalRating(movieName) {
+            const data = getMovieRating(movieName);
+            document.getElementById('modalAvgRating').textContent = data.avg || '—';
+            document.getElementById('modalVotesCount').textContent = data.count || 0;
+        }
+
+        // =====================================================
+        // ===== РЕНДЕР ЖАНРОВ =====
+        // =====================================================
         function getAllGenres() {
             const genresSet = new Set();
             movies.forEach(movie => {
@@ -1359,7 +1635,8 @@
                 item.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const genre = this.dataset.genre;
-                    filterByGenre(genre);
+                    currentGenre = genre;
+                    applyFilters();
                     container.querySelectorAll('.genre-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     closeGenres();
@@ -1368,22 +1645,18 @@
         }
 
         function toggleGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.toggle('open');
+            document.getElementById('genresSlide').classList.toggle('open');
         }
 
         function closeGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.remove('open');
+            document.getElementById('genresSlide').classList.remove('open');
         }
 
-        // Открытие/закрытие по клику на логотип
         document.getElementById('logoWrapper').addEventListener('click', function(e) {
             e.stopPropagation();
             toggleGenres();
         });
 
-        // Закрытие при клике вне области
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('logoWrapper');
             const slide = document.getElementById('genresSlide');
@@ -1392,21 +1665,18 @@
             }
         });
 
+        // =====================================================
         // ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ =====
+        // =====================================================
         let currentYear = 'all';
 
         function renderYears() {
             const container = document.getElementById('yearsDropdown');
             const yearsSet = new Set();
-            
             movies.forEach(movie => {
-                if (movie.year) {
-                    yearsSet.add(movie.year);
-                }
+                if (movie.year) yearsSet.add(movie.year);
             });
-            
             const years = Array.from(yearsSet).sort((a, b) => b - a);
-            
             let html = '';
             years.forEach(year => {
                 html += `<span class="year-item" data-year="${year}">${year}</span>`;
@@ -1422,131 +1692,194 @@
                     document.getElementById('yearsToggle').textContent = ` ${year}`;
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
-                    const dropdown = document.getElementById('yearsDropdown');
-                    dropdown.classList.remove('open');
+                    document.getElementById('yearsDropdown').classList.remove('open');
                 });
             });
-
             document.getElementById('yearsToggle').textContent = ' Поиск по годам';
-        }
-
-        function toggleYears() {
-            const dropdown = document.getElementById('yearsDropdown');
-            dropdown.classList.toggle('open');
-        }
-
-        function closeYears() {
-            const dropdown = document.getElementById('yearsDropdown');
-            dropdown.classList.remove('open');
-            currentYear = 'all';
-            dropdown.querySelectorAll('.year-item').forEach(item => item.classList.remove('active'));
-            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
-            applyFilters();
         }
 
         document.getElementById('yearsToggle').addEventListener('click', function(e) {
             e.stopPropagation();
-            toggleYears();
+            document.getElementById('yearsDropdown').classList.toggle('open');
         });
 
         document.addEventListener('click', function(e) {
             const wrapper = document.getElementById('yearsWrapper');
             if (!wrapper.contains(e.target)) {
-                closeYears();
+                document.getElementById('yearsDropdown').classList.remove('open');
             }
         });
 
-        function filterByYear(year) {
-            currentYear = year;
-            applyFilters();
-        }
-
-        // ===== ОБЩАЯ ФИЛЬТРАЦИЯ =====
+        // =====================================================
+        // ===== ОБЩАЯ ФИЛЬТРАЦИЯ + СОРТИРОВКА =====
+        // =====================================================
         let currentGenre = 'all';
         let currentSearchQuery = '';
+        let currentSort = 'default';
 
-        function applyFilters() {
-            const query = currentSearchQuery;
-            let filtered = movies;
-            
+        function getFilteredMovies() {
+            let filtered = [...movies];
+
+            if (showFavoritesOnly) {
+                filtered = filtered.filter(m => favorites.includes(m.name));
+            }
+
             if (currentGenre !== 'all') {
                 filtered = filtered.filter(m => m.genre && m.genre.includes(currentGenre));
             }
-            
+
             if (currentYear !== 'all') {
                 filtered = filtered.filter(m => m.year === parseInt(currentYear));
             }
-            
-            if (query.trim()) {
-                const lowerQuery = query.toLowerCase().trim();
+
+            if (currentSearchQuery.trim()) {
+                const lowerQuery = currentSearchQuery.toLowerCase().trim();
                 filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
             }
-            
+
+            // Сортировка
+            switch (currentSort) {
+                case 'rating':
+                    filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                    break;
+                case 'rating-asc':
+                    filtered.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+                    break;
+                case 'year':
+                    filtered.sort((a, b) => (b.year || 0) - (a.year || 0));
+                    break;
+                case 'year-asc':
+                    filtered.sort((a, b) => (a.year || 0) - (b.year || 0));
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    break;
+            }
+
+            return filtered;
+        }
+
+        function applyFilters() {
+            const filtered = getFilteredMovies();
             const grid = document.getElementById('moviesGrid');
             const noResults = document.getElementById('noResults');
-            
+
             if (filtered.length === 0) {
                 grid.innerHTML = '';
                 grid.classList.add('hidden');
                 noResults.classList.add('active');
                 return;
             }
-            
+
             noResults.classList.remove('active');
             grid.classList.remove('hidden');
-            
+
             let html = '';
             filtered.forEach(movie => {
-                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name}</div>
-                        </div>`;
+                const fav = isFavorite(movie.name) ? 'favorited' : '';
+                const ratingData = getMovieRating(movie.name);
+                html += `
+                    <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
+                        <span class="rating-badge">⭐ ${movie.rating || '—'}</span>
+                        <span class="favorite-icon ${fav}" data-name="${movie.name}">${isFavorite(movie.name) ? '❤️' : '🤍'}</span>
+                        <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
+                        <div class="title">${movie.name}</div>
+                    </div>
+                `;
             });
             grid.innerHTML = html;
             attachCardClickHandlers();
+            attachFavoriteHandlers();
         }
 
-        function filterByGenre(genre) {
-            currentGenre = genre;
+        function renderMoviesGrid() {
             applyFilters();
         }
 
-        // ===== ОТОБРАЖЕНИЕ СЕТКИ =====
-        function renderMoviesGrid() {
-            const grid = document.getElementById('moviesGrid');
-            let html = '';
-            movies.forEach(movie => {
-                html += `<div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
-                            <img class="poster" src="${movie.poster}" alt="${movie.name}" loading="lazy" />
-                            <div class="title">${movie.name}</div>
-                        </div>`;
+        // =====================================================
+        // ===== ОБРАБОТЧИКИ КАРТОЧЕК =====
+        // =====================================================
+        function attachCardClickHandlers() {
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.favorite-icon')) return;
+                    const movieData = this.dataset.movie;
+                    if (movieData) {
+                        try {
+                            const movie = JSON.parse(movieData);
+                            openModal(movie);
+                        } catch (e) {
+                            console.error('Ошибка парсинга:', e);
+                        }
+                    }
+                });
             });
-            grid.innerHTML = html;
-            attachCardClickHandlers();
         }
 
-        function resetSearch() {
-            const grid = document.getElementById('moviesGrid');
-            const noResults = document.getElementById('noResults');
-            grid.classList.remove('hidden');
-            noResults.classList.remove('active');
-            currentSearchQuery = '';
-            document.getElementById('searchInput').value = '';
-            renderMoviesGrid();
+        function attachFavoriteHandlers() {
+            document.querySelectorAll('.favorite-icon').forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const name = this.dataset.name;
+                    toggleFavorite(name);
+                    this.textContent = isFavorite(name) ? '❤️' : '🤍';
+                    this.classList.toggle('favorited');
+                });
+            });
         }
 
-        renderMoviesGrid();
-        renderGenres();
-        renderYears();
+        // =====================================================
+        // ===== ИЗБРАННОЕ (кнопка-переключатель) =====
+        // =====================================================
+        document.getElementById('favoritesToggle').addEventListener('click', function() {
+            showFavoritesOnly = !showFavoritesOnly;
+            this.classList.toggle('active');
+            this.innerHTML = showFavoritesOnly ?
+                '❤️ Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>' :
+                '❤️ Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>';
+            if (showFavoritesOnly && favorites.length === 0) {
+                showToast('У вас пока нет избранных дорам', '😅', 'info');
+            }
+            applyFilters();
+        });
 
+        // =====================================================
+        // ===== СЛУЧАЙНАЯ ДОРАМА =====
+        // =====================================================
+        document.getElementById('randomBtn').addEventListener('click', function() {
+            const filtered = getFilteredMovies();
+            if (filtered.length === 0) {
+                showToast('Нет дорам для выбора', '😕', 'error');
+                return;
+            }
+            const randomMovie = filtered[Math.floor(Math.random() * filtered.length)];
+            if (randomMovie.isDrama && randomMovie.dramaId) {
+                window.location.href = `watch.html?drama=${randomMovie.dramaId}`;
+            } else {
+                openModal(randomMovie);
+            }
+        });
+
+        // =====================================================
+        // ===== СОРТИРОВКА =====
+        // =====================================================
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            currentSort = this.value;
+            applyFilters();
+            showToast('Сортировка обновлена', '📊', 'info');
+        });
+
+        // =====================================================
         // ===== ПОИСК =====
+        // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         let isAnimating = false;
 
         function performSearch() {
             if (isAnimating) return;
-
             const query = searchInput.value;
             isAnimating = true;
             currentSearchQuery = query;
@@ -1555,10 +1888,8 @@
 
             setTimeout(() => {
                 applyFilters();
-
                 searchBtn.classList.remove('animating');
                 searchBtn.classList.add('returning');
-
                 setTimeout(() => {
                     searchBtn.classList.remove('returning');
                     isAnimating = false;
@@ -1575,244 +1906,92 @@
         });
 
         searchInput.addEventListener('input', function() {
-            if (this.value.trim() === '' && currentGenre === 'all' && currentYear === 'all') {
-                resetSearch();
+            if (this.value.trim() === '' && currentGenre === 'all' && currentYear === 'all' && !showFavoritesOnly) {
+                currentSearchQuery = '';
+                applyFilters();
             } else if (this.value.trim() === '') {
                 currentSearchQuery = '';
                 applyFilters();
             }
         });
 
+        // =====================================================
         // ===== МОДАЛЬНОЕ ОКНО =====
+        // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
         const modalPoster = document.getElementById('modalPoster');
         const modalTitle = document.getElementById('modalTitle');
         const modalDetails = document.getElementById('modalDetails');
-        const modalRating = document.getElementById('modalRating');
         const watchLink = document.getElementById('watchLink');
+        let currentModalMovie = null;
 
         function openModal(movie) {
+            currentModalMovie = movie;
             if (movie.isDrama) {
                 let dramaData = {};
-                
-                if (movie.dramaId === 'drama1') {
-                    dramaData = {
-                        name: 'Завтра снова на работу!',
-                        year: 2024,
-                        rating: 9.5,
-                        poster: 'DR.jpg',
-                        details: `
-                            <strong>Дата выхода:</strong> 22 июня 2026 года<br>
-                            <strong>Жанр:</strong> мелодрама, комедия<br>
-                            <strong>Страна:</strong> Республика Корея<br>
-                            <strong>Режиссёр:</strong> Чо Ын-соль
-                        `
-                    };
-                } else if (movie.dramaId === 'drama2') {
-                    dramaData = {
-                        name: 'Лазурная весна',
-                        year: 2026,
-                        rating: 8.5,
-                        poster: 'Wt.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Чон Хон-су<br>
-                            <strong>Жанр:</strong> Мелодрама<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 00:40:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama3') {
-                    dramaData = {
-                        name: 'Абсолютная величина любви',
-                        year: 2026,
-                        rating: 7.6,
-                        poster: 'DD.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Тхэ Гон Ли<br>
-                            <strong>Жанр:</strong> мелодрама, комедия<br>
-                            <strong>Страна:</strong> Корея Южная
-                        `
-                    };
-                } else if (movie.dramaId === 'drama4') {
-                    dramaData = {
-                        name: 'Атхит - это я',
-                        year: 2022,
-                        rating: 6.8,
-                        poster: 'i.jpg',
-                        details: `
-                            <strong>Оригинальное название:</strong> Even Sun<br>
-                            <strong>Год:</strong> 2022<br>
-                            <strong>Страна:</strong> Таиланд<br>
-                            <strong>Жанр:</strong> комедия, романтика<br>
-                            <strong>В качестве:</strong> Full HD<br>
-                            <strong>В переводе:</strong> Озвучка, Субтитры<br>
-                            <strong>Серий:</strong> 6 из 6<br>
-                            <strong>Статус:</strong> Завершён<br>
-                            <strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler
-                        `
-                    };
-                } else if (movie.dramaId === 'drama5') {
-                    dramaData = {
-                        name: 'Бойфренд по запросу',
-                        year: 2026,
-                        rating: 8.7,
-                        poster: 'GT.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Ким Джон Щик<br>
-                            <strong>Жанр:</strong> Комедия, мелодрама<br>
-                            <strong>Страна:</strong> Южная Корея<br>
-                            <strong>Продолжительность:</strong> 00:55:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama6') {
-                    dramaData = {
-                        name: 'Жена принца XXI века',
-                        year: 2026,
-                        rating: 8.9,
-                        poster: 'GR.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Пак Джун Хва<br>
-                            <strong>Жанр:</strong> мелодрама<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 01:14:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama7') {
-                    dramaData = {
-                        name: 'Весенняя лихорадка',
-                        year: 2026,
-                        rating: 8.6,
-                        poster: 'GN.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Пак Вон-гук<br>
-                            <strong>Жанр:</strong> мелодрама, комедия<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 01:02:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama8') {
-                    dramaData = {
-                        name: 'Босс компании «Тайфун»',
-                        year: 2025,
-                        rating: 8.4,
-                        poster: 'LL.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2025<br>
-                            <strong>Режиссёр:</strong> Ли На-джон<br>
-                            <strong>Жанр:</strong> Драма, семейный<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 01:17:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama9') {
-                    dramaData = {
-                        name: 'Все твои желания исполнятся',
-                        year: 2025,
-                        rating: 8.4,
-                        poster: 'FQ.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2025<br>
-                            <strong>Режиссёр:</strong> Бён Хон Ли (II), Гиль Хо Ан<br>
-                            <strong>Жанр:</strong> комедия, мелодрама, фэнтези<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 00:55:00<br>
-                            <strong>Перевод:</strong> Любительский многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama10') {
-                    dramaData = {
-                        name: 'Полярная звезда',
-                        year: 2025,
-                        rating: 8.6,
-                        poster: 'RR.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2025<br>
-                            <strong>Режиссёр:</strong> Ким Хи-вон, Хо Мён-хэн<br>
-                            <strong>Жанр:</strong> триллер, мелодрама, боевик<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 00:53:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama11') {
-                    dramaData = {
-                        name: 'В погоне за нефритом',
-                        year: 2026,
-                        rating: 8.2,
-                        poster: 'KK.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Цзэн Цинцзе<br>
-                            <strong>Жанр:</strong> драма, мелодрама<br>
-                            <strong>Страна:</strong> Китай<br>
-                            <strong>Продолжительность:</strong> 00:46:50<br>
-                            <strong>Перевод:</strong> Любительский многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama12') {
-                    dramaData = {
-                        name: '50-летние профи',
-                        year: 2026,
-                        rating: 8.5,
-                        poster: 'God.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Хан Донхва<br>
-                            <strong>Жанр:</strong> комедия, боевик, криминал<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 01:10:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
-                } else if (movie.dramaId === 'drama13') {
-                    dramaData = {
-                        name: 'Клетки эмпатии',
-                        year: 2026,
-                        rating: 8.3,
-                        poster: 'AA.jpg',
-                        details: `
-                            <strong>Год выпуска:</strong> 2026<br>
-                            <strong>Режиссёр:</strong> Ким Чхиль-бон<br>
-                            <strong>Жанр:</strong> Мелодрама, Фэнтези<br>
-                            <strong>Страна:</strong> Корея Южная<br>
-                            <strong>Продолжительность:</strong> 00:49:00<br>
-                            <strong>Перевод:</strong> Профессиональный многоголосый
-                        `
-                    };
+                const dId = movie.dramaId;
+                if (dId === 'drama1') {
+                    dramaData = { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg',
+                        details: `<strong>Дата выхода:</strong> 22 июня 2026 года<br><strong>Жанр:</strong> мелодрама, комедия<br><strong>Страна:</strong> Республика Корея<br><strong>Режиссёр:</strong> Чо Ын-соль` };
+                } else if (dId === 'drama2') {
+                    dramaData = { name: 'Лазурная весна', year: 2026, rating: 8.5, poster: 'Wt.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Чон Хон-су<br><strong>Жанр:</strong> Мелодрама<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:40:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama3') {
+                    dramaData = { name: 'Абсолютная величина любви', year: 2026, rating: 7.6, poster: 'DD.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Тхэ Гон Ли<br><strong>Жанр:</strong> мелодрама, комедия<br><strong>Страна:</strong> Корея Южная` };
+                } else if (dId === 'drama4') {
+                    dramaData = { name: 'Атхит - это я', year: 2022, rating: 6.8, poster: 'i.jpg',
+                        details: `<strong>Оригинальное название:</strong> Even Sun<br><strong>Год:</strong> 2022<br><strong>Страна:</strong> Таиланд<br><strong>Жанр:</strong> комедия, романтика<br><strong>В качестве:</strong> Full HD<br><strong>В переводе:</strong> Озвучка, Субтитры<br><strong>Серий:</strong> 6 из 6<br><strong>Статус:</strong> Завершён<br><strong>Режиссёр:</strong> Bhandit Thongdee, Simon Kessler` };
+                } else if (dId === 'drama5') {
+                    dramaData = { name: 'Бойфренд по запросу', year: 2026, rating: 8.7, poster: 'GT.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Ким Джон Щик<br><strong>Жанр:</strong> Комедия, мелодрама<br><strong>Страна:</strong> Южная Корея<br><strong>Продолжительность:</strong> 00:55:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama6') {
+                    dramaData = { name: 'Жена принца XXI века', year: 2026, rating: 8.9, poster: 'GR.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Пак Джун Хва<br><strong>Жанр:</strong> мелодрама<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 01:14:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama7') {
+                    dramaData = { name: 'Весенняя лихорадка', year: 2026, rating: 8.6, poster: 'GN.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Пак Вон-гук<br><strong>Жанр:</strong> мелодрама, комедия<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 01:02:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama8') {
+                    dramaData = { name: 'Босс компании «Тайфун»', year: 2025, rating: 8.4, poster: 'LL.jpg',
+                        details: `<strong>Год выпуска:</strong> 2025<br><strong>Режиссёр:</strong> Ли На-джон<br><strong>Жанр:</strong> Драма, семейный<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 01:17:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama9') {
+                    dramaData = { name: 'Все твои желания исполнятся', year: 2025, rating: 8.4, poster: 'FQ.jpg',
+                        details: `<strong>Год выпуска:</strong> 2025<br><strong>Режиссёр:</strong> Бён Хон Ли (II), Гиль Хо Ан<br><strong>Жанр:</strong> комедия, мелодрама, фэнтези<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:55:00<br><strong>Перевод:</strong> Любительский многоголосый` };
+                } else if (dId === 'drama10') {
+                    dramaData = { name: 'Полярная звезда', year: 2025, rating: 8.6, poster: 'RR.jpg',
+                        details: `<strong>Год выпуска:</strong> 2025<br><strong>Режиссёр:</strong> Ким Хи-вон, Хо Мён-хэн<br><strong>Жанр:</strong> триллер, мелодрама, боевик<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:53:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama11') {
+                    dramaData = { name: 'В погоне за нефритом', year: 2026, rating: 8.2, poster: 'KK.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Цзэн Цинцзе<br><strong>Жанр:</strong> драма, мелодрама<br><strong>Страна:</strong> Китай<br><strong>Продолжительность:</strong> 00:46:50<br><strong>Перевод:</strong> Любительский многоголосый` };
+                } else if (dId === 'drama12') {
+                    dramaData = { name: '50-летние профи', year: 2026, rating: 8.5, poster: 'God.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Хан Донхва<br><strong>Жанр:</strong> комедия, боевик, криминал<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 01:10:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama13') {
+                    dramaData = { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Ким Чхиль-бон<br><strong>Жанр:</strong> Мелодрама, Фэнтези<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:49:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else {
-                    dramaData = {
-                        name: movie.name,
-                        year: movie.year,
-                        rating: movie.rating,
-                        poster: movie.poster,
-                        details: `<strong>Год:</strong> ${movie.year || '—'}`
-                    };
+                    dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
+                        details: `<strong>Год:</strong> ${movie.year || '—'}` };
                 }
 
                 modalPoster.src = dramaData.poster;
                 modalTitle.textContent = dramaData.name;
                 modalDetails.innerHTML = dramaData.details;
-                modalRating.textContent = `⭐ ${dramaData.rating}`;
                 watchLink.style.display = 'block';
                 watchLink.href = `watch.html?drama=${movie.dramaId || 'drama1'}`;
             } else {
                 modalPoster.src = movie.poster;
                 modalTitle.textContent = movie.name;
                 modalDetails.innerHTML = `<strong>Год:</strong> ${movie.year || '—'}`;
-                modalRating.textContent = `⭐ ${movie.rating || '—'}`;
                 watchLink.style.display = 'none';
             }
+
+            // Обновляем рейтинг
+            updateModalRating(movie.name);
+            // Обновляем звёзды
+            updateStars(0);
+
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1830,35 +2009,56 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        function attachCardClickHandlers() {
-            document.querySelectorAll('.movie-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const movieData = this.dataset.movie;
-                    if (movieData) {
-                        try {
-                            const movie = JSON.parse(movieData);
-                            openModal(movie);
-                        } catch (e) {
-                            console.error('Ошибка парсинга:', e);
-                        }
-                    }
-                });
+        // =====================================================
+        // ===== ЗВЁЗДЫ ДЛЯ ОЦЕНКИ =====
+        // =====================================================
+        function updateStars(highlighted) {
+            const stars = document.querySelectorAll('#starRating span');
+            stars.forEach((star, index) => {
+                if (index < highlighted) {
+                    star.textContent = '★';
+                    star.classList.add('active');
+                } else {
+                    star.textContent = '☆';
+                    star.classList.remove('active');
+                }
             });
         }
 
+        document.querySelectorAll('#starRating span').forEach(star => {
+            star.addEventListener('click', function() {
+                const starsCount = parseInt(this.dataset.star);
+                if (currentModalMovie) {
+                    saveRating(currentModalMovie.name, starsCount);
+                    updateStars(starsCount);
+                }
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const starsCount = parseInt(this.dataset.star);
+                updateStars(starsCount);
+            });
+
+            star.addEventListener('mouseleave', function() {
+                const name = currentModalMovie ? currentModalMovie.name : '';
+                const data = getMovieRating(name);
+                updateStars(Math.round(parseFloat(data.avg) || 0));
+            });
+        });
+
+        // =====================================================
         // ===== ПРОДОЛЖИТЬ ПРОСМОТР =====
+        // =====================================================
         function getLastWatchedDrama() {
-            const savedDramaId = localStorage.getItem('lastDramaId');
-            if (savedDramaId && DRAMAS[savedDramaId]) {
-                return savedDramaId;
-            }
+            const saved = localStorage.getItem('lastDramaId');
+            if (saved && DRAMAS[saved]) return saved;
             return 'drama1';
         }
 
         function getLastEpisode(dramaId) {
-            const storageKey = DRAMAS[dramaId]?.storageKey;
-            if (storageKey) {
-                const saved = localStorage.getItem(storageKey);
+            const key = DRAMAS[dramaId]?.storageKey;
+            if (key) {
+                const saved = localStorage.getItem(key);
                 if (saved) return parseInt(saved);
             }
             return 1;
@@ -1868,36 +2068,43 @@
             const dramaId = getLastWatchedDrama();
             const drama = DRAMAS[dramaId];
             if (!drama) return;
-
             const episode = getLastEpisode(dramaId);
-            const poster = drama.poster || 'DR.jpg';
-
-            document.getElementById('continuePoster').src = poster;
+            document.getElementById('continuePoster').src = drama.poster || 'DR.jpg';
             document.getElementById('continueName').textContent = drama.name;
             document.getElementById('continueEpisode').textContent = `Серия ${episode}`;
-
-            const card = document.getElementById('continueCard');
-            card.addEventListener('click', function() {
+            document.getElementById('continueCard').addEventListener('click', function() {
                 window.location.href = `watch.html?drama=${dramaId}`;
             });
         }
 
-        document.addEventListener('DOMContentLoaded', renderContinueWatching);
-
+        // =====================================================
         // ===== КНОПКА "НАВЕРХ" =====
+        // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
-
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.add('visible');
-            } else {
-                scrollBtn.classList.remove('visible');
-            }
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
         });
-
         scrollBtn.addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // =====================================================
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // =====================================================
+        renderGenres();
+        renderYears();
+        renderMoviesGrid();
+        updateFavoritesCount();
+        renderContinueWatching();
+
+        // Если включено избранное — подсветить кнопку
+        if (favorites.length > 0) {
+            document.getElementById('favoritesToggle').innerHTML =
+                `❤️ Избранное <span class="badge" id="favoritesCount">${favorites.length}</span>`;
+        }
+
+        console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
+        console.log('📊 Функции: Сортировка | Избранное | Случайная | Рейтинг | Анимации');
     </script>
 </body>
 </html>
