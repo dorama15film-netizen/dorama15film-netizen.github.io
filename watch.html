@@ -64,6 +64,192 @@
         .cast-item .actor-name { color: #f0f2f5; font-size: 15px; font-weight: 600; }
         .cast-item .actor-role { color: #8892a8; font-size: 13px; margin-top: 2px; }
         .cast-item .actor-role-tag { background: #1e232c; color: #f1c40f; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+
+        /* ===== КОММЕНТАРИИ ===== */
+        .comments-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #1f2631;
+            width: 100%;
+        }
+
+        .comments-section .comments-title {
+            color: #f0f2f5;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comments-section .comments-title span {
+            color: #8892a8;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .comment-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            background: #151b24;
+            border: 2px solid #2a313f;
+            border-radius: 30px;
+            color: #f0f2f5;
+            font-family: system-ui, sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        .comment-form input:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+        }
+
+        .comment-form input::placeholder {
+            color: #6a7288;
+        }
+
+        .comment-form textarea {
+            flex: 2;
+            min-width: 300px;
+            padding: 12px 18px;
+            background: #151b24;
+            border: 2px solid #2a313f;
+            border-radius: 16px;
+            color: #f0f2f5;
+            font-family: system-ui, sans-serif;
+            font-size: 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 60px;
+            transition: 0.3s ease;
+        }
+
+        .comment-form textarea:focus {
+            border-color: #f1c40f;
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+        }
+
+        .comment-form .submit-btn {
+            background: #1a4d2e;
+            border: 2px solid #f1c40f;
+            border-radius: 30px;
+            color: #f0f2f5;
+            padding: 12px 28px;
+            font-family: system-ui, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .comment-form .submit-btn:hover {
+            background: #2a6d3e;
+            border-color: #f39c12;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .comments-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .comments-list::-webkit-scrollbar-track {
+            background: #1a212b;
+            border-radius: 10px;
+        }
+        .comments-list::-webkit-scrollbar-thumb {
+            background: #f1c40f;
+            border-radius: 10px;
+        }
+
+        .comment-item {
+            background: #151b24;
+            border: 1px solid #1f2631;
+            border-radius: 12px;
+            padding: 14px 18px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .comment-item .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .comment-item .comment-author {
+            color: #f1c40f;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .comment-item .comment-date {
+            color: #6a7288;
+            font-size: 12px;
+        }
+
+        .comment-item .comment-text {
+            color: #8892a8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .comment-item .comment-delete {
+            background: transparent;
+            border: none;
+            color: #6a7288;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s ease;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .comment-item .comment-delete:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .no-comments {
+            color: #6a7288;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
             .header .title { font-size: 18px; }
@@ -71,7 +257,11 @@
             .drama-info { grid-template-columns: 1fr; gap: 20px; }
             .cast-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
             .drama-description .info-item .label { min-width: 90px; }
+            .comment-form { flex-direction: column; }
+            .comment-form input { min-width: auto; }
+            .comment-form textarea { min-width: auto; min-height: 50px; }
         }
+
         @media (max-width: 480px) {
             .header .title { font-size: 15px; }
             .header .title span { font-size: 13px; display: block; margin-left: 0; }
@@ -80,6 +270,9 @@
             .drama-description .info-item { flex-direction: column; gap: 2px; }
             .drama-description .info-item .label { min-width: auto; }
             .drama-description .plot { font-size: 13px; }
+            .comments-section .comments-title { font-size: 17px; }
+            .comment-item .comment-author { font-size: 13px; }
+            .comment-item .comment-text { font-size: 13px; }
         }
     </style>
 </head>
@@ -104,6 +297,23 @@
         <div class="episodes-list" id="episodesList"></div>
 
         <div class="drama-info" id="dramaInfo"></div>
+
+        <!-- ===== КОММЕНТАРИИ ===== -->
+        <div class="comments-section" id="commentsSection">
+            <div class="comments-title">
+                💬 Комментарии <span id="commentsCount">(0)</span>
+            </div>
+
+            <div class="comment-form">
+                <input type="text" id="commentName" placeholder="Ваше имя..." maxlength="30" />
+                <textarea id="commentText" placeholder="Напишите комментарий..." maxlength="500"></textarea>
+                <button class="submit-btn" id="submitComment">Отправить</button>
+            </div>
+
+            <div class="comments-list" id="commentsList">
+                <div class="no-comments">Пока нет комментариев. Будьте первым! 🎬</div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -621,7 +831,9 @@
             }
         };
 
+        // =====================================================
         // ===== ОПРЕДЕЛЯЕМ КАКУЮ ДОРАМУ ПОКАЗЫВАТЬ =====
+        // =====================================================
         const urlParams = new URLSearchParams(window.location.search);
         let dramaId = urlParams.get('drama') || 'drama1';
 
@@ -640,7 +852,9 @@
 
         localStorage.setItem('lastDramaId', dramaId);
 
+        // =====================================================
         // ===== ЗАГРУЗКА ДОРАМЫ =====
+        // =====================================================
         const episodes = [];
         for (let i = 1; i <= drama.episodes; i++) {
             episodes.push({ number: i, title: '' });
@@ -738,6 +952,90 @@
             const saved = getLastEpisode();
             if (saved !== currentEpisode) loadEpisode(saved);
         });
+
+        // =====================================================
+        // ===== КОММЕНТАРИИ =====
+        // =====================================================
+        const COMMENTS_STORAGE_KEY = `comments_${dramaId}`;
+        let comments = JSON.parse(localStorage.getItem(COMMENTS_STORAGE_KEY)) || [];
+
+        function renderComments() {
+            const container = document.getElementById('commentsList');
+            const countSpan = document.getElementById('commentsCount');
+
+            countSpan.textContent = `(${comments.length})`;
+
+            if (comments.length === 0) {
+                container.innerHTML = '<div class="no-comments">Пока нет комментариев. Будьте первым! 🎬</div>';
+                return;
+            }
+
+            let html = '';
+            comments.forEach((comment, index) => {
+                html += `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${escapeHtml(comment.name)}</span>
+                            <div>
+                                <span class="comment-date">${comment.date}</span>
+                                <button class="comment-delete" data-index="${index}">✕</button>
+                            </div>
+                        </div>
+                        <div class="comment-text">${escapeHtml(comment.text)}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            container.querySelectorAll('.comment-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    comments.splice(index, 1);
+                    localStorage.setItem(COMMENTS_STORAGE_KEY, JSON.stringify(comments));
+                    renderComments();
+                });
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        document.getElementById('submitComment').addEventListener('click', function() {
+            const nameInput = document.getElementById('commentName');
+            const textInput = document.getElementById('commentText');
+            const name = nameInput.value.trim() || 'Аноним';
+            const text = textInput.value.trim();
+
+            if (!text) {
+                alert('Напишите комментарий!');
+                return;
+            }
+
+            const now = new Date();
+            const date = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+            comments.push({ name, text, date });
+            localStorage.setItem(COMMENTS_STORAGE_KEY, JSON.stringify(comments));
+
+            textInput.value = '';
+            if (nameInput.value.trim() === '') {
+                nameInput.value = '';
+            }
+
+            renderComments();
+            textInput.focus();
+        });
+
+        document.getElementById('commentText').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                document.getElementById('submitComment').click();
+            }
+        });
+
+        renderComments();
     </script>
 </body>
 </html>
