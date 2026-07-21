@@ -60,85 +60,133 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
+        /* ===== ВЫПАДАЮЩИЙ СПИСОК ЖАНРОВ (ПОВЕРХ ВСЕГО) ===== */
         .genres-wrapper {
-            position: absolute;
-            top: 70px;
-            left: 20px;
-            z-index: 20;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow: visible;
-            max-width: 90vw;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .genres-wrapper.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
 
         .genres-slide {
+            background: #151b24;
+            border: 2px solid #f1c40f;
+            border-radius: 20px;
+            padding: 30px 40px;
+            max-width: 90vw;
+            max-height: 85vh;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 6px;
-            max-height: 0;
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        opacity 0.6s ease,
-                        visibility 0.6s ease;
-            padding: 0;
-            background: rgba(11, 14, 20, 0.92);
-            border-radius: 12px;
-            border: 1px solid transparent;
-            backdrop-filter: blur(10px);
-            width: 100%;
+            gap: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            animation: slideUp 0.3s ease;
+            min-width: 280px;
         }
 
-        .genres-slide.open {
-            max-height: 500px;
-            opacity: 1;
-            visibility: visible;
-            padding: 12px 14px;
-            border: 1px solid #2a313f;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        .genres-slide::-webkit-scrollbar {
+            width: 4px;
+        }
+        .genres-slide::-webkit-scrollbar-track {
+            background: #1a212b;
+            border-radius: 10px;
+        }
+        .genres-slide::-webkit-scrollbar-thumb {
+            background: #f1c40f;
+            border-radius: 10px;
         }
 
         .genres-slide .genre-item {
-            color: #f1c40f;
+            color: #8892a8;
             font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 600;
-            padding: 6px 14px;
+            padding: 12px 20px;
             cursor: pointer;
             transition: 0.2s ease;
-            border-radius: 20px;
+            border-radius: 12px;
             white-space: nowrap;
             width: 100%;
-            border: 2px solid #ff0000;
-            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            background: rgba(0, 0, 0, 0.2);
             text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .genres-slide .genre-item:hover {
-            color: #ffffff;
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff3333;
-            transform: scale(1.02);
+            color: #f0f2f5;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #2a313f;
         }
 
         .genres-slide .genre-item.active {
             color: #f1c40f;
-            background: rgba(255, 0, 0, 0.25);
-            border-color: #ff3333;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            background: rgba(241, 196, 15, 0.1);
+            border-color: #f1c40f;
         }
 
         .genres-slide .genre-item .count {
-            color: #ff6666;
-            font-size: 11px;
-            margin-left: 8px;
+            color: #6a7288;
+            font-size: 14px;
+            margin-left: 12px;
+            background: #1a212b;
+            padding: 2px 12px;
+            border-radius: 20px;
         }
 
         .genres-slide .genre-item.active .count {
             color: #f1c40f;
+            background: rgba(241, 196, 15, 0.15);
+        }
+
+        .genres-close-btn {
+            background: #c0392b;
+            border: none;
+            color: #f0f2f5;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            margin-top: 10px;
+            font-family: system-ui, -apple-system, sans-serif;
+            width: 100%;
+        }
+
+        .genres-close-btn:hover {
+            background: #e74c3c;
+            transform: scale(1.02);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
         }
 
         /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ ВВЕРХУ) ===== */
@@ -782,8 +830,8 @@
             .search-wrapper .search-btn { padding: 8px 18px; font-size: 14px; height: 38px; }
             .logo-overlay img { height: 38px; }
             .logo-overlay { top: 12px; left: 12px; }
-            .genres-wrapper { top: 60px; left: 12px; }
-            .genres-slide .genre-item { font-size: 13px; padding: 5px 12px; }
+            .genres-slide { padding: 20px 24px; min-width: 240px; }
+            .genres-slide .genre-item { font-size: 16px; padding: 10px 16px; }
             .modal-content { max-width: 380px; max-height: 92vh; }
             .modal-content .modal-title { font-size: 18px; }
             .modal-content .modal-info { padding: 14px 16px 16px; }
@@ -819,10 +867,9 @@
             .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
             .logo-overlay img { height: 32px; }
             .logo-overlay { top: 8px; left: 8px; }
-            .genres-wrapper { top: 48px; left: 8px; max-width: 92vw; }
-            .genres-slide.open { padding: 10px 10px; }
-            .genres-slide .genre-item { font-size: 12px; padding: 4px 10px; border-width: 1.5px; }
-            .genres-slide .genre-item .count { font-size: 10px; margin-left: 4px; }
+            .genres-slide { padding: 16px 16px; min-width: 200px; }
+            .genres-slide .genre-item { font-size: 14px; padding: 8px 12px; }
+            .genres-slide .genre-item .count { font-size: 12px; }
             .modal-overlay { padding: 10px; }
             .modal-content { max-width: 95%; max-height: 95vh; }
             .modal-content .modal-title { font-size: 16px; }
@@ -851,8 +898,13 @@
         <!-- ===== ЛОГОТИП (СЛЕВА) ===== -->
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
-            <div class="genres-wrapper">
-                <div class="genres-slide" id="genresSlide"></div>
+        </div>
+
+        <!-- ===== ВЫПАДАЮЩИЙ СПИСОК ЖАНРОВ (ПОВЕРХ ВСЕГО) ===== -->
+        <div class="genres-wrapper" id="genresWrapper">
+            <div class="genres-slide" id="genresSlide">
+                <!-- Жанры будут вставлены сюда через JavaScript -->
+                <button class="genres-close-btn" id="genresCloseBtn">✕ Закрыть</button>
             </div>
         </div>
 
@@ -1078,7 +1130,7 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун»...',
+                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами...',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
                         { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
@@ -1097,23 +1149,10 @@
                     country: 'Корея Южная',
                     duration: '00:55:00',
                     translation: 'Любительский многоголосый',
-                    plot: 'Га Ён разучилась мечтать. Точнее, она и не умела толком. Чувства? Выражать эмоции? Зачем, если можно просто существовать, не высовываясь, не надеясь ни на что. Окружающая реальность приносит разочарования, так к чему тогда позитивное мышление и вся эта мишура про силу желаний? Но однажды случается чудо. Старинная лампа, пылившаяся где-то на антресолях, оказывается в её руках. И оттуда появляется... джинн. Настоящий, живой, эмоциональный до неприличия. Дух, который томился в заточении веками, изнывая от одиночества, жаждущий хоть какого-то общения. И вот судьба сводит его с девушкой, которая вообще не знает, чего хочет. Три желания. Классика жанра. Казалось бы, мечта любого человека — получить шанс изменить жизнь одним щелчком пальцев. Но Га Ён ошеломлена. Её мозг отказывается работать в категориях "хочу". Она отвыкла представлять себя счастливой, обладательницей чего-то ценного. Мечты стали чем-то абстрактным, недостижимым, бессмысленным. А джинн — навязчивый, неугомонный, яркий как фейерверк — не даёт ей покоя. Требует загадать желания, чтобы наконец освободиться из проклятой лампы. Но как загадать, если не знаешь, чего хочешь? Как поверить в возможность счастья, если годами убеждал себя, что это не для тебя? Наука утверждает: мозг не отличает реальность от воображения. Мечты могут влиять на жизнь, если их правильно использовать. Но грёзы — коварная штука, они не знают границ, а разочарование от несбывшихся надежд бьёт больнее любой реальной неудачи. Два существа — девушка, запершая себя в клетку равнодушия, и древний дух, переполненный эмоциями. Их встреча обещает быть взрывоопасной. Потому что иногда, чтобы исполнились желания, нужно сначала научиться их чувствовать. А это — самая сложная магия из всех возможных.',
+                    plot: 'Га Ён разучилась мечтать...',
                     cast: [
                         { name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' },
-                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' },
-                        { name: 'Ын Джин Ан', role: '', tag: '' },
-                        { name: 'Стив Но', role: '', tag: '' },
-                        { name: 'Гю Пхиль Го', role: '', tag: '' },
-                        { name: 'Джу Ён Ли', role: '', tag: '' },
-                        { name: 'Ми Гён Ким', role: '', tag: '' },
-                        { name: 'Шин Э Шин', role: '', tag: '' },
-                        { name: 'Мён Син Пак', role: '', tag: '' },
-                        { name: 'Док Джу Ким', role: '', tag: '' },
-                        { name: 'Дон Ёп Го', role: '', tag: '' },
-                        { name: 'Дэниэл Хенни', role: '', tag: '' },
-                        { name: 'Чжи Хун Ким (I)', role: '', tag: '' },
-                        { name: 'Хё Кё Сон', role: '', tag: '' },
-                        { name: 'Му Сэн Ли', role: '', tag: '' }
+                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' }
                     ]
                 }
             },
@@ -1129,18 +1168,10 @@
                     country: 'Корея Южная',
                     duration: '00:53:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона — умная, решительная, безупречная в каждом жесте и слове. Её уважали коллеги, ею гордилась страна. Казалось, ей по плечу любые международные переговоры и самые запутанные политические интриги. Но одно убийство способно разрушить даже самую блестящую карьеру. Влиятельный чиновник найден мёртвым, а все улики ведут в такие дебри, где дипломатический иммунитет не поможет. Между Севером и Югом разгорается игра, ставки в которой — человеческие жизни. В центре этого водоворота появляется Сан Хо — человек без прошлого, имени и, кажется, совести. Наёмник, который умеет решать проблемы радикально и бесшумно. Его руки помнят запах пороха, а глаза видели столько крови, что уже ничему не удивляются. Теперь Мун Джу и этот загадочный незнакомец должны работать в паре. Она — с её дипломатической мудростью, он — с его жестокими методами. Правда где-то рядом, но за неё придётся заплатить такую цену, которая может оказаться слишком высокой даже для закалённых в боях сердец.',
+                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона...',
                     cast: [
                         { name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' },
-                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' },
-                        { name: 'Джон Чо', role: '', tag: '' },
-                        { name: 'Ли Ми-сук', role: '', tag: '' },
-                        { name: 'Пак Хэ-джун', role: '', tag: '' },
-                        { name: 'Ким Хэ-сук', role: '', tag: '' },
-                        { name: 'О Джон-сэ', role: '', tag: '' },
-                        { name: 'Ли Сан-хи', role: '', tag: '' },
-                        { name: 'Чу Джон-хёк', role: '', tag: '' },
-                        { name: 'Вон Джи-ан', role: '', tag: '' }
+                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' }
                     ]
                 }
             },
@@ -1156,18 +1187,10 @@
                     country: 'Китай',
                     duration: '00:46:50',
                     translation: 'Любительский многоголосый',
-                    plot: 'Метель — штука безжалостная, заносит следы быстрее, чем успеваешь оглянуться. Именно в такую непогоду судьба сталкивает Фань Чанъюй, простую девушку из мясной лавки, с раненым, полузамёрзшим мужчиной у обочины. Пройти мимо она не смогла — то ли совесть не позволила, то ли что-то ещё, чему сама Чанъюй пока не может подобрать название. А зря бы прошла: перед ней, оказывается, не бродяга, а Се Чжэн, маркиз, чью семью недавно вырезали жестоко и без сожаления, и теперь он вынужден скрываться, точно загнанный зверь, от врагов, что не остановятся, пока не доведут дело до конца. Фань Чанъюй — не кисейная барышня, а женщина с крепкими руками и характером под стать: работа в мясной лавке закалила и тело, и волю. Родственники у неё, как назло, из тех, что готовы обобрать до нитки при первой возможности, поэтому, когда подворачивается шанс через фиктивный брак защититься от их посягательств и заодно спасти найденного незнакомца, героиня решается — без особых раздумий, на голом расчёте пополам с состраданием. Поначалу это чистая сделка: он получает укрытие, она — защиту от жадных родичей. Она понятия не имеет, что перед ней не какой-то безродный бедолага, а наследник знатного рода. Но, как это часто случается, фальшивые чувства начинают потихоньку прорастать чем-то настоящим, будто трава сквозь трещины в камне. Между двумя людьми, которых свело чистое совпадение, зарождается связь — сначала настороженная, потом всё более крепкая, и вот уже ни он, ни она не могут сказать наверняка, где кончается расчёт и начинается любовь. Только вот радоваться рано: как только чувства становятся явными, влюблённые оказываются в самом центре смертельно опасной игры. Тайны Се Чжэна нагоняют беду, и парочке приходится расстаться — не по своей воле, а чтобы просто выжить. Но Фань Чанъюй не из тех, кто смиряется с несправедливостью: она отправляется прямиком на поле боя, вооружённая ножом мясника вместо меча, и это не метафора, а буквальная деталь, ставшая символом всей истории. Ради любимого и ради справедливости она готова на многое, а рядом с ней — верные друзья, без которых такие бои не выигрывают. Постепенно линии судьбы вновь пересекаются: влюблённые встречаются посреди хаоса войны и вместе идут против общего врага, мечтая только об одном — вернуться домой, туда, где начиналась их история, ещё до всех этих метелей, интриг и крови.',
+                    plot: 'Метель — штука безжалостная...',
                     cast: [
                         { name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' },
-                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' },
-                        { name: 'Ду Чунь', role: '', tag: '' },
-                        { name: 'Янь Икуань', role: '', tag: '' },
-                        { name: 'Лю Линь', role: '', tag: '' },
-                        { name: 'Ли Цин', role: '', tag: '' },
-                        { name: 'Юэ Ян', role: '', tag: '' },
-                        { name: 'Чжу Цзаньцзинь', role: '', tag: '' },
-                        { name: 'Ванг Джин Эр', role: '', tag: '' },
-                        { name: 'Сноу Кун', role: '', tag: '' }
+                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' }
                     ]
                 }
             },
@@ -1183,44 +1206,35 @@
                     country: 'Корея Южная',
                     duration: '01:10:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Есть такая поговорка — покой нам только снится, и трое героев этой истории убедились в этом на собственной шкуре. Каждому из них давно перевалило за пятьдесят, у каждого за плечами — жизнь, полная риска, а теперь вроде бы наступило время тихой гавани. Да только гавань оказалась с подвохом. Чон Хомён когда-то был агентом национальной разведки — человеком, чья работа состояла в том, чтобы оставаться невидимым. После ложного обвинения ему пришлось исчезнуть по-настоящему: сменить имя, лицо жизни и осесть на острове Ёнсон под личиной скромного повара китайского ресторанчика. Готовит, между прочим, неплохо — но руки, которые когда-то держали оружие, иногда предательски вздрагивают при виде ножа для разделки мяса. Бон — фигура ещё более трагичная. Северокорейский спецагент, потерявший память в результате давнего инцидента. Он живёт как будто половинкой себя: старые навыки — рефлексы, реакция, умение читать людей — временами всплывают из глубин подсознания, точно рыба, на миг показавшаяся над водой и снова канувшая в омут. Сам он этого не осознаёт, а окружающие лишь диву даются, откуда в тихом соседе вдруг берётся такая прыть. Третий — Кан, человек с криминальным прошлым, некогда занимавший не последнее место в преступной иерархии. Теперь он старается держаться подальше от бывших подельников, от всего, что напоминает о прежней жизни. Но прошлое, как назло, липнет к пяткам похлеще смолы.',
+                    plot: 'Есть такая поговорка — покой нам только снится...',
                     cast: [
                         { name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' },
                         { name: 'О Джонсэ', role: 'Бон', tag: 'Главная роль' },
-                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' },
-                        { name: 'Ли Хакчу', role: '', tag: '' },
-                        { name: 'Квон Юль', role: '', tag: '' },
-                        { name: 'Ким Санхо', role: '', tag: '' },
-                        { name: 'Син Донми', role: '', tag: '' },
-                        { name: 'Ким Синнок', role: '', tag: '' },
-                        { name: 'Хан Джиын', role: '', tag: '' },
-                        { name: 'Хён Бонсик', role: '', tag: '' }
-                     ]
-                 }
-             },
-             drama13: {
-                 name: 'Клетки эмпатии',
-                 episodes: 6,
-                 storageKey: 'lastDramaEpisode13',
-                 poster: 'AA.jpg',
-                 info: {
-                     year: '2026',
+                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' }
+                    ]
+                }
+            },
+            drama13: {
+                name: 'Клетки эмпатии',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode13',
+                poster: 'AA.jpg',
+                info: {
+                    year: '2026',
                     director: 'Ким Чхиль-бон',
                     genre: 'Мелодрама, Фэнтези',
                     country: 'Корея Южная',
                     duration: '00:49:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Бывают люди, которые чувствуют слишком много, и те, кто не чувствует почти ничего — по разным причинам, но одинаково больно. Психолог-консультант день за днём впитывает чужую боль, как губка, пока границы между «моим» и «твоим» переживанием не начинают стираться совсем. Он слышит чужие слёзы раньше, чем клиент успевает их произнести. По другую сторону — бывшая айдол-звезда, которая с детства училась запирать эмоции на замок. Её лицо — маска, отточенная годами перед камерами и публикой; внутри, впрочем, давно что-то потрескивает. Актёрская карьера трещит следом: холодность, которая раньше читалась как загадочность, теперь выглядит просто пустотой. Их встреча — случайность, из тех, что потом называют судьбой. Что-то происходит в момент столкновения этих двух противоположностей: чувства одного будто просачиваются в другого, минуя все привычные фильтры и защиты. Смех отражается смехом, тревога — тревогой, и оба вдруг оказываются голыми перед чужими переживаниями, как перед зеркалом без права отвернуться. Это уже не просто симпатия и не просто профессиональный интерес — это нечто вроде эмоционального заражения, от которого нет прививки. Комедийные нотки соседствуют с настоящей тревогой, лёгкость — с вопросом о том, где заканчивается «я» и начинается «другой». Что случится, когда чужая боль станет неотличима от собственной?',
+                    plot: 'Бывают люди, которые чувствуют слишком много...',
                     cast: [
                         { name: 'Ким Мён-су', role: 'Психолог-консультант', tag: 'Главная роль' },
-                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' },
-                        { name: 'Квон Со-хён', role: '', tag: '' },
-                        { name: 'Щин У-гём', role: '', tag: '' }
-                     ]
-                 }
-             }
-         };
-        
+                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }
+                    ]
+                }
+            }
+        };
+
         // ===== СПИСОК ФИЛЬМОВ =====
         const movies = [
             {
@@ -1333,7 +1347,6 @@
                 genre: 'драма, мелодрама',
                 dramaId: 'drama11'
             },
-            // ===== НОВАЯ ДОРАМА — БОГИ (drama12) =====
             {
                 name: '50-летние профи',
                 year: 2026,
@@ -1382,12 +1395,26 @@
         function renderGenres() {
             const container = document.getElementById('genresSlide');
             const genres = getAllGenres();
-            let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
+            
+            // Удаляем старую кнопку закрытия, если она есть
+            const oldBtn = document.getElementById('genresCloseBtn');
+            if (oldBtn) oldBtn.remove();
+            
+            let html = `<span class="genre-item active" data-genre="all">Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
                 const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
                 html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
             });
+            
             container.innerHTML = html;
+            
+            // Добавляем кнопку закрытия
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'genres-close-btn';
+            closeBtn.id = 'genresCloseBtn';
+            closeBtn.textContent = '✕ Закрыть';
+            closeBtn.addEventListener('click', closeGenres);
+            container.appendChild(closeBtn);
 
             container.querySelectorAll('.genre-item').forEach(item => {
                 item.addEventListener('click', function(e) {
@@ -1402,24 +1429,37 @@
         }
 
         function toggleGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.toggle('open');
+            const wrapper = document.getElementById('genresWrapper');
+            wrapper.classList.toggle('open');
+            if (wrapper.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function closeGenres() {
-            const slide = document.getElementById('genresSlide');
-            slide.classList.remove('open');
+            const wrapper = document.getElementById('genresWrapper');
+            wrapper.classList.remove('open');
+            document.body.style.overflow = 'auto';
         }
 
+        // Открытие по клику на логотип
         document.getElementById('logoWrapper').addEventListener('click', function(e) {
             e.stopPropagation();
             toggleGenres();
         });
 
-        document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('logoWrapper');
-            const slide = document.getElementById('genresSlide');
-            if (!wrapper.contains(e.target) && !slide.contains(e.target)) {
+        // Закрытие по клику на фон
+        document.getElementById('genresWrapper').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGenres();
+            }
+        });
+
+        // Закрытие по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
                 closeGenres();
             }
         });
@@ -1794,7 +1834,7 @@
                     };
                 } else if (movie.dramaId === 'drama12') {
                     dramaData = {
-                        name: 'Боги',
+                        name: '50-летние профи',
                         year: 2026,
                         rating: 8.5,
                         poster: 'God.jpg',
@@ -1807,21 +1847,21 @@
                             <strong>Перевод:</strong> Профессиональный многоголосый
                         `
                     };
-              } else if (movie.dramaId === 'drama13') {
-                  dramaData = {
-                      name: 'Клетки эмпатии',
-                      year: 2026,
-                      rating: 8.3,
-                      poster: 'AA.jpg',
-                      details: `
-                          <strong>Год выпуска:</strong> 2026<br>
-                          <strong>Режиссёр:</strong> Ким Чхиль-бон<br>
-                          <strong>Жанр:</strong> Мелодрама, Фэнтези<br>
-                          <strong>Страна:</strong> Корея Южная<br>
-                          <strong>Продолжительность:</strong> 00:49:00<br>
-                          <strong>Перевод:</strong> Профессиональный многоголосый
-                       `
-                   };
+                } else if (movie.dramaId === 'drama13') {
+                    dramaData = {
+                        name: 'Клетки эмпатии',
+                        year: 2026,
+                        rating: 8.3,
+                        poster: 'AA.jpg',
+                        details: `
+                            <strong>Год выпуска:</strong> 2026<br>
+                            <strong>Режиссёр:</strong> Ким Чхиль-бон<br>
+                            <strong>Жанр:</strong> Мелодрама, Фэнтези<br>
+                            <strong>Страна:</strong> Корея Южная<br>
+                            <strong>Продолжительность:</strong> 00:49:00<br>
+                            <strong>Перевод:</strong> Профессиональный многоголосый
+                        `
+                    };
                 } else {
                     dramaData = {
                         name: movie.name,
