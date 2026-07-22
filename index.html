@@ -12,14 +12,53 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-secondary: #151b24;
+            --bg-card: #151b24;
+            --bg-header: #0f141c;
+            --text-primary: #f0f2f5;
+            --text-secondary: #8892a8;
+            --text-muted: #6a7288;
+            --border-color: #1f2631;
+            --border-light: #2a313f;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --shadow-glow: rgba(241, 196, 15, 0.15);
+            --input-bg: #000000;
+            --toast-bg: #151b24;
+            --modal-bg: #151b24;
+            --scrollbar-track: #1a212b;
+            --scrollbar-thumb: #f1c40f;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-header: #e8eaed;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --text-muted: #6a6a7a;
+            --border-color: #d0d0d0;
+            --border-light: #b0b0b0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow-glow: rgba(241, 196, 15, 0.3);
+            --input-bg: #ffffff;
+            --toast-bg: #ffffff;
+            --modal-bg: #ffffff;
+            --scrollbar-track: #e0e0e0;
+            --scrollbar-thumb: #f1c40f;
+        }
+
         html, body {
             width: 100%;
             min-height: 100vh;
-            background: #0b0e14;
+            background: var(--bg-primary);
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             scroll-behavior: smooth;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .image-wrapper {
@@ -58,6 +97,46 @@
         .logo-overlay img:hover {
             transform: scale(1.05);
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
+        }
+
+        /* ===== КНОПКА СМЕНЫ ТЕМЫ ===== */
+        .theme-toggle-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+        }
+
+        .theme-toggle {
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid #2a313f;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            color: #f0f2f5;
+            user-select: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle:hover {
+            border-color: #f1c40f;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
+        }
+
+        .theme-toggle .theme-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover .theme-icon {
+            transform: rotate(30deg);
         }
 
         /* ===== ЖАНРЫ (ВЫПАДАЮЩЕЕ МЕНЮ ПОВЕРХ ВСЕГО) ===== */
@@ -163,7 +242,7 @@
             backdrop-filter: blur(10px);
             border: 2px solid #2a313f;
             border-radius: 12px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 16px;
             font-weight: 700;
@@ -207,7 +286,7 @@
         }
 
         .year-item {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             font-weight: 600;
@@ -219,7 +298,7 @@
         }
 
         .year-item:hover {
-            color: #f0f2f5;
+            color: var(--text-primary);
             background: rgba(255, 255, 255, 0.05);
         }
 
@@ -280,7 +359,7 @@
         }
 
         .continue-name {
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             font-weight: 600;
@@ -290,7 +369,7 @@
         }
 
         .continue-episode {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 12px;
         }
@@ -299,12 +378,13 @@
         .controls-bar {
             width: 100%;
             padding: 12px 20px 8px 20px;
-            background: #0b0e14;
+            background: var(--bg-primary);
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 12px;
             align-items: center;
+            transition: background 0.3s ease;
         }
 
         .controls-bar .controls-inner {
@@ -325,17 +405,17 @@
         }
 
         .sort-wrapper label {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             font-weight: 600;
         }
 
         .sort-wrapper select {
-            background: #151b24;
+            background: var(--bg-secondary);
             border: 2px solid #2ecc71;
             border-radius: 30px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             padding: 8px 16px;
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
@@ -363,8 +443,8 @@
         }
 
         .sort-wrapper select option {
-            background: #151b24;
-            color: #f0f2f5;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
         .action-buttons {
@@ -374,10 +454,10 @@
         }
 
         .action-btn {
-            background: #151b24;
+            background: var(--bg-secondary);
             border: 2px solid #2a313f;
             border-radius: 30px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             padding: 8px 20px;
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
@@ -423,10 +503,11 @@
         .search-section {
             width: 100%;
             padding: 15px 20px 8px 20px;
-            background: #0b0e14;
+            background: var(--bg-primary);
             display: flex;
             justify-content: center;
             flex-shrink: 0;
+            transition: background 0.3s ease;
         }
 
         .search-wrapper {
@@ -440,10 +521,10 @@
         .search-wrapper input {
             width: 100%;
             padding: 14px 28px;
-            background: #000000;
+            background: var(--input-bg);
             border: 3px solid #ff0000;
             border-radius: 50px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-size: 20px;
             font-family: system-ui, -apple-system, sans-serif;
             outline: none;
@@ -454,7 +535,7 @@
         }
 
         .search-wrapper input::placeholder {
-            color: #6a7288;
+            color: var(--text-muted);
             font-size: 18px;
         }
 
@@ -512,7 +593,8 @@
             width: 100%;
             flex: 1;
             padding: 20px 20px 30px;
-            background: #0b0e14;
+            background: var(--bg-primary);
+            transition: background 0.3s ease;
         }
 
         .movies-grid {
@@ -528,13 +610,13 @@
         }
 
         .movie-card {
-            background: #151b24;
+            background: var(--bg-card);
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid #2a313f;
+            border: 1px solid var(--border-light);
             transition: 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 24px var(--shadow);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeInUp 0.6s ease forwards;
@@ -576,7 +658,7 @@
         .movie-card:hover {
             transform: scale(1.05);
             border-color: #f1c40f;
-            box-shadow: 0 12px 40px rgba(241, 196, 15, 0.15);
+            box-shadow: 0 12px 40px var(--shadow-glow);
         }
 
         .movie-card .poster {
@@ -589,7 +671,7 @@
 
         .movie-card .title {
             padding: 12px 14px 14px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 15px;
             font-weight: 600;
@@ -597,8 +679,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            background: #151b24;
-            border-top: 1px solid #1f2631;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .movie-card .favorite-icon {
@@ -648,7 +731,7 @@
             display: none;
             text-align: center;
             padding: 40px 20px;
-            color: #8892a8;
+            color: var(--text-secondary);
             font-size: 20px;
         }
 
@@ -684,7 +767,7 @@
         }
 
         .modal-content {
-            background: #151b24;
+            background: var(--modal-bg);
             border-radius: 20px;
             max-width: 420px;
             width: 100%;
@@ -694,16 +777,17 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             animation: slideUp 0.4s ease;
             position: relative;
+            transition: background 0.3s ease;
         }
 
         .modal-content::-webkit-scrollbar {
             width: 4px;
         }
         .modal-content::-webkit-scrollbar-track {
-            background: #1a212b;
+            background: var(--scrollbar-track);
         }
         .modal-content::-webkit-scrollbar-thumb {
-            background: #f1c40f;
+            background: var(--scrollbar-thumb);
             border-radius: 10px;
         }
 
@@ -720,23 +804,25 @@
         }
 
         .modal-content .modal-title {
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 6px;
+            transition: color 0.3s ease;
         }
 
         .modal-content .modal-details {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             line-height: 1.7;
             margin-bottom: 6px;
+            transition: color 0.3s ease;
         }
 
         .modal-content .modal-details strong {
-            color: #f0f2f5;
+            color: var(--text-primary);
         }
 
         .modal-content .modal-rating {
@@ -825,9 +911,10 @@
         }
 
         .modal-rating-section .rating-text {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-size: 14px;
             font-family: system-ui, -apple-system, sans-serif;
+            transition: color 0.3s ease;
         }
 
         .modal-rating-section .rating-text strong {
@@ -847,18 +934,19 @@
         }
 
         .toast {
-            background: #151b24;
+            background: var(--toast-bg);
             border: 2px solid #f1c40f;
             border-radius: 12px;
             padding: 14px 20px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 8px 30px var(--shadow);
             animation: slideInRight 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .toast.success {
@@ -948,11 +1036,12 @@
 
         .site-footer {
             width: 100%;
-            background: #0f141c;
-            border-top: 1px solid #1f2631;
+            background: var(--bg-header);
+            border-top: 1px solid var(--border-color);
             padding: 30px 20px 20px;
             flex-shrink: 0;
             margin-top: auto;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .footer-content {
@@ -964,19 +1053,21 @@
         }
 
         .footer-column h4 {
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
 
         .footer-column p {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             line-height: 1.8;
+            transition: color 0.3s ease;
         }
 
         .footer-column a {
@@ -1024,9 +1115,10 @@
         }
 
         .footer-bottom p {
-            color: #3c4557;
+            color: var(--text-muted);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 13px;
+            transition: color 0.3s ease;
         }
 
         .footer-bottom .social-links {
@@ -1035,7 +1127,7 @@
         }
 
         .footer-bottom .social-links a {
-            color: #3c4557;
+            color: var(--text-muted);
             font-size: 18px;
             transition: 0.2s;
             text-decoration: none;
@@ -1047,6 +1139,8 @@
 
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
+            .theme-toggle { width: 40px; height: 40px; font-size: 20px; }
+            .theme-toggle-wrapper { top: 12px; right: 12px; }
             .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 70px; }
             .continue-wrapper { max-width: 150px; min-width: 110px; right: 20px; }
             .continue-name { font-size: 12px; }
@@ -1091,6 +1185,8 @@
 
         @media (max-width: 480px) {
             .image-wrapper { height: 40vh; }
+            .theme-toggle { width: 36px; height: 36px; font-size: 17px; }
+            .theme-toggle-wrapper { top: 8px; right: 8px; }
             .years-wrapper { top: 10px; }
             .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 60px; }
             .years-dropdown.open { padding: 4px 0; }
@@ -1152,6 +1248,13 @@
             <div class="genres-wrapper">
                 <div class="genres-slide" id="genresSlide"></div>
             </div>
+        </div>
+
+        <!-- ===== КНОПКА СМЕНЫ ТЕМЫ (СПРАВА) ===== -->
+        <div class="theme-toggle-wrapper">
+            <button class="theme-toggle" id="themeToggle" aria-label="Сменить тему">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+            </button>
         </div>
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
@@ -1260,6 +1363,28 @@
     </footer>
 
     <script>
+        // =====================================================
+        // ===== ТЕМА =====
+        // =====================================================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            showToast(newTheme === 'light' ? 'Светлая тема включена' : 'Тёмная тема включена', '🎨', 'info');
+        });
+
+        applyTheme(currentTheme);
+
         // =====================================================
         // ===== ДАННЫЕ О ДОРАМАХ =====
         // =====================================================
@@ -2089,7 +2214,7 @@
         }
 
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
-        console.log('📊 Функции: Сортировка | Избранное | Рейтинг | Анимации');
+        console.log('📊 Функции: Сортировка | Избранное | Тёмная/Светлая тема | Рейтинг | Анимации');
     </script>
 </body>
 </html>
