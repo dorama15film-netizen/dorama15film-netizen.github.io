@@ -29,25 +29,29 @@
             --modal-bg: #151b24;
             --scrollbar-track: #1a212b;
             --scrollbar-thumb: #f1c40f;
+            --accent-color: #f1c40f;
+            --accent-hover: #f39c12;
         }
 
         [data-theme="light"] {
-            --bg-primary: #f0f2f5;
+            --bg-primary: #e8f4f8;
             --bg-secondary: #ffffff;
             --bg-card: #ffffff;
-            --bg-header: #e8eaed;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a4a5a;
-            --text-muted: #6a6a7a;
-            --border-color: #d0d0d0;
-            --border-light: #b0b0b0;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --shadow-glow: rgba(241, 196, 15, 0.3);
-            --input-bg: #ffffff;
+            --bg-header: #d4ecf5;
+            --text-primary: #1a2a3a;
+            --text-secondary: #3a5a6a;
+            --text-muted: #5a7a8a;
+            --border-color: #b0d4e0;
+            --border-light: #90c4d4;
+            --shadow: rgba(0, 180, 200, 0.15);
+            --shadow-glow: rgba(0, 212, 255, 0.25);
+            --input-bg: #f0f8fa;
             --toast-bg: #ffffff;
             --modal-bg: #ffffff;
-            --scrollbar-track: #e0e0e0;
-            --scrollbar-thumb: #f1c40f;
+            --scrollbar-track: #d4ecf5;
+            --scrollbar-thumb: #00bcd4;
+            --accent-color: #00bcd4;
+            --accent-hover: #0097a7;
         }
 
         html, body {
@@ -58,7 +62,7 @@
             display: flex;
             flex-direction: column;
             scroll-behavior: smooth;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
         .image-wrapper {
@@ -99,45 +103,79 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        /* ===== КНОПКА СМЕНЫ ТЕМЫ ===== */
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (СЛАЙДЕР) ===== */
         .theme-toggle-wrapper {
             position: absolute;
             top: 20px;
             right: 20px;
             z-index: 30;
-        }
-
-        .theme-toggle {
-            background: rgba(11, 14, 20, 0.85);
-            backdrop-filter: blur(10px);
-            border: 2px solid #2a313f;
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            gap: 10px;
+        }
+
+        .theme-toggle-label {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #2a313f;
+            border-radius: 30px;
             cursor: pointer;
             transition: 0.3s ease;
-            color: #f0f2f5;
-            user-select: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid #3a4555;
+            flex-shrink: 0;
         }
 
-        .theme-toggle:hover {
-            border-color: #f1c40f;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
+        [data-theme="light"] .theme-switch {
+            background: #00bcd4;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
-        .theme-toggle .theme-icon {
-            transition: transform 0.3s ease;
+        .theme-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: #8892a8;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .theme-toggle:hover .theme-icon {
-            transform: rotate(30deg);
+        [data-theme="light"] .theme-switch .slider {
+            left: 28px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 212, 255, 0.4);
         }
+
+        .theme-switch:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .theme-switch .theme-icons {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 6px;
+            align-items: center;
+            height: 100%;
+            font-size: 14px;
+            color: #6a7288;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
+        [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
         /* ===== ЖАНРЫ (ВЫПАДАЮЩЕЕ МЕНЮ ПОВЕРХ ВСЕГО) ===== */
         .genres-wrapper {
@@ -255,8 +293,8 @@
         }
 
         .years-toggle:hover {
-            border-color: #f1c40f;
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
         }
 
         .years-dropdown {
@@ -303,8 +341,8 @@
         }
 
         .year-item.active {
-            color: #f1c40f;
-            background: rgba(241, 196, 15, 0.1);
+            color: var(--accent-color);
+            background: rgba(0, 212, 255, 0.1);
         }
 
         /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (ПО ЦЕНТРУ ВЕРТИКАЛИ, СПРАВА) ===== */
@@ -325,7 +363,7 @@
             align-items: center;
             background: rgba(21, 27, 36, 0.92);
             backdrop-filter: blur(8px);
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             border-radius: 14px;
             padding: 10px 10px 12px;
             cursor: pointer;
@@ -336,8 +374,8 @@
 
         .continue-card:hover {
             transform: scale(1.05);
-            border-color: #f39c12;
-            box-shadow: 0 4px 30px rgba(241, 196, 15, 0.25);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 30px var(--shadow-glow);
         }
 
         .continue-poster {
@@ -366,12 +404,14 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: color 0.3s ease;
         }
 
         .continue-episode {
             color: var(--text-secondary);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 12px;
+            transition: color 0.3s ease;
         }
 
         /* ===== ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + КНОПКИ) ===== */
@@ -409,6 +449,7 @@
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .sort-wrapper select {
@@ -470,7 +511,7 @@
         }
 
         .action-btn:hover {
-            border-color: #f1c40f;
+            border-color: var(--accent-color);
             transform: scale(1.02);
         }
 
@@ -657,7 +698,7 @@
 
         .movie-card:hover {
             transform: scale(1.05);
-            border-color: #f1c40f;
+            border-color: var(--accent-color);
             box-shadow: 0 12px 40px var(--shadow-glow);
         }
 
@@ -681,7 +722,7 @@
             text-overflow: ellipsis;
             background: var(--bg-card);
             border-top: 1px solid var(--border-color);
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         .movie-card .favorite-icon {
@@ -718,13 +759,14 @@
             top: 10px;
             left: 10px;
             background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             border-radius: 20px;
             padding: 2px 10px;
-            color: #f1c40f;
+            color: var(--accent-color);
             font-size: 13px;
             font-weight: 700;
             font-family: system-ui, -apple-system, sans-serif;
+            transition: border-color 0.3s ease, color 0.3s ease;
         }
 
         .no-results {
@@ -733,6 +775,7 @@
             padding: 40px 20px;
             color: var(--text-secondary);
             font-size: 20px;
+            transition: color 0.3s ease;
         }
 
         .no-results.active {
@@ -773,11 +816,11 @@
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             animation: slideUp 0.4s ease;
             position: relative;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .modal-content::-webkit-scrollbar {
@@ -826,17 +869,18 @@
         }
 
         .modal-content .modal-rating {
-            color: #f1c40f;
+            color: var(--accent-color);
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 17px;
             font-weight: 600;
             margin-bottom: 10px;
+            transition: color 0.3s ease;
         }
 
         .modal-content .modal-watch-link {
             display: block;
             width: 100%;
-            background: #f1c40f;
+            background: var(--accent-color);
             color: #0b0e14;
             padding: 12px 20px;
             border-radius: 30px;
@@ -851,7 +895,7 @@
         }
 
         .modal-content .modal-watch-link:hover {
-            background: #f39c12;
+            background: var(--accent-hover);
             transform: scale(1.02);
         }
 
@@ -903,7 +947,7 @@
         }
 
         .modal-rating-section .stars span.active {
-            color: #f1c40f;
+            color: var(--accent-color);
         }
 
         .modal-rating-section .stars span:hover {
@@ -918,7 +962,7 @@
         }
 
         .modal-rating-section .rating-text strong {
-            color: #f1c40f;
+            color: var(--accent-color);
         }
 
         /* ===== TOAST УВЕДОМЛЕНИЯ ===== */
@@ -935,7 +979,7 @@
 
         .toast {
             background: var(--toast-bg);
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             border-radius: 12px;
             padding: 14px 20px;
             color: var(--text-primary);
@@ -946,7 +990,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         .toast.success {
@@ -958,7 +1002,7 @@
         }
 
         .toast.info {
-            border-color: #3498db;
+            border-color: var(--accent-color);
         }
 
         .toast .toast-icon {
@@ -994,7 +1038,7 @@
             right: 30px;
             z-index: 999;
             background: #1a4d2e;
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             color: #f0f2f5;
             width: 55px;
             height: 55px;
@@ -1019,9 +1063,9 @@
 
         .scroll-top-btn:hover {
             background: #2a6d3e;
-            border-color: #f39c12;
+            border-color: var(--accent-hover);
             transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(241, 196, 15, 0.3);
+            box-shadow: 0 0 40px var(--shadow-glow);
         }
 
         @keyframes fadeIn {
@@ -1071,13 +1115,13 @@
         }
 
         .footer-column a {
-            color: #f1c40f;
+            color: var(--accent-color);
             text-decoration: none;
             transition: 0.2s;
         }
 
         .footer-column a:hover {
-            color: #f39c12;
+            color: var(--accent-hover);
             text-decoration: underline;
         }
 
@@ -1087,7 +1131,7 @@
             padding: 8px 20px;
             border-radius: 30px;
             border: 1px solid #2a313f;
-            color: #f1c40f;
+            color: var(--accent-color);
             font-size: 15px;
             font-weight: 600;
             transition: 0.2s;
@@ -1096,7 +1140,7 @@
 
         .footer-column .email-link:hover {
             background: #2a313f;
-            border-color: #f1c40f;
+            border-color: var(--accent-color);
             text-decoration: none;
             transform: scale(1.02);
         }
@@ -1134,13 +1178,16 @@
         }
 
         .footer-bottom .social-links a:hover {
-            color: #f1c40f;
+            color: var(--accent-color);
         }
 
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
-            .theme-toggle { width: 40px; height: 40px; font-size: 20px; }
-            .theme-toggle-wrapper { top: 12px; right: 12px; }
+            .theme-toggle-wrapper { top: 12px; right: 12px; gap: 6px; }
+            .theme-switch { width: 48px; height: 26px; }
+            .theme-switch .slider { width: 18px; height: 18px; }
+            [data-theme="light"] .theme-switch .slider { left: 24px; }
+            .theme-toggle-label { font-size: 11px; }
             .years-toggle { font-size: 14px; padding: 6px 16px; min-width: 70px; }
             .continue-wrapper { max-width: 150px; min-width: 110px; right: 20px; }
             .continue-name { font-size: 12px; }
@@ -1185,8 +1232,12 @@
 
         @media (max-width: 480px) {
             .image-wrapper { height: 40vh; }
-            .theme-toggle { width: 36px; height: 36px; font-size: 17px; }
-            .theme-toggle-wrapper { top: 8px; right: 8px; }
+            .theme-toggle-wrapper { top: 8px; right: 8px; gap: 4px; }
+            .theme-switch { width: 42px; height: 22px; }
+            .theme-switch .slider { width: 16px; height: 16px; top: 1px; left: 1px; }
+            [data-theme="light"] .theme-switch .slider { left: 22px; }
+            .theme-toggle-label { font-size: 10px; }
+            .theme-switch .theme-icons { font-size: 11px; padding: 0 4px; }
             .years-wrapper { top: 10px; }
             .years-toggle { font-size: 12px; padding: 4px 12px; min-width: 60px; }
             .years-dropdown.open { padding: 4px 0; }
@@ -1250,16 +1301,21 @@
             </div>
         </div>
 
-        <!-- ===== КНОПКА СМЕНЫ ТЕМЫ (СПРАВА) ===== -->
+        <!-- ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (СЛАЙДЕР) ===== -->
         <div class="theme-toggle-wrapper">
-            <button class="theme-toggle" id="themeToggle" aria-label="Сменить тему">
-                <span class="theme-icon" id="themeIcon">🌙</span>
-            </button>
+            <span class="theme-toggle-label" id="themeLabel">Тема</span>
+            <div class="theme-switch" id="themeSwitch">
+                <div class="slider"></div>
+                <div class="theme-icons">
+                    <span class="moon-icon">🌙</span>
+                    <span class="sun-icon">☀️</span>
+                </div>
+            </div>
         </div>
 
         <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle"> Поиск по годам</div>
+            <div class="years-toggle" id="yearsToggle"> 📅 Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -1364,23 +1420,21 @@
 
     <script>
         // =====================================================
-        // ===== ТЕМА =====
+        // ===== ТЕМА (СЛАЙДЕР) =====
         // =====================================================
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
+        const themeSwitch = document.getElementById('themeSwitch');
         let currentTheme = localStorage.getItem('theme') || 'dark';
 
         function applyTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
-            themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
             localStorage.setItem('theme', theme);
             currentTheme = theme;
         }
 
-        themeToggle.addEventListener('click', () => {
+        themeSwitch.addEventListener('click', () => {
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
-            showToast(newTheme === 'light' ? 'Светлая тема включена' : 'Тёмная тема включена', '🎨', 'info');
+            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '🎨', 'info');
         });
 
         applyTheme(currentTheme);
@@ -1820,13 +1874,13 @@
                     const year = this.dataset.year;
                     currentYear = year;
                     applyFilters();
-                    document.getElementById('yearsToggle').textContent = ` ${year}`;
+                    document.getElementById('yearsToggle').textContent = ` 📅 ${year}`;
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     document.getElementById('yearsDropdown').classList.remove('open');
                 });
             });
-            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
+            document.getElementById('yearsToggle').textContent = ' 📅 Поиск по годам';
         }
 
         document.getElementById('yearsToggle').addEventListener('click', function(e) {
@@ -2214,7 +2268,7 @@
         }
 
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
-        console.log('📊 Функции: Сортировка | Избранное | Тёмная/Светлая тема | Рейтинг | Анимации');
+        console.log('📊 Функции: Сортировка | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
     </script>
 </body>
 </html>
