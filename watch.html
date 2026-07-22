@@ -7,86 +7,384 @@
     <link rel="icon" href="Log.png" type="image/png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0b0e14; color: #f0f2f5; font-family: system-ui, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        .header { padding: 16px 30px; background: #0f141c; border-bottom: 1px solid #1f2631; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .header .back-btn { 
-            color: #f0f2f5; 
-            text-decoration: none; 
-            font-size: 16px; 
-            font-weight: 600; 
+
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-secondary: #151b24;
+            --bg-card: #151b24;
+            --bg-header: #0f141c;
+            --text-primary: #f0f2f5;
+            --text-secondary: #8892a8;
+            --text-muted: #6a7288;
+            --border-color: #1f2631;
+            --border-light: #2a313f;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --shadow-glow: rgba(241, 196, 15, 0.15);
+            --input-bg: #000000;
+            --toast-bg: #151b24;
+            --modal-bg: #151b24;
+            --scrollbar-track: #1a212b;
+            --scrollbar-thumb: #f1c40f;
+            --accent-color: #f1c40f;
+            --accent-hover: #f39c12;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #e8f4f8;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-header: #d4ecf5;
+            --text-primary: #1a2a3a;
+            --text-secondary: #3a5a6a;
+            --text-muted: #5a7a8a;
+            --border-color: #b0d4e0;
+            --border-light: #90c4d4;
+            --shadow: rgba(0, 180, 200, 0.15);
+            --shadow-glow: rgba(0, 212, 255, 0.25);
+            --input-bg: #f0f8fa;
+            --toast-bg: #ffffff;
+            --modal-bg: #ffffff;
+            --scrollbar-track: #d4ecf5;
+            --scrollbar-thumb: #00bcd4;
+            --accent-color: #00bcd4;
+            --accent-hover: #0097a7;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .header {
+            padding: 16px 30px;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .header .back-btn {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
             padding: 10px 24px;
             background: #1a4d2e;
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             border-radius: 30px;
             transition: 0.3s ease;
             display: inline-block;
         }
-        .header .back-btn:hover { 
+
+        .header .back-btn:hover {
             background: #2a6d3e;
-            border-color: #f39c12;
+            border-color: var(--accent-hover);
             transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 30px var(--shadow-glow);
         }
-        .header .title { 
-            font-size: 22px; 
-            font-weight: 700; 
+
+        .header .title {
+            font-size: 22px;
+            font-weight: 700;
             color: #1a4d2e;
-            text-shadow: 
+            text-shadow:
                 0 0 10px rgba(241, 196, 15, 0.5),
                 0 0 20px rgba(241, 196, 15, 0.3),
                 0 0 40px rgba(241, 196, 15, 0.1);
-            -webkit-text-stroke: 1px #f1c40f;
-            text-stroke: 1px #f1c40f;
+            -webkit-text-stroke: 1px var(--accent-color);
+            text-stroke: 1px var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: text-shadow 0.3s ease, -webkit-text-stroke 0.3s ease;
         }
-        .header .title span { color: #8892a8; font-weight: 400; font-size: 16px; margin-left: 10px; }
-        .main-content { flex: 1; padding: 20px 30px 30px; max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; }
-        .player-wrapper { width: 100%; background: #000; border-radius: 16px; overflow: hidden; border: 1px solid #1f2631; position: relative; aspect-ratio: 16 / 9; }
-        .player-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
-        .episode-info { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 10px; flex-wrap: wrap; gap: 10px; }
-        .episode-info .current-episode { font-size: 20px; font-weight: 600; color: #f1c40f; }
-        .episode-info .episode-title { color: #8892a8; font-size: 16px; }
-        .episodes-list { display: flex; gap: 12px; flex-wrap: wrap; padding: 10px 0 20px; border-bottom: 1px solid #1f2631; margin-bottom: 20px; }
-        .episodes-list .episode-btn { background: #151b24; border: 2px solid #2a313f; color: #8892a8; padding: 10px 24px; border-radius: 30px; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.25s ease; }
-        .episodes-list .episode-btn:hover { border-color: #f1c40f; color: #f0f2f5; }
-        .episodes-list .episode-btn.active { background: #f1c40f; border-color: #f1c40f; color: #0b0e14; }
-        .drama-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 10px; }
-        .drama-description { color: #8892a8; font-size: 15px; line-height: 1.8; }
-        .drama-description .info-item { display: flex; gap: 10px; margin-bottom: 6px; }
-        .drama-description .info-item .label { color: #6a7288; min-width: 120px; flex-shrink: 0; }
-        .drama-description .info-item .value { color: #f0f2f5; }
-        .drama-description .plot { color: #8892a8; font-size: 14px; line-height: 1.8; margin-top: 8px; }
-        .drama-description .plot strong { color: #f0f2f5; }
-        .cast-section .cast-title { color: #f0f2f5; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
-        .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-        .cast-item { background: #151b24; border: 1px solid #1f2631; border-radius: 12px; padding: 12px 16px; }
-        .cast-item .actor-name { color: #f0f2f5; font-size: 15px; font-weight: 600; }
-        .cast-item .actor-role { color: #8892a8; font-size: 13px; margin-top: 2px; }
-        .cast-item .actor-role-tag { background: #1e232c; color: #f1c40f; font-size: 11px; padding: 2px 10px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+
+        .header .title span {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 16px;
+            margin-left: 10px;
+            transition: color 0.3s ease;
+        }
+
+        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
+        .theme-toggle-wrapper {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle-label {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #2a313f;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border: 2px solid #3a4555;
+            flex-shrink: 0;
+        }
+
+        [data-theme="light"] .theme-switch {
+            background: #00bcd4;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .theme-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: #8892a8;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] .theme-switch .slider {
+            left: 28px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 212, 255, 0.4);
+        }
+
+        .theme-switch:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .theme-switch .theme-icons {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 6px;
+            align-items: center;
+            height: 100%;
+            font-size: 14px;
+            color: #6a7288;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
+        [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
+
+        .main-content {
+            flex: 1;
+            padding: 20px 30px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-wrapper {
+            width: 100%;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            position: relative;
+            aspect-ratio: 16 / 9;
+            transition: border-color 0.3s ease;
+        }
+
+        .player-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .episode-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .episode-info .current-episode {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+
+        .episode-info .episode-title {
+            color: var(--text-secondary);
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .episodes-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .episodes-list .episode-btn {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-light);
+            color: var(--text-secondary);
+            padding: 10px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .episodes-list .episode-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+        }
+
+        .episodes-list .episode-btn.active {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #0b0e14;
+        }
+
+        .drama-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .drama-description {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .drama-description .info-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .drama-description .info-item .label {
+            color: var(--text-muted);
+            min-width: 120px;
+            flex-shrink: 0;
+            transition: color 0.3s ease;
+        }
+
+        .drama-description .info-item .value {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .drama-description .plot {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .drama-description .plot strong {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .cast-section .cast-title {
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .cast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .cast-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .cast-item .actor-name {
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .cast-item .actor-role {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 2px;
+            transition: color 0.3s ease;
+        }
+
+        .cast-item .actor-role-tag {
+            background: #1e232c;
+            color: var(--accent-color);
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+            transition: color 0.3s ease;
+        }
 
         /* ===== КОММЕНТАРИИ ===== */
         .comments-section {
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #1f2631;
+            border-top: 1px solid var(--border-color);
             width: 100%;
+            transition: border-color 0.3s ease;
         }
 
         .comments-section .comments-title {
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: color 0.3s ease;
         }
 
         .comments-section .comments-title span {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-size: 14px;
             font-weight: 400;
+            transition: color 0.3s ease;
         }
 
         .comment-form {
@@ -100,10 +398,10 @@
             flex: 1;
             min-width: 200px;
             padding: 12px 18px;
-            background: #151b24;
-            border: 2px solid #2a313f;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-light);
             border-radius: 30px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, sans-serif;
             font-size: 14px;
             outline: none;
@@ -111,22 +409,22 @@
         }
 
         .comment-form input:focus {
-            border-color: #f1c40f;
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px var(--shadow-glow);
         }
 
         .comment-form input::placeholder {
-            color: #6a7288;
+            color: var(--text-muted);
         }
 
         .comment-form textarea {
             flex: 2;
             min-width: 300px;
             padding: 12px 18px;
-            background: #151b24;
-            border: 2px solid #2a313f;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-light);
             border-radius: 16px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             font-family: system-ui, sans-serif;
             font-size: 14px;
             outline: none;
@@ -136,15 +434,15 @@
         }
 
         .comment-form textarea:focus {
-            border-color: #f1c40f;
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px var(--shadow-glow);
         }
 
         .comment-form .submit-btn {
             background: #1a4d2e;
-            border: 2px solid #f1c40f;
+            border: 2px solid var(--accent-color);
             border-radius: 30px;
-            color: #f0f2f5;
+            color: var(--text-primary);
             padding: 12px 28px;
             font-family: system-ui, sans-serif;
             font-size: 14px;
@@ -156,9 +454,9 @@
 
         .comment-form .submit-btn:hover {
             background: #2a6d3e;
-            border-color: #f39c12;
+            border-color: var(--accent-hover);
             transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.2);
+            box-shadow: 0 0 30px var(--shadow-glow);
         }
 
         .comments-list {
@@ -174,20 +472,21 @@
             width: 4px;
         }
         .comments-list::-webkit-scrollbar-track {
-            background: #1a212b;
+            background: var(--scrollbar-track);
             border-radius: 10px;
         }
         .comments-list::-webkit-scrollbar-thumb {
-            background: #f1c40f;
+            background: var(--scrollbar-thumb);
             border-radius: 10px;
         }
 
         .comment-item {
-            background: #151b24;
-            border: 1px solid #1f2631;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 14px 18px;
             animation: fadeInUp 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .comment-item .comment-header {
@@ -200,26 +499,29 @@
         }
 
         .comment-item .comment-author {
-            color: #f1c40f;
+            color: var(--accent-color);
             font-weight: 600;
             font-size: 15px;
+            transition: color 0.3s ease;
         }
 
         .comment-item .comment-date {
-            color: #6a7288;
+            color: var(--text-muted);
             font-size: 12px;
+            transition: color 0.3s ease;
         }
 
         .comment-item .comment-text {
-            color: #8892a8;
+            color: var(--text-secondary);
             font-size: 14px;
             line-height: 1.6;
+            transition: color 0.3s ease;
         }
 
         .comment-item .comment-delete {
             background: transparent;
             border: none;
-            color: #6a7288;
+            color: var(--text-muted);
             cursor: pointer;
             font-size: 14px;
             transition: 0.2s ease;
@@ -233,26 +535,80 @@
         }
 
         .no-comments {
-            color: #6a7288;
+            color: var(--text-muted);
             text-align: center;
             padding: 20px;
             font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+
+        .toast {
+            background: var(--toast-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 8px 30px var(--shadow);
+            animation: slideInRight 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .toast.success {
+            border-color: #2ecc71;
+        }
+
+        .toast.error {
+            border-color: #e74c3c;
+        }
+
+        .toast.info {
+            border-color: var(--accent-color);
+        }
+
+        .toast .toast-icon {
+            font-size: 20px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(50px); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
             .header .title { font-size: 18px; }
+            .theme-toggle-wrapper { gap: 6px; }
+            .theme-switch { width: 48px; height: 26px; }
+            .theme-switch .slider { width: 18px; height: 18px; }
+            [data-theme="light"] .theme-switch .slider { left: 24px; }
+            .theme-toggle-label { font-size: 11px; }
             .main-content { padding: 12px 16px 20px; }
             .drama-info { grid-template-columns: 1fr; gap: 20px; }
             .cast-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
@@ -265,6 +621,12 @@
         @media (max-width: 480px) {
             .header .title { font-size: 15px; }
             .header .title span { font-size: 13px; display: block; margin-left: 0; }
+            .theme-toggle-wrapper { gap: 4px; }
+            .theme-switch { width: 42px; height: 22px; }
+            .theme-switch .slider { width: 16px; height: 16px; top: 1px; left: 1px; }
+            [data-theme="light"] .theme-switch .slider { left: 22px; }
+            .theme-toggle-label { font-size: 10px; }
+            .theme-switch .theme-icons { font-size: 11px; padding: 0 4px; }
             .cast-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .cast-item { padding: 10px 12px; }
             .drama-description .info-item { flex-direction: column; gap: 2px; }
@@ -273,6 +635,8 @@
             .comments-section .comments-title { font-size: 17px; }
             .comment-item .comment-author { font-size: 13px; }
             .comment-item .comment-text { font-size: 13px; }
+            .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
+            .toast { font-size: 12px; padding: 10px 14px; }
         }
     </style>
 </head>
@@ -280,6 +644,18 @@
     <header class="header">
         <a href="index.html" class="back-btn"> На главную</a>
         <div class="title"> <span id="dramaTitle">Завтра снова на работу!</span> <span id="dramaEpisodes">6 серий</span></div>
+
+        <!-- ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== -->
+        <div class="theme-toggle-wrapper">
+            <span class="theme-toggle-label" id="themeLabel">Тема</span>
+            <div class="theme-switch" id="themeSwitch">
+                <div class="slider"></div>
+                <div class="theme-icons">
+                    <span class="moon-icon">🌙</span>
+                    <span class="sun-icon">☀️</span>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main class="main-content">
@@ -317,7 +693,48 @@
     </main>
 
     <script>
+        // =====================================================
+        // ===== ТЕМА (СЛАЙДЕР) =====
+        // =====================================================
+        const themeSwitch = document.getElementById('themeSwitch');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        themeSwitch.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '🎨', 'info');
+        });
+
+        applyTheme(currentTheme);
+
+        // =====================================================
         // ===== ДАННЫЕ О ДОРАМАХ =====
+        // =====================================================
+        function showToast(message, icon = '📢', type = 'info') {
+            const container = document.getElementById('toastContainer') || createToastContainer();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 3000);
+        }
+
+        function createToastContainer() {
+            const container = document.createElement('div');
+            container.className = 'toast-container';
+            container.id = 'toastContainer';
+            document.body.appendChild(container);
+            return container;
+        }
+
         const DRAMAS = {
             drama1: {
                 name: 'Завтра снова на работу!',
@@ -360,12 +777,10 @@
                     country: 'Корея Южная',
                     duration: '00:40:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Говорят, море умеет слушать. Не отвечает, не осуждает — просто шумит, перекатывая гальку, и ждёт. Именно к нему и приходят двое, каждый со своим грузом, каждый — на последнем издыхании в той жизни, которую уже не в силах тащить дальше. Юн Док Хён давно перестал ждать чего-то от будущего. Прошлое прилипло к нему, как морская соль к коже — незаметно, намертво, и уже не смыть. Со Ан На когда-то бежала вперёд быстрее всех, но однажды упала — и не просто разбила колено. Разбилась вся жизнь, которую она строила. Теперь тревога стала её постоянным спутником, тихим и удушающим, как туман над водой ранним утром. Они встречаются в маленьком прибрежном посёлке, где время течёт иначе. Без суеты. Без дедлайнов. Здесь рыбаки чинят сети, пахнет водорослями и жареной рыбой, и кажется, что мир снаружи — это просто сон, который никак не хочет заканчиваться. Нырять без снаряжения — странный выбор для людей, которые едва держатся на поверхности. Но именно под водой что-то меняется. Там нет голосов, нет воспоминаний, нет страха перед завтрашним днём. Только холод, темнота и собственное сердцебиение. И — странным образом — покой.',
+                    plot: 'Говорят, море умеет слушать...',
                     cast: [
                         { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
-                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' },
-                        { name: 'Ко Джу-хи', role: 'Второстепенная роль', tag: '' },
-                        { name: 'Чон Хён-мин', role: 'Второстепенная роль', tag: '' }
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -388,12 +803,10 @@
                     country: 'Корея Южная',
                     duration: '00:59:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Днём — серая мышка за последней партой, та самая ученица, которую учителя путают с соседкой по парте. Ночью — автор бойких веб-романов, где слова льются куда смелее, чем в реальной жизни Е И-джу когда-либо получалось вести себя. Дома — мать с хваткой, не оставляющей пространства для своевольных решений. На бумаге же — свобода без границ. Вдохновением для нового хита становятся четверо молодых учителей, только-только переступивших порог школы: живые, настоящие, с разными голосами и разными взглядами. И вот тонкая грань между вымыслом и явью начинает плавиться, особенно когда в поле зрения попадает загадочный учитель математики — слишком спокойный, слишком наблюдательный, слишком похожий на героя из её собственных текстов. 14 серий нежной неловкости, первых румянцев и того особого корейского обаяния, когда комедия щекочет, а в следующую секунду внезапно сжимает сердце. Где кончается строка романа и начинается настоящее чувство — провести эту черту окажется куда сложнее, чем писать главы по ночам.',
+                    plot: 'Днём — серая мышка за последней партой...',
                     cast: [
                         { name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' },
-                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' },
-                        { name: 'Чха Хаг-ён', role: 'Чхве Су-мин', tag: '' },
-                        { name: 'Сон Джон-хёк', role: 'Ким Дон-гю', tag: '' }
+                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -424,15 +837,10 @@
                     country: 'Таиланд',
                     duration: '44 мин.',
                     translation: 'Озвучка, Субтитры',
-                    plot: 'Сун работает сборщиком долгов, но его успех в этой роли оставляет желать лучшего. Он часто сталкивается с трудностями при попытках возврата денежных средств от должников. Ситуация усугубляется тем, что его отец, стоящий на грани банкротства, настоятельно требует от Суна возвращения долга с одного из клиентов, молодого человека по имени Атхит. Суну нужно как можно скорее найти способ эффективно разрешить эту задачу, чтобы избежать финансового коллапса своей семьи и сохранить деловую репутацию. Однако его обычные методы работают плохо — подход с прямым давлением и угрозами не приносит ожидаемых результатов. Необходимо, чтобы Сун пересмотрел свои методы и возможно нашел более гуманный и эффективный подход к взысканию задолженностей, чтобы добиться положительных изменений и успеха в своей работе.',
+                    plot: 'Сун работает сборщиком долгов...',
                     cast: [
                         { name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
-                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' },
-                        { name: 'Parinya Angsanan', role: 'Мек (Mek)', tag: '' },
-                        { name: 'Papungkorn Sakunsong', role: 'Най (Nai)', tag: '' },
-                        { name: 'Nathas Tunjaroen', role: 'Манкон (Mangkorn)', tag: '' },
-                        { name: 'Weerapat Toemmaneerat', role: 'Тай (Thai)', tag: '' },
-                        { name: 'Tanawat Hudchaleelaha', role: 'Немо (Nemo)', tag: '' }
+                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -455,24 +863,10 @@
                     country: 'Южная Корея',
                     duration: '00:55:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Со Ми Рэ живёт работой. Продюсер вебтунов — звучит круто, да? На деле это бесконечные дедлайны, капризные авторы и постоянное ощущение, что времени катастрофически не хватает ни на что. Романтика? Да она про неё даже думать забыла. Свидания, цветы, бабочки в животе — всё это кажется какой-то сказкой из манхвы, которую она сама редактирует. И тут ей подсовывают новое приложение. "Парень по подписке". Виртуальная реальность, идеальные парни на любой вкус — красавцы, умницы, романтики. Со Ми Рэ сначала скептически фыркает, но... любопытство берёт своё. Надевает шлем — и погружается. Там всё не по-настоящему, конечно. Но чувства? О, чувства очень даже настоящие. Сердце колотится, щёки горят, хочется улыбаться без причины. Она будто заново учится влюбляться. Параллельно в офисе её достаёт коллега Пак Кён Нам. Амбициозный, успешный, вечно всех переплюнуть пытается. Они постоянно спорят, соревнуются, огрызаются друг на друга. Но с недавних пор... споры перестали раздражать. Более того — работа вообще стала легче как-то. Неужели виртуальные свидания настолько меняют настроение? Вопрос назревает сам собой: где кончается фантазия и где начинается реальность? И что если самый идеальный парень давно рядом — просто ты его не замечала? А если Кён Нам знает о приложении больше, чем кажется? Если он тоже играет в эту игру — но по своим правилам?',
+                    plot: 'Со Ми Рэ живёт работой...',
                     cast: [
                         { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
-                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' },
-                        { name: 'Рю Абель', role: '', tag: '' },
-                        { name: 'Ким Сон Чхоль', role: '', tag: '' },
-                        { name: 'Пак Чи-ху', role: '', tag: '' },
-                        { name: 'Кон Мин Чжон', role: '', tag: '' },
-                        { name: 'Ко Гю Пхиль', role: '', tag: '' },
-                        { name: 'Кан Мин У', role: '', tag: '' },
-                        { name: 'Сон Ха-На', role: '', tag: '' },
-                        { name: 'Ю Сон Хо', role: '', tag: '' },
-                        { name: 'Хё Рим Со', role: '', tag: '' },
-                        { name: 'Сон Хо Ён', role: '', tag: '' },
-                        { name: 'Хун Ли', role: '', tag: '' },
-                        { name: 'Ким А Ён', role: '', tag: '' },
-                        { name: 'Пак Хэ-лин', role: '', tag: '' },
-                        { name: 'Тинюй Лу', role: '', tag: '' }
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -499,16 +893,10 @@
                     country: 'Корея Южная',
                     duration: '01:14:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема. Небоскрёбы, смартфоны, пробки на хайвеях, и где-то над всем этим — королевский дворец, живой и настоящий, с флагом, гвардией и протоколом на каждый чих. Монархия здесь — не музейный экспонат, а работающий механизм. Со своими правилами, своими жертвами и своими играми. Сон Хи Джу умеет многое. Острый ум, внешность, которая заставляет оборачиваться, воля — хоть гвозди забивай. Дочь влиятельного чеболя, казалось бы, у неё есть всё. Но одно маленькое "но" перечёркивает многое: она незаконнорождённая. В мире, где статус — это воздух, это звучит как приговор. Шёпот за спиной она слышит давно, научилась не вздрагивать. Но внутри — накопилось. Принц Ли Ан — второй сын. Не наследник, не символ, почти тень. Старший брат получил всё: внимание, привилегии, будущее. Ли Ан существует на периферии собственной семьи — и устал от этого так, что иногда хочется просто исчезнуть. Оказаться обычным человеком, хотя бы на один день. Их встреча — случайная, нелепая, немного неловкая — могла бы ничем не кончиться. Но судьба, она такая: редко спрашивает разрешения. Предложение, которое Хи Джу решается сделать, звучит холодно и по-деловому: фиктивный брак. Ей — защита и статус, ему — видимость реальной роли. Всё просто. Всё под контролем. Так обычно говорят в самом начале истории, которая потом выходит из-под контроля полностью.',
+                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема...',
                     cast: [
                         { name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' },
-                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' },
-                        { name: 'Стив Санхён Но', role: '', tag: '' },
-                        { name: 'Гон Сын Ён', role: '', tag: '' },
-                        { name: 'Ю Су Бин', role: '', tag: '' },
-                        { name: 'Ли Ён', role: '', tag: '' },
-                        { name: 'Пак Джун Мён', role: '', tag: '' },
-                        { name: 'Пён Со Юн', role: '', tag: '' }
+                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -537,18 +925,10 @@
                     country: 'Корея Южная',
                     duration: '01:02:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Юн Бом сбегает из Сеула. Ну то есть официально она просто берёт перевод по обмену в маленький городишко Шинсу, работать учителем. Но по факту — да, сбегает, от чего-то что болит так сильно, что молчать об этом легче чем объяснять. Приезжает, а там всё как в провинции обычно бывает: все всех знают, сплетни разносятся быстрее интернета, и новенькая учительница из столицы — это событие года, считай. Поначалу Юн Бом держит дистанцию. Холодная, замкнутая, делает свою работу и всё. Пытается построить стену между собой и этим миром где все лезут с вопросами. А потом в её жизни появляется Сон Джэ Гю. Дядя одного из учеников, местная знаменитость, причём не самого положительного толка — связан с криминалом, решает вопросы по своему, грубовато так. Но парадокс в том, что за этой грубостью прячется что-то настоящее. Искреннее, что ли. Сначала их общение — чисто по школьным делам. Но Джэ-гю видит как местные начинают "прижимать" новенькую учительницу намёками, сплетнями, давлением. И начинает вмешиваться. А Юн Бом — она же независимая, ей эта защита не нужна вообще! Пытается границы выстроить, но обстоятельства заставляют их всё чаще пересекаться. Конфликты с родителями учеников, старые долги Джэ-гю, прошлое Юн Бом которое не отпускает... Постепенно между ними что то возникает. Не сразу понятно что именно, но точно больше чем просто знакомство. И теперь Юн Бом стоит перед выбором: продолжать прятаться в спокойной жизни или наконец разобраться со своим прошлым и впустить кого-то по-настоящему близко.',
+                    plot: 'Юн Бом сбегает из Сеула...',
                     cast: [
                         { name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' },
-                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' },
-                        { name: 'Чха Со-вон', role: '', tag: '' },
-                        { name: 'Чо Джун-ён', role: '', tag: '' },
-                        { name: 'Ли Джэ-ин', role: '', tag: '' },
-                        { name: 'Чин Гён', role: '', tag: '' },
-                        { name: 'Пэ Джон-нам', role: '', tag: '' },
-                        { name: 'Ким Бён-чхун', role: '', tag: '' },
-                        { name: 'О Ман-сок', role: '', tag: '' },
-                        { name: 'Чон Ён-ги', role: '', tag: '' }
+                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -577,18 +957,10 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун» — человек, который создавал это дело с нуля. А его сын Кан Тхэ-пун (имя буквально значит «тайфун») всю жизнь был беззаботным наследником. Деньги, тусовки, никакой ответственности. И вот теперь — бац! — он вынужден возглавить компанию, которая на грани банкротства. Тхэ-пун садится в кресло генерального директора, но понятия не имеет, что делать. Он путает факс с телефоном, не знает, что такое просроченный платёж, усердно конспектирует на совещаниях, как первоклашка. Кредиторы требуют долги, поставщики разрывают контракты, сотрудники в панике. Особенно О Ми-сук из бухгалтерии — старшая дочь в бедной семье, которая годами тянет родных на себе. Для неё работа в «Тайфуне» — единственный источник дохода. И тут появляется этот неопытный босс со своими идеями? Но Тхэ-пун не сдаётся. Он меняет яркую одежду на строгий костюм и начинает учиться заново — с нуля, как отец когда-то. Предлагает рискованный план: искать клиентов среди мелких провинциальных магазинов, которых игнорируют большие корпорации. Стать посредником, помочь им выжить в кризис. Ми-сук, перфекционистка до мозга костей, видит в этом плане шанс. Она соглашается возглавить проект, хотя сомнения гложут изнутри. Команда раскалывается: Ми-сук уезжает по городам, сталкиваясь с отказами и недоверием. Тхэ-пун остаётся в Сеуле, ведёт переговоры с кредиторами... и узнаёт страшную правду: его отец заложил личное имущество ради бизнеса. Эта жертва меняет всё. Тхэ-пун понимает: «Тайфун» — это не просто компания. Это наследие, любовь, символ стихии, которая может как разрушить, так и очистить путь для нового начала. И если он не справится, всё рухнет окончательно.',
+                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами...',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
-                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' },
-                        { name: 'Сон Дон-иль', role: '', tag: '' },
-                        { name: 'Ким Джи-ён', role: '', tag: '' },
-                        { name: 'Ким Мин-сок', role: '', tag: '' },
-                        { name: 'Му Джин-сон', role: '', tag: '' },
-                        { name: 'Квон Хан-соль', role: '', tag: '' },
-                        { name: 'Ли Чхан-хун', role: '', tag: '' },
-                        { name: 'Ким Джэ-хва', role: '', tag: '' },
-                        { name: 'Ким Сон-иль', role: '', tag: '' }
+                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -621,23 +993,10 @@
                     country: 'Корея Южная',
                     duration: '00:55:00',
                     translation: 'Любительский многоголосый',
-                    plot: 'Га Ён разучилась мечтать. Точнее, она и не умела толком. Чувства? Выражать эмоции? Зачем, если можно просто существовать, не высовываясь, не надеясь ни на что. Окружающая реальность приносит разочарования, так к чему тогда позитивное мышление и вся эта мишура про силу желаний? Но однажды случается чудо. Старинная лампа, пылившаяся где-то на антресолях, оказывается в её руках. И оттуда появляется... джинн. Настоящий, живой, эмоциональный до неприличия. Дух, который томился в заточении веками, изнывая от одиночества, жаждущий хоть какого-то общения. И вот судьба сводит его с девушкой, которая вообще не знает, чего хочет. Три желания. Классика жанра. Казалось бы, мечта любого человека — получить шанс изменить жизнь одним щелчком пальцев. Но Га Ён ошеломлена. Её мозг отказывается работать в категориях "хочу". Она отвыкла представлять себя счастливой, обладательницей чего-то ценного. Мечты стали чем-то абстрактным, недостижимым, бессмысленным. А джинн — навязчивый, неугомонный, яркий как фейерверк — не даёт ей покоя. Требует загадать желания, чтобы наконец освободиться из проклятой лампы. Но как загадать, если не знаешь, чего хочешь? Как поверить в возможность счастья, если годами убеждал себя, что это не для тебя? Наука утверждает: мозг не отличает реальность от воображения. Мечты могут влиять на жизнь, если их правильно использовать. Но грёзы — коварная штука, они не знают границ, а разочарование от несбывшихся надежд бьёт больнее любой реальной неудачи. Два существа — девушка, запершая себя в клетку равнодушия, и древний дух, переполненный эмоциями. Их встреча обещает быть взрывоопасной. Потому что иногда, чтобы исполнились желания, нужно сначала научиться их чувствовать. А это — самая сложная магия из всех возможных.',
+                    plot: 'Га Ён разучилась мечтать...',
                     cast: [
                         { name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' },
-                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' },
-                        { name: 'Ын Джин Ан', role: '', tag: '' },
-                        { name: 'Стив Но', role: '', tag: '' },
-                        { name: 'Гю Пхиль Го', role: '', tag: '' },
-                        { name: 'Джу Ён Ли', role: '', tag: '' },
-                        { name: 'Ми Гён Ким', role: '', tag: '' },
-                        { name: 'Шин Э Шин', role: '', tag: '' },
-                        { name: 'Мён Син Пак', role: '', tag: '' },
-                        { name: 'Док Джу Ким', role: '', tag: '' },
-                        { name: 'Дон Ёп Го', role: '', tag: '' },
-                        { name: 'Дэниэл Хенни', role: '', tag: '' },
-                        { name: 'Чжи Хун Ким (I)', role: '', tag: '' },
-                        { name: 'Хё Кё Сон', role: '', tag: '' },
-                        { name: 'Му Сэн Ли', role: '', tag: '' }
+                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -667,18 +1026,10 @@
                     country: 'Корея Южная',
                     duration: '00:53:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона — умная, решительная, безупречная в каждом жесте и слове. Её уважали коллеги, ею гордилась страна. Казалось, ей по плечу любые международные переговоры и самые запутанные политические интриги. Но одно убийство способно разрушить даже самую блестящую карьеру. Влиятельный чиновник найден мёртвым, а все улики ведут в такие дебри, где дипломатический иммунитет не поможет. Между Севером и Югом разгорается игра, ставки в которой — человеческие жизни. В центре этого водоворота появляется Сан Хо — человек без прошлого, имени и, кажется, совести. Наёмник, который умеет решать проблемы радикально и бесшумно. Его руки помнят запах пороха, а глаза видели столько крови, что уже ничему не удивляются. Теперь Мун Джу и этот загадочный незнакомец должны работать в паре. Она — с её дипломатической мудростью, он — с его жестокими методами. Правда где-то рядом, но за неё придётся заплатить такую цену, которая может оказаться слишком высокой даже для закалённых в боях сердец.',
+                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона...',
                     cast: [
                         { name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' },
-                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' },
-                        { name: 'Джон Чо', role: '', tag: '' },
-                        { name: 'Ли Ми-сук', role: '', tag: '' },
-                        { name: 'Пак Хэ-джун', role: '', tag: '' },
-                        { name: 'Ким Хэ-сук', role: '', tag: '' },
-                        { name: 'О Джон-сэ', role: '', tag: '' },
-                        { name: 'Ли Сан-хи', role: '', tag: '' },
-                        { name: 'Чу Джон-хёк', role: '', tag: '' },
-                        { name: 'Вон Джи-ан', role: '', tag: '' }
+                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -704,18 +1055,10 @@
                     country: 'Китай',
                     duration: '00:46:50',
                     translation: 'Любительский многоголосый',
-                    plot: 'Метель — штука безжалостная, заносит следы быстрее, чем успеваешь оглянуться. Именно в такую непогоду судьба сталкивает Фань Чанъюй, простую девушку из мясной лавки, с раненым, полузамёрзшим мужчиной у обочины. Пройти мимо она не смогла — то ли совесть не позволила, то ли что-то ещё, чему сама Чанъюй пока не может подобрать название. А зря бы прошла: перед ней, оказывается, не бродяга, а Се Чжэн, маркиз, чью семью недавно вырезали жестоко и без сожаления, и теперь он вынужден скрываться, точно загнанный зверь, от врагов, что не остановятся, пока не доведут дело до конца. Фань Чанъюй — не кисейная барышня, а женщина с крепкими руками и характером под стать: работа в мясной лавке закалила и тело, и волю. Родственники у неё, как назло, из тех, что готовы обобрать до нитки при первой возможности, поэтому, когда подворачивается шанс через фиктивный брак защититься от их посягательств и заодно спасти найденного незнакомца, героиня решается — без особых раздумий, на голом расчёте пополам с состраданием. Поначалу это чистая сделка: он получает укрытие, она — защиту от жадных родичей. Она понятия не имеет, что перед ней не какой-то безродный бедолага, а наследник знатного рода. Но, как это часто случается, фальшивые чувства начинают потихоньку прорастать чем-то настоящим, будто трава сквозь трещины в камне. Между двумя людьми, которых свело чистое совпадение, зарождается связь — сначала настороженная, потом всё более крепкая, и вот уже ни он, ни она не могут сказать наверняка, где кончается расчёт и начинается любовь. Только вот радоваться рано: как только чувства становятся явными, влюблённые оказываются в самом центре смертельно опасной игры. Тайны Се Чжэна нагоняют беду, и парочке приходится расстаться — не по своей воле, а чтобы просто выжить. Но Фань Чанъюй не из тех, кто смиряется с несправедливостью: она отправляется прямиком на поле боя, вооружённая ножом мясника вместо меча, и это не метафора, а буквальная деталь, ставшая символом всей истории. Ради любимого и ради справедливости она готова на многое, а рядом с ней — верные друзья, без которых такие бои не выигрывают. Постепенно линии судьбы вновь пересекаются: влюблённые встречаются посреди хаоса войны и вместе идут против общего врага, мечтая только об одном — вернуться домой, туда, где начиналась их история, ещё до всех этих метелей, интриг и крови.',
+                    plot: 'Метель — штука безжалостная...',
                     cast: [
                         { name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' },
-                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' },
-                        { name: 'Ду Чунь', role: '', tag: '' },
-                        { name: 'Янь Икуань', role: '', tag: '' },
-                        { name: 'Лю Линь', role: '', tag: '' },
-                        { name: 'Ли Цин', role: '', tag: '' },
-                        { name: 'Юэ Ян', role: '', tag: '' },
-                        { name: 'Чжу Цзаньцзинь', role: '', tag: '' },
-                        { name: 'Ванг Джин Эр', role: '', tag: '' },
-                        { name: 'Сноу Кун', role: '', tag: '' }
+                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -772,18 +1115,11 @@
                     country: 'Корея Южная',
                     duration: '01:10:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Есть такая поговорка — покой нам только снится, и трое героев этой истории убедились в этом на собственной шкуре. Каждому из них давно перевалило за пятьдесят, у каждого за плечами — жизнь, полная риска, а теперь вроде бы наступило время тихой гавани. Да только гавань оказалась с подвохом. Чон Хомён когда-то был агентом национальной разведки — человеком, чья работа состояла в том, чтобы оставаться невидимым. После ложного обвинения ему пришлось исчезнуть по-настоящему: сменить имя, лицо жизни и осесть на острове Ёнсон под личиной скромного повара китайского ресторанчика. Готовит, между прочим, неплохо — но руки, которые когда-то держали оружие, иногда предательски вздрагивают при виде ножа для разделки мяса. Бон — фигура ещё более трагичная. Северокорейский спецагент, потерявший память в результате давнего инцидента. Он живёт как будто половинкой себя: старые навыки — рефлексы, реакция, умение читать людей — временами всплывают из глубин подсознания, точно рыба, на миг показавшаяся над водой и снова канувшая в омут. Сам он этого не осознаёт, а окружающие лишь диву даются, откуда в тихом соседе вдруг берётся такая прыть. Третий — Кан, человек с криминальным прошлым, некогда занимавший не последнее место в преступной иерархии. Теперь он старается держаться подальше от бывших подельников, от всего, что напоминает о прежней жизни. Но прошлое, как назло, липнет к пяткам похлеще смолы.',
+                    plot: 'Есть такая поговорка — покой нам только снится...',
                     cast: [
                         { name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' },
                         { name: 'О Джонсэ', role: 'Бон', tag: 'Главная роль' },
-                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' },
-                        { name: 'Ли Хакчу', role: '', tag: '' },
-                        { name: 'Квон Юль', role: '', tag: '' },
-                        { name: 'Ким Санхо', role: '', tag: '' },
-                        { name: 'Син Донми', role: '', tag: '' },
-                        { name: 'Ким Синнок', role: '', tag: '' },
-                        { name: 'Хан Джиын', role: '', tag: '' },
-                        { name: 'Хён Бонсик', role: '', tag: '' }
+                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -812,12 +1148,10 @@
                     country: 'Корея Южная',
                     duration: '00:49:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Бывают люди, которые чувствуют слишком много, и те, кто не чувствует почти ничего — по разным причинам, но одинаково больно. Психолог-консультант день за днём впитывает чужую боль, как губка, пока границы между «моим» и «твоим» переживанием не начинают стираться совсем. Он слышит чужие слёзы раньше, чем клиент успевает их произнести. По другую сторону — бывшая айдол-звезда, которая с детства училась запирать эмоции на замок. Её лицо — маска, отточенная годами перед камерами и публикой; внутри, впрочем, давно что-то потрескивает. Актёрская карьера трещит следом: холодность, которая раньше читалась как загадочность, теперь выглядит просто пустотой. Их встреча — случайность, из тех, что потом называют судьбой. Что-то происходит в момент столкновения этих двух противоположностей: чувства одного будто просачиваются в другого, минуя все привычные фильтры и защиты. Смех отражается смехом, тревога — тревогой, и оба вдруг оказываются голыми перед чужими переживаниями, как перед зеркалом без права отвернуться. Это уже не просто симпатия и не просто профессиональный интерес — это нечто вроде эмоционального заражения, от которого нет прививки. Комедийные нотки соседствуют с настоящей тревогой, лёгкость — с вопросом о том, где заканчивается «я» и начинается «другой». Что случится, когда чужая боль станет неотличима от собственной?',
+                    plot: 'Бывают люди, которые чувствуют слишком много...',
                     cast: [
                         { name: 'Ким Мён-су', role: 'Психолог-консультант', tag: 'Главная роль' },
-                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' },
-                        { name: 'Квон Со-хён', role: '', tag: '' },
-                        { name: 'Щин У-гём', role: '', tag: '' }
+                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1010,7 +1344,7 @@
             const text = textInput.value.trim();
 
             if (!text) {
-                alert('Напишите комментарий!');
+                showToast('Напишите комментарий!', '⚠️', 'error');
                 return;
             }
 
@@ -1027,6 +1361,7 @@
 
             renderComments();
             textInput.focus();
+            showToast('Комментарий добавлен!', '✅', 'success');
         });
 
         document.getElementById('commentText').addEventListener('keydown', function(e) {
