@@ -1285,7 +1285,7 @@
         </div>
 
         <div class="years-wrapper" id="yearsWrapper">
-            <div class="years-toggle" id="yearsToggle"> 📅 Поиск по годам</div>
+            <div class="years-toggle" id="yearsToggle">Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
@@ -1303,7 +1303,7 @@
     <div class="controls-bar">
         <div class="controls-inner">
             <div class="sort-wrapper">
-                <label for="sortSelect">📊 Сортировка:</label>
+                <label for="sortSelect">Сортировка:</label>
                 <select id="sortSelect">
                     <option value="default">По умолчанию</option>
                     <option value="rating">По рейтингу ↓</option>
@@ -1406,7 +1406,7 @@
         // =====================================================
         // ===== TOAST =====
         // =====================================================
-        function showToast(message, icon = '📢', type = 'info') {
+        function showToast(message, icon = '', type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -1700,6 +1700,37 @@
                     ]
                 }
             }
+            drama15: {
+    name: 'Грань',
+    episodes: 6,
+    storageKey: 'lastDramaEpisode15',
+    poster: 'HY.jpg',
+    info: {
+        year: '2026',
+        director: 'Хидэки Такэути',
+        genre: 'Триллер, Драма, Боевик',
+        country: 'Япония',
+        duration: '00:45:00',
+        translation: 'Профессиональный многоголосый',
+        plot: 'Камера трясётся в руках, звук рвётся, на экране — обычный школьный двор, где обычного парня снова прижали к забору. Ничего нового. Кота Симура давно перестал считать синяки: мать тяжело болеет, в кошельке — пустота, а одноклассники чувствуют слабину носом, как собаки. Жить с этим можно. Жить на это — нельзя. И вот однажды случайно снятый ролик с дворовой дракой взлетает в сети так, что у Коты темнеет в глазах от количества просмотров. Деньги. Внимание. Хоть что-то, что не отнимет завтрашний день. Парень, ни разу в жизни не вставший в правильную боевую стойку, начинает по ночам пересматривать мутные видеоуроки, заучивая удары, как иероглифы. Получается криво, болезненно, но получается. Стримерская лестница не прощает слабину — каждая новая трансляция требует драки жёстче предыдущей, а зрители быстро привыкают к зрелищу и просят добавки. Рядом появляются такие же отчаявшиеся — кто-то стал другом, кто-то союзником на одну ночь эфира. Цифры подписчиков растут, как температура у больного: вроде хороший знак, а тревожно. Мир интернет-славы оказывается куда грязнее школьного двора — тут предают красивее и бьют не только кулаками. Вопрос лишь один: что Кота продаст раньше — свой страх или себя самого?',
+        cast: [
+            { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' },
+            { name: 'Миэко Харада', role: '', tag: '' },
+            { name: 'Нана Асакава', role: '', tag: '' },
+            { name: 'Аи Миками', role: '', tag: '' },
+            { name: 'Араки Суго', role: '', tag: '' },
+            { name: 'Такуро Осада', role: '', tag: '' }
+        ]
+    },
+    videos: {
+        1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239271&hash=441df6f243599195&hd=3',
+        2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239270&hash=ea1989da6fbed6e2&hd=3',
+        3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239269&hash=93fd0e144f99c09b&hd=3',
+        4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239268&hash=dd648a3b2efabc85&hd=3',
+        5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239267&hash=00e78ac9ca370de6&hd=3',
+        6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239266&hash=53734edc5b946baf&hd=3'
+    }
+}
         };
 
         // =====================================================
@@ -2258,9 +2289,9 @@
                 `❤️ Избранное <span class="badge" id="favoritesCount">${favorites.length}</span>`;
         }
 
-        console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
-        console.log('📊 Функции: Сортировка | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
-        console.log('📽️ Дорам на сайте: ' + Object.keys(DRAMAS).length);
+        console.log(' Сайт Дорамы от Дианы успешно загружен!');
+        console.log(' Функции: Сортировка | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
+        console.log(' Дорам на сайте: ' + Object.keys(DRAMAS).length);
     </script>
 </body>
 </html>
