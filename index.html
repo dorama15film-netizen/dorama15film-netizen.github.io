@@ -673,6 +673,7 @@
         .movie-card:nth-child(13) { animation-delay: 0.65s; }
         .movie-card:nth-child(14) { animation-delay: 0.70s; }
         .movie-card:nth-child(15) { animation-delay: 0.75s; }
+        .movie-card:nth-child(16) { animation-delay: 0.80s; }
 
         @keyframes fadeInUp {
             from {
@@ -1384,7 +1385,7 @@
 
     <script>
         // =====================================================
-        // ===== ТЕМА (СЛАЙДЕР) =====
+        // ===== ТЕМА =====
         // =====================================================
         const themeSwitch = document.getElementById('themeSwitch');
         let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -1699,38 +1700,30 @@
                         { name: 'Сюй Лэсяо', role: '', tag: '' }
                     ]
                 }
-            }
+            },
             drama15: {
-    name: 'Грань',
-    episodes: 6,
-    storageKey: 'lastDramaEpisode15',
-    poster: 'HY.jpg',
-    info: {
-        year: '2026',
-        director: 'Хидэки Такэути',
-        genre: 'Триллер, Драма, Боевик',
-        country: 'Япония',
-        duration: '00:45:00',
-        translation: 'Профессиональный многоголосый',
-        plot: 'Камера трясётся в руках, звук рвётся, на экране — обычный школьный двор, где обычного парня снова прижали к забору. Ничего нового. Кота Симура давно перестал считать синяки: мать тяжело болеет, в кошельке — пустота, а одноклассники чувствуют слабину носом, как собаки. Жить с этим можно. Жить на это — нельзя. И вот однажды случайно снятый ролик с дворовой дракой взлетает в сети так, что у Коты темнеет в глазах от количества просмотров. Деньги. Внимание. Хоть что-то, что не отнимет завтрашний день. Парень, ни разу в жизни не вставший в правильную боевую стойку, начинает по ночам пересматривать мутные видеоуроки, заучивая удары, как иероглифы. Получается криво, болезненно, но получается. Стримерская лестница не прощает слабину — каждая новая трансляция требует драки жёстче предыдущей, а зрители быстро привыкают к зрелищу и просят добавки. Рядом появляются такие же отчаявшиеся — кто-то стал другом, кто-то союзником на одну ночь эфира. Цифры подписчиков растут, как температура у больного: вроде хороший знак, а тревожно. Мир интернет-славы оказывается куда грязнее школьного двора — тут предают красивее и бьют не только кулаками. Вопрос лишь один: что Кота продаст раньше — свой страх или себя самого?',
-        cast: [
-            { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' },
-            { name: 'Миэко Харада', role: '', tag: '' },
-            { name: 'Нана Асакава', role: '', tag: '' },
-            { name: 'Аи Миками', role: '', tag: '' },
-            { name: 'Араки Суго', role: '', tag: '' },
-            { name: 'Такуро Осада', role: '', tag: '' }
-        ]
-    },
-    videos: {
-        1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239271&hash=441df6f243599195&hd=3',
-        2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239270&hash=ea1989da6fbed6e2&hd=3',
-        3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239269&hash=93fd0e144f99c09b&hd=3',
-        4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239268&hash=dd648a3b2efabc85&hd=3',
-        5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239267&hash=00e78ac9ca370de6&hd=3',
-        6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239266&hash=53734edc5b946baf&hd=3'
-    }
-}
+                name: 'Грань',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode15',
+                poster: 'HY.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Хидэки Такэути',
+                    genre: 'Триллер, Драма, Боевик',
+                    country: 'Япония',
+                    duration: '00:45:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Камера трясётся в руках, звук рвётся, на экране — обычный школьный двор, где обычного парня снова прижали к забору. Ничего нового. Кота Симура давно перестал считать синяки: мать тяжело болеет, в кошельке — пустота, а одноклассники чувствуют слабину носом, как собаки. Жить с этим можно. Жить на это — нельзя. И вот однажды случайно снятый ролик с дворовой дракой взлетает в сети так, что у Коты темнеет в глазах от количества просмотров. Деньги. Внимание. Хоть что-то, что не отнимет завтрашний день. Парень, ни разу в жизни не вставший в правильную боевую стойку, начинает по ночам пересматривать мутные видеоуроки, заучивая удары, как иероглифы. Получается криво, болезненно, но получается. Стримерская лестница не прощает слабину — каждая новая трансляция требует драки жёстче предыдущей, а зрители быстро привыкают к зрелищу и просят добавки. Рядом появляются такие же отчаявшиеся — кто-то стал другом, кто-то союзником на одну ночь эфира. Цифры подписчиков растут, как температура у больного: вроде хороший знак, а тревожно. Мир интернет-славы оказывается куда грязнее школьного двора — тут предают красивее и бьют не только кулаками. Вопрос лишь один: что Кота продаст раньше — свой страх или себя самого?',
+                    cast: [
+                        { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' },
+                        { name: 'Миэко Харада', role: '', tag: '' },
+                        { name: 'Нана Асакава', role: '', tag: '' },
+                        { name: 'Аи Миками', role: '', tag: '' },
+                        { name: 'Араки Суго', role: '', tag: '' },
+                        { name: 'Такуро Осада', role: '', tag: '' }
+                    ]
+                }
+            }
         };
 
         // =====================================================
@@ -1751,6 +1744,7 @@
             { name: '50-летние профи', year: 2026, rating: 8.5, poster: 'God.jpg', isDrama: true, isSeries: true, genre: 'комедия, боевик, криминал', dramaId: 'drama12' },
             { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg', isDrama: true, isSeries: true, genre: 'Мелодрама, Фэнтези', dramaId: 'drama13' },
             { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg', isDrama: true, isSeries: true, genre: 'комедия, мелодрама, романтика, молодость, спорт', dramaId: 'drama14' },
+            { name: 'Грань', year: 2026, rating: 8.2, poster: 'HY.jpg', isDrama: true, isSeries: true, genre: 'Триллер, Драма, Боевик', dramaId: 'drama15' },
             { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
         ];
 
@@ -1897,13 +1891,13 @@
                     const year = this.dataset.year;
                     currentYear = year;
                     applyFilters();
-                    document.getElementById('yearsToggle').textContent = ` 📅 ${year}`;
+                    document.getElementById('yearsToggle').textContent = ` ${year}`;
                     container.querySelectorAll('.year-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     document.getElementById('yearsDropdown').classList.remove('open');
                 });
             });
-            document.getElementById('yearsToggle').textContent = ' 📅 Поиск по годам';
+            document.getElementById('yearsToggle').textContent = ' Поиск по годам';
         }
 
         document.getElementById('yearsToggle').addEventListener('click', function(e) {
@@ -2057,7 +2051,7 @@
         document.getElementById('sortSelect').addEventListener('change', function() {
             currentSort = this.value;
             applyFilters();
-            showToast('Сортировка обновлена', '📊', 'info');
+            showToast('Сортировка обновлена', '', 'info');
         });
 
         // =====================================================
@@ -2162,6 +2156,9 @@
                 } else if (dId === 'drama14') {
                     dramaData = { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg',
                         details: `<strong>Оригинальное название:</strong> 亲爱的，热爱的 (Go Go Squid!)<br><strong>Год выпуска:</strong> 2019<br><strong>Страна:</strong> Китай<br><strong>Жанр:</strong> комедия, мелодрама, романтика, молодость, спорт<br><strong>Режиссёры:</strong> Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama15') {
+                    dramaData = { name: 'Грань', year: 2026, rating: 8.2, poster: 'HY.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Хидэки Такэути<br><strong>Жанр:</strong> Триллер, Драма, Боевик<br><strong>Страна:</strong> Япония<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else {
                     dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
                         details: `<strong>Год:</strong> ${movie.year || '—'}` };
