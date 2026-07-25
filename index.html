@@ -103,7 +103,6 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        /* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (СЛАЙДЕР) ===== */
         .theme-toggle-wrapper {
             position: absolute;
             top: 20px;
@@ -177,7 +176,6 @@
         [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
         [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
-        /* ===== ЖАНРЫ (ВЫПАДАЮЩЕЕ МЕНЮ ПОВЕРХ ВСЕГО) ===== */
         .genres-wrapper {
             position: absolute;
             top: 70px;
@@ -263,7 +261,6 @@
             color: #f1c40f;
         }
 
-        /* ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ ВВЕРХУ) ===== */
         .years-wrapper {
             position: absolute;
             top: 20px;
@@ -345,7 +342,6 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
-        /* ===== ПРОДОЛЖИТЬ ПРОСМОТР (ПО ЦЕНТРУ ВЕРТИКАЛИ, СПРАВА) ===== */
         .continue-wrapper {
             position: absolute;
             top: 50%;
@@ -414,7 +410,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ===== ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + КНОПКИ) ===== */
         .controls-bar {
             width: 100%;
             padding: 12px 20px 8px 20px;
@@ -629,7 +624,6 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        /* ===== СЕТКА ФИЛЬМОВ ===== */
         .movies-grid-wrapper {
             width: 100%;
             flex: 1;
@@ -679,11 +673,6 @@
         .movie-card:nth-child(13) { animation-delay: 0.65s; }
         .movie-card:nth-child(14) { animation-delay: 0.70s; }
         .movie-card:nth-child(15) { animation-delay: 0.75s; }
-        .movie-card:nth-child(16) { animation-delay: 0.80s; }
-        .movie-card:nth-child(17) { animation-delay: 0.85s; }
-        .movie-card:nth-child(18) { animation-delay: 0.90s; }
-        .movie-card:nth-child(19) { animation-delay: 0.95s; }
-        .movie-card:nth-child(20) { animation-delay: 1.00s; }
 
         @keyframes fadeInUp {
             from {
@@ -788,7 +777,6 @@
             margin-bottom: 12px;
         }
 
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -925,7 +913,6 @@
             transform: rotate(90deg);
         }
 
-        /* ===== РЕЙТИНГ В МОДАЛКЕ ===== */
         .modal-rating-section {
             margin: 12px 0;
             display: flex;
@@ -965,7 +952,6 @@
             color: var(--accent-color);
         }
 
-        /* ===== TOAST УВЕДОМЛЕНИЯ ===== */
         .toast-container {
             position: fixed;
             bottom: 100px;
@@ -1010,28 +996,15 @@
         }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(50px);
-            }
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(50px); }
         }
 
-        /* ===== КНОПКА "НАВЕРХ" ===== */
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -1293,7 +1266,6 @@
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Изображение" />
 
-        <!-- ===== ЛОГОТИП И ЖАНРЫ (СЛЕВА) ===== -->
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
             <div class="genres-wrapper">
@@ -1301,7 +1273,6 @@
             </div>
         </div>
 
-        <!-- ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (СЛАЙДЕР) ===== -->
         <div class="theme-toggle-wrapper">
             <span class="theme-toggle-label" id="themeLabel">Тема</span>
             <div class="theme-switch" id="themeSwitch">
@@ -1313,13 +1284,11 @@
             </div>
         </div>
 
-        <!-- ===== ФИЛЬТР ПО ГОДАМ (ПО ЦЕНТРУ) ===== -->
         <div class="years-wrapper" id="yearsWrapper">
             <div class="years-toggle" id="yearsToggle"> 📅 Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
-        <!-- ===== ПРОДОЛЖИТЬ ПРОСМОТР (ПО ЦЕНТРУ ВЕРТИКАЛИ, СПРАВА) ===== -->
         <div class="continue-wrapper" id="continueWrapper">
             <div class="continue-card" id="continueCard">
                 <img class="continue-poster" id="continuePoster" src="" alt="Постер" />
@@ -1331,7 +1300,6 @@
         </div>
     </div>
 
-    <!-- ===== ПАНЕЛЬ УПРАВЛЕНИЯ ===== -->
     <div class="controls-bar">
         <div class="controls-inner">
             <div class="sort-wrapper">
@@ -1360,7 +1328,6 @@
         </div>
     </div>
 
-    <!-- ===== СЕТКА С ФИЛЬМАМИ ===== -->
     <div class="movies-grid-wrapper">
         <div class="movies-grid" id="moviesGrid"></div>
         <div class="no-results" id="noResults">
@@ -1369,10 +1336,8 @@
         </div>
     </div>
 
-    <!-- ===== КНОПКА "НАВЕРХ" ===== -->
     <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
-    <!-- ===== МОДАЛЬНОЕ ОКНО ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">✕</button>
@@ -1395,7 +1360,6 @@
         </div>
     </div>
 
-    <!-- ===== TOAST КОНТЕЙНЕР ===== -->
     <div class="toast-container" id="toastContainer"></div>
 
     <footer class="site-footer">
@@ -1438,6 +1402,20 @@
         });
 
         applyTheme(currentTheme);
+
+        // =====================================================
+        // ===== TOAST =====
+        // =====================================================
+        function showToast(message, icon = '📢', type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 3000);
+        }
 
         // =====================================================
         // ===== ДАННЫЕ О ДОРАМАХ =====
@@ -1694,6 +1672,33 @@
                         { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }
                     ]
                 }
+            },
+            drama14: {
+                name: 'Вперёд, Кальмар!',
+                episodes: 41,
+                storageKey: 'lastDramaEpisode14',
+                poster: 'WK.jpg',
+                info: {
+                    year: '2019',
+                    director: 'Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли',
+                    genre: 'комедия, мелодрама, романтика, молодость, спорт',
+                    country: 'Китай',
+                    duration: '00:45:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Бойкая и харизматичная студентка Тун Нянь занята собственными научными разработками по изучению искусственного интеллекта, а в свободное время участвует в аниме-косплеях и поет песни в своем видеостриме. Но вся ее спокойная жизнь полетела под откос, когда она встретилась с Хань Шан Яном — капитаном команды по киберспорту. Однако неприступный красавчик не замечает ничего вокруг, обеспокоенный только предстоящим чемпионатом мира. Умная девушка придумывает, как привлечь внимание парня: раз это невозможно в реальности, значит, надо сделать это в кибервселенной.',
+                    cast: [
+                        { name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' },
+                        { name: 'Ли Сянь', role: 'Хань Шан Янь', tag: 'Главная роль' },
+                        { name: 'Ли Миндэ', role: '', tag: '' },
+                        { name: 'Вэнь Ифань', role: '', tag: '' },
+                        { name: 'Чэнь Сицзюнь', role: '', tag: '' },
+                        { name: 'Ли Хунчи', role: '', tag: '' },
+                        { name: 'Ли Цзэфэн', role: '', tag: '' },
+                        { name: 'Юй Чэнъэнь', role: '', tag: '' },
+                        { name: 'Ху Итянь', role: '', tag: '' },
+                        { name: 'Сюй Лэсяо', role: '', tag: '' }
+                    ]
+                }
             }
         };
 
@@ -1714,6 +1719,7 @@
             { name: 'В погоне за нефритом', year: 2026, rating: 8.2, poster: 'KK.jpg', isDrama: true, isSeries: true, genre: 'драма, мелодрама', dramaId: 'drama11' },
             { name: '50-летние профи', year: 2026, rating: 8.5, poster: 'God.jpg', isDrama: true, isSeries: true, genre: 'комедия, боевик, криминал', dramaId: 'drama12' },
             { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg', isDrama: true, isSeries: true, genre: 'Мелодрама, Фэнтези', dramaId: 'drama13' },
+            { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg', isDrama: true, isSeries: true, genre: 'комедия, мелодрама, романтика, молодость, спорт', dramaId: 'drama14' },
             { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
         ];
 
@@ -1747,21 +1753,7 @@
         }
 
         // =====================================================
-        // ===== TOAST УВЕДОМЛЕНИЯ =====
-        // =====================================================
-        function showToast(message, icon = '📢', type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                if (toast.parentNode) toast.remove();
-            }, 3000);
-        }
-
-        // =====================================================
-        // ===== РЕЙТИНГИ (в localStorage) =====
+        // ===== РЕЙТИНГИ =====
         // =====================================================
         let ratings = JSON.parse(localStorage.getItem('movieRatings')) || {};
 
@@ -1789,7 +1781,7 @@
         }
 
         // =====================================================
-        // ===== РЕНДЕР ЖАНРОВ =====
+        // ===== ЖАНРЫ =====
         // =====================================================
         function getAllGenres() {
             const genresSet = new Set();
@@ -1851,7 +1843,7 @@
         });
 
         // =====================================================
-        // ===== ВЫПАДАЮЩИЙ ФИЛЬТР ПО ГОДАМ =====
+        // ===== ГОДА =====
         // =====================================================
         let currentYear = 'all';
 
@@ -1896,7 +1888,7 @@
         });
 
         // =====================================================
-        // ===== ОБЩАЯ ФИЛЬТРАЦИЯ + СОРТИРОВКА =====
+        // ===== ФИЛЬТРАЦИЯ + СОРТИРОВКА =====
         // =====================================================
         let currentGenre = 'all';
         let currentSearchQuery = '';
@@ -1963,7 +1955,6 @@
             let html = '';
             filtered.forEach(movie => {
                 const fav = isFavorite(movie.name) ? 'favorited' : '';
-                const ratingData = getMovieRating(movie.name);
                 html += `
                     <div class="movie-card" data-movie='${JSON.stringify(movie).replace(/'/g, "&#39;")}'>
                         <span class="rating-badge">⭐ ${movie.rating || '—'}</span>
@@ -2015,7 +2006,7 @@
         }
 
         // =====================================================
-        // ===== ИЗБРАННОЕ (кнопка-переключатель) =====
+        // ===== ИЗБРАННОЕ (кнопка) =====
         // =====================================================
         document.getElementById('favoritesToggle').addEventListener('click', function() {
             showFavoritesOnly = !showFavoritesOnly;
@@ -2137,6 +2128,9 @@
                 } else if (dId === 'drama13') {
                     dramaData = { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg',
                         details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Ким Чхиль-бон<br><strong>Жанр:</strong> Мелодрама, Фэнтези<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:49:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama14') {
+                    dramaData = { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg',
+                        details: `<strong>Оригинальное название:</strong> 亲爱的，热爱的 (Go Go Squid!)<br><strong>Год выпуска:</strong> 2019<br><strong>Страна:</strong> Китай<br><strong>Жанр:</strong> комедия, мелодрама, романтика, молодость, спорт<br><strong>Режиссёры:</strong> Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else {
                     dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
                         details: `<strong>Год:</strong> ${movie.year || '—'}` };
@@ -2174,9 +2168,6 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // =====================================================
-        // ===== ЗВЁЗДЫ ДЛЯ ОЦЕНКИ =====
-        // =====================================================
         function updateStars(highlighted) {
             const stars = document.querySelectorAll('#starRating span');
             stars.forEach((star, index) => {
@@ -2269,6 +2260,7 @@
 
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('📊 Функции: Сортировка | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
+        console.log('📽️ Дорам на сайте: ' + Object.keys(DRAMAS).length);
     </script>
 </body>
 </html>
