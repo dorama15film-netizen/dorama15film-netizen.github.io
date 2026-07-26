@@ -80,7 +80,6 @@
             transition: background 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Кнопка "На главную" */
         .header .back-btn {
             color: var(--text-primary);
             text-decoration: none;
@@ -101,7 +100,6 @@
             box-shadow: 0 0 30px var(--shadow-glow);
         }
 
-        /* Заголовок дорамы */
         .header .title {
             font-size: 22px;
             font-weight: 700;
@@ -233,7 +231,7 @@
         }
 
         /* ============================================================
-           БЛОК 7: ИНФОРМАЦИЯ О СЕРИИ
+           БЛОК 7: ИНФОРМАЦИЯ О СЕРИИ (БЕЗ КНОПКИ)
            ============================================================ */
         .episode-info {
             display: flex;
@@ -255,25 +253,6 @@
             color: var(--text-secondary);
             font-size: 16px;
             transition: color 0.3s ease;
-        }
-
-        /* Кнопка "Следующая серия" */
-        .next-episode-btn {
-            background: var(--accent-color);
-            border: 2px solid var(--accent-color);
-            color: #0b0e14;
-            padding: 8px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.25s ease;
-            font-family: system-ui, sans-serif;
-        }
-
-        .next-episode-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--shadow-glow);
         }
 
         /* ============================================================
@@ -484,7 +463,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Форма комментария */
         .comment-form {
             display: flex;
             gap: 12px;
@@ -557,7 +535,6 @@
             box-shadow: 0 0 30px var(--shadow-glow);
         }
 
-        /* Список комментариев */
         .comments-list {
             display: flex;
             flex-direction: column;
@@ -721,8 +698,6 @@
             .comment-form input { min-width: auto; }
             .comment-form textarea { min-width: auto; min-height: 50px; }
             .auto-next-wrapper { flex-wrap: wrap; }
-            .episode-info { flex-direction: column; align-items: stretch; gap: 8px; }
-            .next-episode-btn { width: 100%; text-align: center; }
         }
 
         @media (max-width: 480px) {
@@ -759,7 +734,6 @@
             <span id="dramaEpisodes">6 серий</span>
         </div>
 
-        <!-- Переключатель темы -->
         <div class="theme-toggle-wrapper">
             <span class="theme-toggle-label" id="themeLabel">Тема</span>
             <div class="theme-switch" id="themeSwitch">
@@ -785,15 +759,12 @@
         </div>
 
         <!-- ============================================================
-        БЛОК 18: ИНФОРМАЦИЯ О СЕРИИ + КНОПКА "СЛЕДУЮЩАЯ"
+        БЛОК 18: ИНФОРМАЦИЯ О СЕРИИ (БЕЗ КНОПКИ)
         ============================================================ -->
         <div class="episode-info">
             <div>
                 <span class="current-episode" id="currentEpisode">Серия 1</span>
                 <span class="episode-title" id="episodeTitle"> Начало истории</span>
-            </div>
-            <div>
-                <button class="next-episode-btn" id="nextEpisodeBtn">⏭️ Следующая</button>
             </div>
         </div>
 
@@ -1664,7 +1635,7 @@
         }
 
         // ============================================================
-        // БЛОК 34: ПЕРЕХОД НА СЛЕДУЮЩУЮ СЕРИЮ
+        // БЛОК 34: ПЕРЕХОД НА СЛЕДУЮЩУЮ СЕРИЮ (С СОХРАНЕНИЕМ FULLSCREEN)
         // ============================================================
         function goToNextEpisode() {
             if (isAutoNextLoading) return;
@@ -1673,60 +1644,90 @@
             const nextNumber = currentEpisode + 1;
             if (nextNumber <= drama.episodes) {
                 isAutoNextLoading = true;
-                showToast(`⏭️ Переход на серию ${nextNumber}...`, '📺', 'info');
+                showToast(`⏭️ Серия ${nextNumber}...`, '📺', 'info');
                 
+                // Сохраняем состояние полноэкранного режима
+                const isFullscreen = document.fullscreenElement || 
+                                    document.webkitFullscreenElement || 
+                                    document.mozFullScreenElement ||
+                                    document.msFullscreenElement;
+                
+                // Переключаем серию
+                loadEpisode(nextNumber);
+                saveLastEpisode(nextNumber);
+                
+                // Восстанавливаем полноэкранный режим, если он был
                 setTimeout(() => {
-                    loadEpisode(nextNumber);
-                    saveLastEpisode(nextNumber);
+                    if (isFullscreen) {
+                        try {
+                            const iframe = document.getElementById('videoPlayer');
+                            if (iframe && iframe.requestFullscreen) {
+                                iframe.requestFullscreen();
+                            } else if (iframe && iframe.webkitRequestFullscreen) {
+                                iframe.webkitRequestFullscreen();
+                            } else if (iframe && iframe.mozRequestFullScreen) {
+                                iframe.mozRequestFullScreen();
+                            } else if (iframe && iframe.msRequestFullscreen) {
+                                iframe.msRequestFullscreen();
+                            }
+                        } catch (e) {
+                            // Если не удалось восстановить полноэкранный режим — игнорируем
+                        }
+                    }
                     isAutoNextLoading = false;
-                }, 800);
+                }, 500);
             } else {
                 showToast('🏁 Это последняя серия!', '🎬', 'success');
             }
         }
 
         // ============================================================
-        // БЛОК 35: ОБНАРУЖЕНИЕ ОКОНЧАНИЯ ВИДЕО (ЧЕРЕЗ API И ТАЙМЕР)
+        // БЛОК 35: ОБНАРУЖЕНИЕ ОКОНЧАНИЯ ВИДЕО
         // ============================================================
         function setupVideoEndDetection() {
-            try {
-                // Способ 1: через postMessage от VK Video
-                window.addEventListener('message', function(event) {
-                    if (event.data && typeof event.data === 'string') {
-                        try {
-                            const data = JSON.parse(event.data);
-                            if (data.type === 'videoEnded' || data.event === 'ended') {
-                                console.log('🎬 Видео закончилось (API)');
-                                goToNextEpisode();
-                            }
-                        } catch (e) {}
-                    }
-                });
-                console.log('✅ API VK Video обнаружен');
-            } catch (e) {
-                console.log('⚠️ API VK Video не доступен, используем таймер');
-            }
+            // Способ 1: через postMessage от VK Video
+            window.addEventListener('message', function(event) {
+                if (event.data && typeof event.data === 'string') {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'videoEnded' || data.event === 'ended') {
+                            console.log('🎬 Видео закончилось (API)');
+                            goToNextEpisode();
+                        }
+                    } catch (e) {}
+                }
+            });
+            console.log('✅ API VK Video обнаружен');
 
             // Способ 2: таймер (запасной вариант)
             setupTimerDetection();
         }
 
         function setupTimerDetection() {
+            // Проверяем каждые 2 секунды
             setInterval(() => {
                 try {
+                    // Если это последняя серия — не проверяем
                     if (currentEpisode >= drama.episodes) return;
                     
+                    // Если уже идёт загрузка — пропускаем
+                    if (isAutoNextLoading) return;
+                    
+                    // Получаем длительность серии
                     const durationSeconds = getDurationSeconds();
                     if (durationSeconds > 0) {
                         const timeSinceLoad = Date.now() - lastLoadTime;
-                        if (timeSinceLoad > (durationSeconds * 1000 + 5000) && !endedFlag && !isAutoNextLoading) {
+                        // Добавляем небольшую задержку (2 секунды) для надёжности
+                        if (timeSinceLoad > (durationSeconds * 1000 + 2000) && !endedFlag) {
                             endedFlag = true;
                             console.log('🎬 Видео закончилось (таймер)');
                             goToNextEpisode();
                         }
                     }
-                } catch (e) {}
-            }, 3000);
+                } catch (e) {
+                    // Игнорируем ошибки
+                }
+            }, 2000);
         }
 
         function getDurationSeconds() {
@@ -1742,21 +1743,7 @@
         }
 
         // ============================================================
-        // БЛОК 36: КНОПКА "СЛЕДУЮЩАЯ СЕРИЯ"
-        // ============================================================
-        document.getElementById('nextEpisodeBtn').addEventListener('click', function() {
-            const nextNumber = currentEpisode + 1;
-            if (nextNumber <= drama.episodes) {
-                loadEpisode(nextNumber);
-                saveLastEpisode(nextNumber);
-                showToast(`⏭️ Серия ${nextNumber}`, '📺', 'info');
-            } else {
-                showToast('🏁 Это последняя серия!', '🎬', 'success');
-            }
-        });
-
-        // ============================================================
-        // БЛОК 37: ИНИЦИАЛИЗАЦИЯ ПЛЕЕРА
+        // БЛОК 36: ИНИЦИАЛИЗАЦИЯ ПЛЕЕРА
         // ============================================================
         renderInfo();
         renderEpisodes();
@@ -1778,7 +1765,7 @@
         });
 
         // ============================================================
-        // БЛОК 38: КОММЕНТАРИИ
+        // БЛОК 37: КОММЕНТАРИИ
         // ============================================================
         const COMMENTS_STORAGE_KEY = `comments_${dramaId}`;
         let comments = JSON.parse(localStorage.getItem(COMMENTS_STORAGE_KEY)) || [];
@@ -1863,7 +1850,7 @@
         renderComments();
 
         // ============================================================
-        // БЛОК 39: ВЫВОД В КОНСОЛЬ
+        // БЛОК 38: ВЫВОД В КОНСОЛЬ
         // ============================================================
         console.log('🎬 Дорама загружена: ' + drama.name);
         console.log('📺 Серий: ' + drama.episodes);
