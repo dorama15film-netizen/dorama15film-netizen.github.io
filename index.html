@@ -6,6 +6,9 @@
     <title>Дорамы от Дианы</title>
     <link rel="icon" href="Log.png" type="image/png">
     <style>
+        /* ============================================================
+           БЛОК 1: ОБНУЛЕНИЕ СТИЛЕЙ И ПЕРЕМЕННЫЕ ТЕМ
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -65,6 +68,9 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
+        /* ============================================================
+           БЛОК 2: ОБЁРТКА С ИЗОБРАЖЕНИЕМ
+           ============================================================ */
         .image-wrapper {
             width: 100%;
             height: 55vh;
@@ -81,6 +87,9 @@
             display: block;
         }
 
+        /* ============================================================
+           БЛОК 3: ЛОГОТИП И ЖАНРЫ
+           ============================================================ */
         .logo-overlay {
             position: absolute;
             top: 20px;
@@ -102,79 +111,6 @@
             transform: scale(1.05);
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
-
-        .theme-toggle-wrapper {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 30;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .theme-toggle-label {
-            color: var(--text-secondary);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .theme-switch {
-            position: relative;
-            width: 56px;
-            height: 30px;
-            background: #2a313f;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            border: 2px solid #3a4555;
-            flex-shrink: 0;
-        }
-
-        [data-theme="light"] .theme-switch {
-            background: #00bcd4;
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .theme-switch .slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 22px;
-            height: 22px;
-            background: #8892a8;
-            border-radius: 50%;
-            transition: 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="light"] .theme-switch .slider {
-            left: 28px;
-            background: #ffffff;
-            box-shadow: 0 2px 12px rgba(0, 212, 255, 0.4);
-        }
-
-        .theme-switch:hover {
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
-        .theme-switch .theme-icons {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 6px;
-            align-items: center;
-            height: 100%;
-            font-size: 14px;
-            color: #6a7288;
-            pointer-events: none;
-        }
-
-        [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
-        [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
         .genres-wrapper {
             position: absolute;
@@ -261,6 +197,141 @@
             color: #f1c40f;
         }
 
+        /* ============================================================
+           БЛОК 4: СЧЁТЧИК ОНЛАЙНА (ПРАВЫЙ ВЕРХНИЙ УГОЛ)
+           ============================================================ */
+        .online-counter {
+            position: absolute;
+            top: 20px;
+            right: 85px;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid #2a313f;
+            border-radius: 30px;
+            padding: 6px 16px 6px 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            user-select: none;
+        }
+
+        [data-theme="light"] .online-counter {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: #90c4d4;
+        }
+
+        .online-counter .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        .online-counter .count {
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .online-counter .label {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* ============================================================
+           БЛОК 5: ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+           ============================================================ */
+        .theme-toggle-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle-label {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #2a313f;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border: 2px solid #3a4555;
+            flex-shrink: 0;
+        }
+
+        [data-theme="light"] .theme-switch {
+            background: #00bcd4;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .theme-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: #8892a8;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] .theme-switch .slider {
+            left: 28px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 212, 255, 0.4);
+        }
+
+        .theme-switch:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .theme-switch .theme-icons {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 6px;
+            align-items: center;
+            height: 100%;
+            font-size: 14px;
+            color: #6a7288;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
+        [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
+
+        /* ============================================================
+           БЛОК 6: ФИЛЬТР ПО ГОДАМ
+           ============================================================ */
         .years-wrapper {
             position: absolute;
             top: 20px;
@@ -342,6 +413,9 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
+        /* ============================================================
+           БЛОК 7: ПРОДОЛЖИТЬ ПРОСМОТР
+           ============================================================ */
         .continue-wrapper {
             position: absolute;
             top: 50%;
@@ -410,6 +484,9 @@
             transition: color 0.3s ease;
         }
 
+        /* ============================================================
+           БЛОК 8: ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + ИЗБРАННОЕ)
+           ============================================================ */
         .controls-bar {
             width: 100%;
             padding: 12px 20px 8px 20px;
@@ -437,14 +514,6 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
-        }
-
-        .sort-wrapper label {
-            color: var(--text-secondary);
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            transition: color 0.3s ease;
         }
 
         .sort-wrapper select {
@@ -536,6 +605,9 @@
             text-align: center;
         }
 
+        /* ============================================================
+           БЛОК 9: ПОИСК
+           ============================================================ */
         .search-section {
             width: 100%;
             padding: 15px 20px 8px 20px;
@@ -624,6 +696,9 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
+        /* ============================================================
+           БЛОК 10: СЕТКА ФИЛЬМОВ
+           ============================================================ */
         .movies-grid-wrapper {
             width: 100%;
             flex: 1;
@@ -676,14 +751,8 @@
         .movie-card:nth-child(16) { animation-delay: 0.80s; }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .movie-card:hover {
@@ -759,6 +828,9 @@
             transition: border-color 0.3s ease, color 0.3s ease;
         }
 
+        /* ============================================================
+           БЛОК 11: НЕТ РЕЗУЛЬТАТОВ
+           ============================================================ */
         .no-results {
             display: none;
             text-align: center;
@@ -778,6 +850,9 @@
             margin-bottom: 12px;
         }
 
+        /* ============================================================
+           БЛОК 12: МОДАЛЬНОЕ ОКНО
+           ============================================================ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -914,6 +989,9 @@
             transform: rotate(90deg);
         }
 
+        /* ============================================================
+           БЛОК 13: РЕЙТИНГ В МОДАЛКЕ
+           ============================================================ */
         .modal-rating-section {
             margin: 12px 0;
             display: flex;
@@ -953,6 +1031,9 @@
             color: var(--accent-color);
         }
 
+        /* ============================================================
+           БЛОК 14: TOAST УВЕДОМЛЕНИЯ
+           ============================================================ */
         .toast-container {
             position: fixed;
             bottom: 100px;
@@ -980,21 +1061,11 @@
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        .toast.success {
-            border-color: #2ecc71;
-        }
+        .toast.success { border-color: #2ecc71; }
+        .toast.error { border-color: #e74c3c; }
+        .toast.info { border-color: var(--accent-color); }
 
-        .toast.error {
-            border-color: #e74c3c;
-        }
-
-        .toast.info {
-            border-color: var(--accent-color);
-        }
-
-        .toast .toast-icon {
-            font-size: 20px;
-        }
+        .toast .toast-icon { font-size: 20px; }
 
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
@@ -1006,6 +1077,9 @@
             to { opacity: 0; transform: translateX(50px); }
         }
 
+        /* ============================================================
+           БЛОК 15: КНОПКА "НАВЕРХ"
+           ============================================================ */
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -1052,6 +1126,9 @@
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
+        /* ============================================================
+           БЛОК 16: ПОДВАЛ (FOOTER)
+           ============================================================ */
         .site-footer {
             width: 100%;
             background: var(--bg-header);
@@ -1155,8 +1232,15 @@
             color: var(--accent-color);
         }
 
+        /* ============================================================
+           БЛОК 17: АДАПТИВНЫЙ ДИЗАЙН
+           ============================================================ */
         @media (max-width: 768px) {
             .image-wrapper { height: 45vh; }
+            .online-counter { top: 12px; right: 65px; padding: 4px 12px 4px 8px; gap: 6px; }
+            .online-counter .dot { width: 8px; height: 8px; }
+            .online-counter .count { font-size: 13px; }
+            .online-counter .label { font-size: 10px; }
             .theme-toggle-wrapper { top: 12px; right: 12px; gap: 6px; }
             .theme-switch { width: 48px; height: 26px; }
             .theme-switch .slider { width: 18px; height: 18px; }
@@ -1188,24 +1272,17 @@
             .modal-content .modal-details { font-size: 13px; }
             .modal-content .modal-watch-link { font-size: 15px; padding: 10px 20px; }
             .scroll-top-btn { width: 45px; height: 45px; font-size: 20px; bottom: 20px; right: 20px; }
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                text-align: center;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-            .toast-container {
-                bottom: 80px;
-                right: 15px;
-                max-width: 280px;
-            }
+            .footer-content { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .toast-container { bottom: 80px; right: 15px; max-width: 280px; }
         }
 
         @media (max-width: 480px) {
             .image-wrapper { height: 40vh; }
+            .online-counter { top: 8px; right: 48px; padding: 3px 8px 3px 6px; gap: 4px; border-radius: 20px; border-width: 1.5px; }
+            .online-counter .dot { width: 6px; height: 6px; }
+            .online-counter .count { font-size: 11px; }
+            .online-counter .label { font-size: 8px; }
             .theme-toggle-wrapper { top: 8px; right: 8px; gap: 4px; }
             .theme-switch { width: 42px; height: 22px; }
             .theme-switch .slider { width: 16px; height: 16px; top: 1px; left: 1px; }
@@ -1244,29 +1321,24 @@
             .modal-content .modal-details { font-size: 12px; line-height: 1.5; }
             .modal-rating-section .stars { font-size: 22px; }
             .scroll-top-btn { width: 40px; height: 40px; font-size: 18px; bottom: 15px; right: 15px; }
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                text-align: center;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-            .toast-container {
-                bottom: 70px;
-                right: 10px;
-                max-width: 240px;
-            }
+            .footer-content { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
             .toast { font-size: 12px; padding: 10px 14px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ============================================================
+    БЛОК 18: ОБЁРТКА С ИЗОБРАЖЕНИЕМ
+    ============================================================ -->
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Изображение" />
 
+        <!-- ============================================================
+        БЛОК 19: ЛОГОТИП И ЖАНРЫ
+        ============================================================ -->
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
             <div class="genres-wrapper">
@@ -1274,6 +1346,18 @@
             </div>
         </div>
 
+        <!-- ============================================================
+        БЛОК 20: СЧЁТЧИК ОНЛАЙНА (ПРАВЫЙ ВЕРХНИЙ УГОЛ)
+        ============================================================ -->
+        <div class="online-counter" id="onlineCounter">
+            <span class="dot"></span>
+            <span class="count" id="onlineCount">1</span>
+            <span class="label">онлайн</span>
+        </div>
+
+        <!-- ============================================================
+        БЛОК 21: ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+        ============================================================ -->
         <div class="theme-toggle-wrapper">
             <span class="theme-toggle-label" id="themeLabel">Тема</span>
             <div class="theme-switch" id="themeSwitch">
@@ -1285,11 +1369,17 @@
             </div>
         </div>
 
+        <!-- ============================================================
+        БЛОК 22: ФИЛЬТР ПО ГОДАМ
+        ============================================================ -->
         <div class="years-wrapper" id="yearsWrapper">
             <div class="years-toggle" id="yearsToggle">Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
+        <!-- ============================================================
+        БЛОК 23: ПРОДОЛЖИТЬ ПРОСМОТР
+        ============================================================ -->
         <div class="continue-wrapper" id="continueWrapper">
             <div class="continue-card" id="continueCard">
                 <img class="continue-poster" id="continuePoster" src="" alt="Постер" />
@@ -1301,27 +1391,32 @@
         </div>
     </div>
 
+    <!-- ============================================================
+    БЛОК 24: ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + ИЗБРАННОЕ)
+    ============================================================ -->
     <div class="controls-bar">
         <div class="controls-inner">
             <div class="sort-wrapper">
-                <label for="sortSelect"></label>
                 <select id="sortSelect">
                     <option value="default">По умолчанию</option>
-                    <option value="rating">По рейтингу -</option>
-                    <option value="rating-asc">По рейтингу +</option>
-                    <option value="year">По году -</option>
-                    <option value="year-asc">По году +</option>
+                    <option value="rating">По рейтингу ↓</option>
+                    <option value="rating-asc">По рейтингу ↑</option>
+                    <option value="year">По году ↓</option>
+                    <option value="year-asc">По году ↑</option>
                     <option value="name">По названию А-Я</option>
                 </select>
             </div>
             <div class="action-buttons">
                 <button class="action-btn favorite-btn" id="favoritesToggle">
-                    ❤️ Избранное <span class="badge" id="favoritesCount">0</span>
+                    Избранное <span class="badge" id="favoritesCount">0</span>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- ============================================================
+    БЛОК 25: ПОИСК
+    ============================================================ -->
     <div class="search-section">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="Поиск фильмов..." autocomplete="off" />
@@ -1329,6 +1424,9 @@
         </div>
     </div>
 
+    <!-- ============================================================
+    БЛОК 26: СЕТКА ФИЛЬМОВ
+    ============================================================ -->
     <div class="movies-grid-wrapper">
         <div class="movies-grid" id="moviesGrid"></div>
         <div class="no-results" id="noResults">
@@ -1337,8 +1435,14 @@
         </div>
     </div>
 
+    <!-- ============================================================
+    БЛОК 27: КНОПКА "НАВЕРХ"
+    ============================================================ -->
     <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
+    <!-- ============================================================
+    БЛОК 28: МОДАЛЬНОЕ ОКНО
+    ============================================================ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">✕</button>
@@ -1361,8 +1465,14 @@
         </div>
     </div>
 
+    <!-- ============================================================
+    БЛОК 29: TOAST УВЕДОМЛЕНИЯ
+    ============================================================ -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- ============================================================
+    БЛОК 30: ПОДВАЛ (FOOTER)
+    ============================================================ -->
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-column">
@@ -1383,9 +1493,12 @@
         </div>
     </footer>
 
+    <!-- ============================================================
+    БЛОК 31: JAVASCRIPT
+    ============================================================ -->
     <script>
         // =====================================================
-        // ===== ТЕМА =====
+        // БЛОК 32: ТЕМА
         // =====================================================
         const themeSwitch = document.getElementById('themeSwitch');
         let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -1399,13 +1512,13 @@
         themeSwitch.addEventListener('click', () => {
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
-            showToast(newTheme === 'light' ? ' Светлая тема' : ' Тёмная тема', '', 'info');
+            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '', 'info');
         });
 
         applyTheme(currentTheme);
 
         // =====================================================
-        // ===== TOAST =====
+        // БЛОК 33: TOAST
         // =====================================================
         function showToast(message, icon = '', type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1419,7 +1532,53 @@
         }
 
         // =====================================================
-        // ===== ДАННЫЕ О ДОРАМАХ =====
+        // БЛОК 34: СЧЁТЧИК ОНЛАЙНА
+        // =====================================================
+        (function() {
+            const STORAGE_KEY = 'drama_online_users';
+            const HEARTBEAT_INTERVAL = 10000;
+            const TIMEOUT_INTERVAL = 30000;
+            const countElement = document.getElementById('onlineCount');
+
+            function getOnlineUsers() {
+                const now = Date.now();
+                let users = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                for (const [key, time] of Object.entries(users)) {
+                    if (now - time > TIMEOUT_INTERVAL) delete users[key];
+                }
+                const userId = localStorage.getItem('drama_user_id') || generateUserId();
+                localStorage.setItem('drama_user_id', userId);
+                users[userId] = now;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                return Object.keys(users).length;
+            }
+
+            function generateUserId() {
+                return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+
+            function updateCounter() {
+                const count = getOnlineUsers();
+                if (countElement) countElement.textContent = count;
+            }
+
+            updateCounter();
+            setInterval(updateCounter, HEARTBEAT_INTERVAL);
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) updateCounter();
+            });
+            window.addEventListener('beforeunload', function() {
+                const userId = localStorage.getItem('drama_user_id');
+                if (userId) {
+                    let users = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                    delete users[userId];
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                }
+            });
+        })();
+
+        // =====================================================
+        // БЛОК 35: ДАННЫЕ О ДОРАМАХ
         // =====================================================
         const DRAMAS = {
             drama1: {
@@ -1727,7 +1886,7 @@
         };
 
         // =====================================================
-        // ===== СПИСОК ФИЛЬМОВ =====
+        // БЛОК 36: СПИСОК ФИЛЬМОВ
         // =====================================================
         const movies = [
             { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия', dramaId: 'drama1' },
@@ -1749,7 +1908,7 @@
         ];
 
         // =====================================================
-        // ===== ИЗБРАННОЕ =====
+        // БЛОК 37: ИЗБРАННОЕ
         // =====================================================
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showFavoritesOnly = false;
@@ -1758,10 +1917,10 @@
             const index = favorites.indexOf(movieName);
             if (index > -1) {
                 favorites.splice(index, 1);
-                showToast('Удалено из избранного', '💔', 'error');
+                showToast('Удалено из избранного', '', 'error');
             } else {
                 favorites.push(movieName);
-                showToast('Добавлено в избранное!', '❤️', 'success');
+                showToast('Добавлено в избранное!', '', 'success');
             }
             localStorage.setItem('favorites', JSON.stringify(favorites));
             updateFavoritesCount();
@@ -1778,7 +1937,7 @@
         }
 
         // =====================================================
-        // ===== РЕЙТИНГИ =====
+        // БЛОК 38: РЕЙТИНГИ
         // =====================================================
         let ratings = JSON.parse(localStorage.getItem('movieRatings')) || {};
 
@@ -1790,7 +1949,7 @@
             ratings[movieName].count += 1;
             localStorage.setItem('movieRatings', JSON.stringify(ratings));
             updateModalRating(movieName);
-            showToast(`Оценка ${stars}⭐ поставлена!`, '⭐', 'success');
+            showToast('Оценка ' + stars + ' поставлена!', '', 'success');
         }
 
         function getMovieRating(movieName) {
@@ -1806,7 +1965,7 @@
         }
 
         // =====================================================
-        // ===== ЖАНРЫ =====
+        // БЛОК 39: ЖАНРЫ
         // =====================================================
         function getAllGenres() {
             const genresSet = new Set();
@@ -1868,7 +2027,7 @@
         });
 
         // =====================================================
-        // ===== ГОДА =====
+        // БЛОК 40: ГОДА
         // =====================================================
         let currentYear = 'all';
 
@@ -1913,7 +2072,7 @@
         });
 
         // =====================================================
-        // ===== ФИЛЬТРАЦИЯ + СОРТИРОВКА =====
+        // БЛОК 41: ФИЛЬТРАЦИЯ + СОРТИРОВКА
         // =====================================================
         let currentGenre = 'all';
         let currentSearchQuery = '';
@@ -1999,7 +2158,7 @@
         }
 
         // =====================================================
-        // ===== ОБРАБОТЧИКИ КАРТОЧЕК =====
+        // БЛОК 42: ОБРАБОТЧИКИ КАРТОЧЕК
         // =====================================================
         function attachCardClickHandlers() {
             document.querySelectorAll('.movie-card').forEach(card => {
@@ -2031,14 +2190,14 @@
         }
 
         // =====================================================
-        // ===== ИЗБРАННОЕ (кнопка) =====
+        // БЛОК 43: ИЗБРАННОЕ (кнопка)
         // =====================================================
         document.getElementById('favoritesToggle').addEventListener('click', function() {
             showFavoritesOnly = !showFavoritesOnly;
             this.classList.toggle('active');
             this.innerHTML = showFavoritesOnly ?
-                '❤️ Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>' :
-                '❤️ Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>';
+                'Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>' :
+                'Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>';
             if (showFavoritesOnly && favorites.length === 0) {
                 showToast('У вас пока нет избранных дорам', '😅', 'info');
             }
@@ -2046,7 +2205,7 @@
         });
 
         // =====================================================
-        // ===== СОРТИРОВКА =====
+        // БЛОК 44: СОРТИРОВКА
         // =====================================================
         document.getElementById('sortSelect').addEventListener('change', function() {
             currentSort = this.value;
@@ -2055,7 +2214,7 @@
         });
 
         // =====================================================
-        // ===== ПОИСК =====
+        // БЛОК 45: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2099,7 +2258,7 @@
         });
 
         // =====================================================
-        // ===== МОДАЛЬНОЕ ОКНО =====
+        // БЛОК 46: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2157,7 +2316,7 @@
                     dramaData = { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg',
                         details: `<strong>Оригинальное название:</strong> 亲爱的，热爱的 (Go Go Squid!)<br><strong>Год выпуска:</strong> 2019<br><strong>Страна:</strong> Китай<br><strong>Жанр:</strong> комедия, мелодрама, романтика, молодость, спорт<br><strong>Режиссёры:</strong> Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else if (dId === 'drama15') {
-                    dramaData = { name: 'Грань', year: 2026, rating: 8.2, poster: 'HY.jpg',
+                    dramaData = { name: 'Борьба в прямом эфире', year: 2026, rating: 8.2, poster: 'HY.jpg',
                         details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Хидэки Такэути<br><strong>Жанр:</strong> Триллер, Драма, Боевик<br><strong>Страна:</strong> Япония<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else {
                     dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
@@ -2231,7 +2390,7 @@
         });
 
         // =====================================================
-        // ===== ПРОДОЛЖИТЬ ПРОСМОТР =====
+        // БЛОК 47: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2262,7 +2421,7 @@
         }
 
         // =====================================================
-        // ===== КНОПКА "НАВЕРХ" =====
+        // БЛОК 48: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2273,7 +2432,7 @@
         });
 
         // =====================================================
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // БЛОК 49: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
@@ -2283,7 +2442,7 @@
 
         if (favorites.length > 0) {
             document.getElementById('favoritesToggle').innerHTML =
-                `❤️ Избранное <span class="badge" id="favoritesCount">${favorites.length}</span>`;
+                'Избранное <span class="badge" id="favoritesCount">' + favorites.length + '</span>';
         }
 
         console.log(' Сайт Дорамы от Дианы успешно загружен!');
