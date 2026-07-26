@@ -751,6 +751,7 @@
         .movie-card:nth-child(14) { animation-delay: 0.70s; }
         .movie-card:nth-child(15) { animation-delay: 0.75s; }
         .movie-card:nth-child(16) { animation-delay: 0.80s; }
+        .movie-card:nth-child(17) { animation-delay: 0.85s; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -1885,6 +1886,32 @@
                         { name: 'Такуро Осада', role: '', tag: '' }
                     ]
                 }
+            },
+            drama16: {
+                name: 'Золотое место',
+                episodes: 10,
+                storageKey: 'lastDramaEpisode16',
+                poster: 'LL.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Сон Хун Ким',
+                    genre: 'криминал, триллер',
+                    country: 'Корея Южная',
+                    duration: '00:52:50',
+                    translation: 'Любительский двухголосый',
+                    plot: 'Ким Хи Джу умеет быть невидимкой. Восемь часов в форме, проверяешь сумки, смотришь в документы, киваешь, пропускаешь. Аэропорт — место, где все куда-то летят, а ты стоишь на месте. Дома — ссоры, усталость, тупик. Она давно привыкла, что её жизнь — это узкий коридор без окон: вперёд идти можно, но куда — непонятно. Один знакомый пилот попросил подержать сумку. Обычную, с виду ничем не примечательную. Внутри оказалось золото. Вот тут всё и началось. Блеск металла делает с людьми странные вещи — гасит осторожность, разжигает что-то такое, о чём потом неловко вспоминать. Хи Джу не сразу, но поддалась. Кажется, что наконец-то — вот оно, шанс, которого так долго не было. Выход из коридора. Дверь в другую жизнь. Только золото — вещь такая: оно всегда чьё-то. И за ним уже идут. Директор Пак отправил людей. Преступники почуяли запах. Детектив Джин Ман тоже двигается по следу. А из прошлого появляется Чан Ук — человек, которого она когда-то знала, и который теперь смотрит на неё так, будто читает мысли. Спасаясь, Хи Джу бежит туда, куда меньше всего хотела возвращаться — в Gold Land, бывший шахтёрский город, пропахший азартом и старыми обидами. Здесь её знают. Здесь её помнят. Здесь её боятся — или, наоборот, ждут.',
+                    cast: [
+                        { name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' },
+                        { name: 'Сон Чхоль Ким', role: '', tag: '' },
+                        { name: 'Хён Ук Ли', role: '', tag: '' },
+                        { name: 'Хи Вон Ким', role: '', tag: '' },
+                        { name: 'Чжон Хи Мун', role: '', tag: '' },
+                        { name: 'Кван Су Ли', role: '', tag: '' },
+                        { name: 'Соль Ли', role: '', tag: '' },
+                        { name: 'Док Мун Чхве', role: '', tag: '' },
+                        { name: 'Мин Чжэ Ким', role: '', tag: '' }
+                    ]
+                }
             }
         };
 
@@ -1907,6 +1934,7 @@
             { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg', isDrama: true, isSeries: true, genre: 'Мелодрама, Фэнтези', dramaId: 'drama13' },
             { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg', isDrama: true, isSeries: true, genre: 'комедия, мелодрама, романтика, молодость, спорт', dramaId: 'drama14' },
             { name: 'Борьба в прямом эфире', year: 2026, rating: 8.2, poster: 'HY.jpg', isDrama: true, isSeries: true, genre: 'Триллер, Драма, Боевик', dramaId: 'drama15' },
+            { name: 'Золотое место', year: 2026, rating: 8.2, poster: 'LL.jpg', isDrama: true, isSeries: true, genre: 'криминал, триллер', dramaId: 'drama16' },
             { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
         ];
 
@@ -2321,6 +2349,9 @@
                 } else if (dId === 'drama15') {
                     dramaData = { name: 'Борьба в прямом эфире', year: 2026, rating: 8.2, poster: 'HY.jpg',
                         details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Хидэки Такэути<br><strong>Жанр:</strong> Триллер, Драма, Боевик<br><strong>Страна:</strong> Япония<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
+                } else if (dId === 'drama16') {
+                    dramaData = { name: 'Золотое место', year: 2026, rating: 8.2, poster: 'LL.jpg',
+                        details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Сон Хун Ким<br><strong>Жанр:</strong> криминал, триллер<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 00:52:50<br><strong>Перевод:</strong> Любительский двухголосый` };
                 } else {
                     dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
                         details: `<strong>Год:</strong> ${movie.year || '—'}` };
