@@ -1304,13 +1304,13 @@
     <div class="controls-bar">
         <div class="controls-inner">
             <div class="sort-wrapper">
-                <label for="sortSelect">Сортировка:</label>
+                <label for="sortSelect"></label>
                 <select id="sortSelect">
                     <option value="default">По умолчанию</option>
-                    <option value="rating">По рейтингу ↓</option>
-                    <option value="rating-asc">По рейтингу ↑</option>
-                    <option value="year">По году ↓</option>
-                    <option value="year-asc">По году ↑</option>
+                    <option value="rating">По рейтингу -</option>
+                    <option value="rating-asc">По рейтингу +</option>
+                    <option value="year">По году -</option>
+                    <option value="year-asc">По году +</option>
                     <option value="name">По названию А-Я</option>
                 </select>
             </div>
@@ -1399,7 +1399,7 @@
         themeSwitch.addEventListener('click', () => {
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
-            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '🎨', 'info');
+            showToast(newTheme === 'light' ? ' Светлая тема' : ' Тёмная тема', '', 'info');
         });
 
         applyTheme(currentTheme);
