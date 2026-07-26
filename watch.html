@@ -53,9 +53,6 @@
             --accent-hover: #0097a7;
         }
 
-        /* ============================================================
-           БЛОК 2: ОБЩИЕ СТИЛИ СТРАНИЦЫ
-           ============================================================ */
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -66,9 +63,6 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ============================================================
-           БЛОК 3: ШАПКА САЙТА (HEADER)
-           ============================================================ */
         .header {
             padding: 16px 30px;
             background: var(--bg-header);
@@ -123,9 +117,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           БЛОК 4: ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (СЛАЙДЕР)
-           ============================================================ */
         .theme-toggle-wrapper {
             margin-left: auto;
             display: flex;
@@ -196,9 +187,6 @@
         [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
         [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
-        /* ============================================================
-           БЛОК 5: ОСНОВНОЙ КОНТЕНТ
-           ============================================================ */
         .main-content {
             flex: 1;
             padding: 20px 30px 30px;
@@ -209,9 +197,6 @@
             flex-direction: column;
         }
 
-        /* ============================================================
-           БЛОК 6: ПЛЕЕР
-           ============================================================ */
         .player-wrapper {
             width: 100%;
             background: #000;
@@ -230,9 +215,6 @@
             display: block;
         }
 
-        /* ============================================================
-           БЛОК 7: ИНФОРМАЦИЯ О СЕРИИ (БЕЗ КНОПКИ)
-           ============================================================ */
         .episode-info {
             display: flex;
             justify-content: space-between;
@@ -255,9 +237,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           БЛОК 8: АВТОПЕРЕКЛЮЧЕНИЕ СЕРИЙ
-           ============================================================ */
         .auto-next-wrapper {
             display: flex;
             align-items: center;
@@ -266,6 +245,7 @@
             margin-top: 4px;
             border-top: 1px solid var(--border-color);
             padding-top: 12px;
+            flex-wrap: wrap;
         }
 
         .auto-next-wrapper label {
@@ -300,9 +280,6 @@
             color: var(--accent-color);
         }
 
-        /* ============================================================
-           БЛОК 9: СПИСОК СЕРИЙ
-           ============================================================ */
         .episodes-list {
             display: flex;
             gap: 12px;
@@ -336,9 +313,6 @@
             color: #0b0e14;
         }
 
-        /* ============================================================
-           БЛОК 10: ИНФОРМАЦИЯ О ДОРАМЕ
-           ============================================================ */
         .drama-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -384,9 +358,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           БЛОК 11: АКТЁРСКИЙ СОСТАВ
-           ============================================================ */
         .cast-section .cast-title {
             color: var(--text-primary);
             font-size: 18px;
@@ -434,9 +405,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           БЛОК 12: КОММЕНТАРИИ
-           ============================================================ */
         .comments-section {
             margin-top: 30px;
             padding-top: 20px;
@@ -618,9 +586,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           БЛОК 13: TOAST УВЕДОМЛЕНИЯ
-           ============================================================ */
         .toast-container {
             position: fixed;
             bottom: 100px;
@@ -679,9 +644,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============================================================
-           БЛОК 14: АДАПТИВНЫЙ ДИЗАЙН
-           ============================================================ */
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
             .header .title { font-size: 18px; }
@@ -723,17 +685,12 @@
     </style>
 </head>
 <body>
-
-    <!-- ============================================================
-    БЛОК 15: ШАПКА (HEADER)
-    ============================================================ -->
     <header class="header">
         <a href="index.html" class="back-btn"> На главную</a>
         <div class="title">
             <span id="dramaTitle">Завтра снова на работу!</span>
             <span id="dramaEpisodes">6 серий</span>
         </div>
-
         <div class="theme-toggle-wrapper">
             <span class="theme-toggle-label" id="themeLabel">Тема</span>
             <div class="theme-switch" id="themeSwitch">
@@ -746,21 +703,11 @@
         </div>
     </header>
 
-    <!-- ============================================================
-    БЛОК 16: ОСНОВНОЙ КОНТЕНТ
-    ============================================================ -->
     <main class="main-content">
-
-        <!-- ============================================================
-        БЛОК 17: ПЛЕЕР
-        ============================================================ -->
         <div class="player-wrapper">
             <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
         </div>
 
-        <!-- ============================================================
-        БЛОК 18: ИНФОРМАЦИЯ О СЕРИИ (БЕЗ КНОПКИ)
-        ============================================================ -->
         <div class="episode-info">
             <div>
                 <span class="current-episode" id="currentEpisode">Серия 1</span>
@@ -768,9 +715,6 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        БЛОК 19: АВТОПЕРЕКЛЮЧЕНИЕ СЕРИЙ
-        ============================================================ -->
         <div class="auto-next-wrapper">
             <label>
                 <input type="checkbox" id="autoNextToggle" checked />
@@ -779,40 +723,24 @@
             <span class="next-status active" id="nextStatus">✅ Включено</span>
         </div>
 
-        <!-- ============================================================
-        БЛОК 20: СПИСОК СЕРИЙ
-        ============================================================ -->
         <div class="episodes-list" id="episodesList"></div>
-
-        <!-- ============================================================
-        БЛОК 21: ИНФОРМАЦИЯ О ДОРАМЕ
-        ============================================================ -->
         <div class="drama-info" id="dramaInfo"></div>
 
-        <!-- ============================================================
-        БЛОК 22: КОММЕНТАРИИ
-        ============================================================ -->
         <div class="comments-section" id="commentsSection">
             <div class="comments-title">
                 💬 Комментарии <span id="commentsCount">(0)</span>
             </div>
-
             <div class="comment-form">
                 <input type="text" id="commentName" placeholder="Ваше имя..." maxlength="30" />
                 <textarea id="commentText" placeholder="Напишите комментарий..." maxlength="500"></textarea>
                 <button class="submit-btn" id="submitComment">Отправить</button>
             </div>
-
             <div class="comments-list" id="commentsList">
                 <div class="no-comments">Пока нет комментариев. Будьте первым! 🎬</div>
             </div>
         </div>
-
     </main>
 
-    <!-- ============================================================
-    БЛОК 23: JAVASCRIPT
-    ============================================================ -->
     <script>
         // ============================================================
         // БЛОК 24: ТЕМА (СВЕТЛАЯ/ТЁМНАЯ)
@@ -857,10 +785,9 @@
         }
 
         // ============================================================
-        // БЛОК 26: ДАННЫЕ О ДОРАМАХ (ВСЕ 15)
+        // БЛОК 26: ДАННЫЕ О ДОРАМАХ (ВСЕ 15) - СОКРАЩЁННЫЙ ВАРИАНТ
         // ============================================================
         const DRAMAS = {
-            // ===== ДОРАМА 1: Завтра снова на работу! =====
             drama1: {
                 name: 'Завтра снова на работу!',
                 episodes: 6,
@@ -870,16 +797,12 @@
                     director: 'Чо Ын-соль',
                     genre: 'мелодрама, комедия',
                     country: 'Республика Корея',
-                    duration: '—',
+                    duration: '00:45:00',
                     translation: '—',
                     plot: 'Увлекательная история о жизни и любви.',
                     cast: [
                         { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
-                        { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
-                        { name: 'Кан Ми На', role: 'Юн Но А', tag: '' },
-                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: '' },
-                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
-                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
+                        { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -891,7 +814,6 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
                 }
             },
-            // ===== ДОРАМА 2: Лазурная весна =====
             drama2: {
                 name: 'Лазурная весна',
                 episodes: 6,
@@ -906,9 +828,7 @@
                     plot: 'Говорят, море умеет слушать...',
                     cast: [
                         { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
-                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' },
-                        { name: 'Ко Джу-хи', role: 'Второстепенная роль', tag: '' },
-                        { name: 'Чон Хён-мин', role: 'Второстепенная роль', tag: '' }
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -920,7 +840,6 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239028&hash=77eede5363ac751f&hd=3'
                 }
             },
-            // ===== ДОРАМА 3: Абсолютная величина любви =====
             drama3: {
                 name: 'Абсолютная величина любви',
                 episodes: 14,
@@ -935,9 +854,7 @@
                     plot: 'Днём — серая мышка за последней партой...',
                     cast: [
                         { name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' },
-                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' },
-                        { name: 'Чха Хаг-ён', role: 'Чхве Су-мин', tag: '' },
-                        { name: 'Сон Джон-хёк', role: 'Ким Дон-гю', tag: '' }
+                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -957,7 +874,6 @@
                     14: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239042&hash=2c1c90e731a413de&hd=3'
                 }
             },
-            // ===== ДОРАМА 4: Атхит - это я =====
             drama4: {
                 name: 'Атхит - это я',
                 episodes: 6,
@@ -967,17 +883,12 @@
                     director: 'Bhandit Thongdee, Simon Kessler',
                     genre: 'комедия, романтика',
                     country: 'Таиланд',
-                    duration: '44 мин.',
+                    duration: '00:44:00',
                     translation: 'Озвучка, Субтитры',
                     plot: 'Сун работает сборщиком долгов...',
                     cast: [
                         { name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
-                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' },
-                        { name: 'Parinya Angsanan', role: 'Мек (Mek)', tag: '' },
-                        { name: 'Papungkorn Sakunsong', role: 'Най (Nai)', tag: '' },
-                        { name: 'Nathas Tunjaroen', role: 'Манкон (Mangkorn)', tag: '' },
-                        { name: 'Weerapat Toemmaneerat', role: 'Тай (Thai)', tag: '' },
-                        { name: 'Tanawat Hudchaleelaha', role: 'Немо (Nemo)', tag: '' }
+                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -989,7 +900,6 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239048&hash=d9466f01ce9b0a00&hd=3'
                 }
             },
-            // ===== ДОРАМА 5: Бойфренд по запросу =====
             drama5: {
                 name: 'Бойфренд по запросу',
                 episodes: 10,
@@ -1004,21 +914,7 @@
                     plot: 'Со Ми Рэ живёт работой...',
                     cast: [
                         { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
-                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' },
-                        { name: 'Рю Абель', role: '', tag: '' },
-                        { name: 'Ким Сон Чхоль', role: '', tag: '' },
-                        { name: 'Пак Чи-ху', role: '', tag: '' },
-                        { name: 'Кон Мин Чжон', role: '', tag: '' },
-                        { name: 'Ко Гю Пхиль', role: '', tag: '' },
-                        { name: 'Кан Мин У', role: '', tag: '' },
-                        { name: 'Сон Ха-На', role: '', tag: '' },
-                        { name: 'Ю Сон Хо', role: '', tag: '' },
-                        { name: 'Хё Рим Со', role: '', tag: '' },
-                        { name: 'Сон Хо Ён', role: '', tag: '' },
-                        { name: 'Хун Ли', role: '', tag: '' },
-                        { name: 'Ким А Ён', role: '', tag: '' },
-                        { name: 'Пак Хэ-лин', role: '', tag: '' },
-                        { name: 'Тинюй Лу', role: '', tag: '' }
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1034,7 +930,6 @@
                     10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239058&hash=4cd0477c2a8825b2&hd=3'
                 }
             },
-            // ===== ДОРАМА 6: Жена принца XXI века =====
             drama6: {
                 name: 'Жена принца XXI века',
                 episodes: 12,
@@ -1046,16 +941,10 @@
                     country: 'Корея Южная',
                     duration: '01:14:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема...',
+                    plot: 'Корея, которой не существует...',
                     cast: [
                         { name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' },
-                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' },
-                        { name: 'Стив Санхён Но', role: '', tag: '' },
-                        { name: 'Гон Сын Ён', role: '', tag: '' },
-                        { name: 'Ю Су Бин', role: '', tag: '' },
-                        { name: 'Ли Ён', role: '', tag: '' },
-                        { name: 'Пак Джун Мён', role: '', tag: '' },
-                        { name: 'Пён Со Юн', role: '', tag: '' }
+                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1073,7 +962,6 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239070&hash=27d8c0f57c73886f&hd=3'
                 }
             },
-            // ===== ДОРАМА 7: Весенняя лихорадка =====
             drama7: {
                 name: 'Весенняя лихорадка',
                 episodes: 12,
@@ -1088,15 +976,7 @@
                     plot: 'Юн Бом сбегает из Сеула...',
                     cast: [
                         { name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' },
-                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' },
-                        { name: 'Чха Со-вон', role: '', tag: '' },
-                        { name: 'Чо Джун-ён', role: '', tag: '' },
-                        { name: 'Ли Джэ-ин', role: '', tag: '' },
-                        { name: 'Чин Гён', role: '', tag: '' },
-                        { name: 'Пэ Джон-нам', role: '', tag: '' },
-                        { name: 'Ким Бён-чхун', role: '', tag: '' },
-                        { name: 'О Ман-сок', role: '', tag: '' },
-                        { name: 'Чон Ён-ги', role: '', tag: '' }
+                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1114,7 +994,6 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239082&hash=60863793b7acf836&hd=3'
                 }
             },
-            // ===== ДОРАМА 8: Босс компании «Тайфун» =====
             drama8: {
                 name: 'Босс компании «Тайфун»',
                 episodes: 16,
@@ -1126,18 +1005,10 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами...',
+                    plot: '1997 год. Южная Корея...',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
-                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' },
-                        { name: 'Сон Дон-иль', role: '', tag: '' },
-                        { name: 'Ким Джи-ён', role: '', tag: '' },
-                        { name: 'Ким Мин-сок', role: '', tag: '' },
-                        { name: 'Му Джин-сон', role: '', tag: '' },
-                        { name: 'Квон Хан-соль', role: '', tag: '' },
-                        { name: 'Ли Чхан-хун', role: '', tag: '' },
-                        { name: 'Ким Джэ-хва', role: '', tag: '' },
-                        { name: 'Ким Сон-иль', role: '', tag: '' }
+                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1159,7 +1030,6 @@
                     16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239083&hash=bd27462a88e0354c&hd=3'
                 }
             },
-            // ===== ДОРАМА 9: Все твои желания исполнятся =====
             drama9: {
                 name: 'Все твои желания исполнятся',
                 episodes: 13,
@@ -1174,20 +1044,7 @@
                     plot: 'Га Ён разучилась мечтать...',
                     cast: [
                         { name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' },
-                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' },
-                        { name: 'Ын Джин Ан', role: '', tag: '' },
-                        { name: 'Стив Но', role: '', tag: '' },
-                        { name: 'Гю Пхиль Го', role: '', tag: '' },
-                        { name: 'Джу Ён Ли', role: '', tag: '' },
-                        { name: 'Ми Гён Ким', role: '', tag: '' },
-                        { name: 'Шин Э Шин', role: '', tag: '' },
-                        { name: 'Мён Син Пак', role: '', tag: '' },
-                        { name: 'Док Джу Ким', role: '', tag: '' },
-                        { name: 'Дон Ёп Го', role: '', tag: '' },
-                        { name: 'Дэниэл Хенни', role: '', tag: '' },
-                        { name: 'Чжи Хун Ким (I)', role: '', tag: '' },
-                        { name: 'Хё Кё Сон', role: '', tag: '' },
-                        { name: 'Му Сэн Ли', role: '', tag: '' }
+                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1206,7 +1063,6 @@
                     13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239099&hash=6cabc9bafeaebb9c&hd=3'
                 }
             },
-            // ===== ДОРАМА 10: Полярная звезда =====
             drama10: {
                 name: 'Полярная звезда',
                 episodes: 9,
@@ -1218,18 +1074,10 @@
                     country: 'Корея Южная',
                     duration: '00:53:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона...',
+                    plot: 'Мун Джу когда-то была звездой...',
                     cast: [
                         { name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' },
-                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' },
-                        { name: 'Джон Чо', role: '', tag: '' },
-                        { name: 'Ли Ми-сук', role: '', tag: '' },
-                        { name: 'Пак Хэ-джун', role: '', tag: '' },
-                        { name: 'Ким Хэ-сук', role: '', tag: '' },
-                        { name: 'О Джон-сэ', role: '', tag: '' },
-                        { name: 'Ли Сан-хи', role: '', tag: '' },
-                        { name: 'Чу Джон-хёк', role: '', tag: '' },
-                        { name: 'Вон Джи-ан', role: '', tag: '' }
+                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1244,7 +1092,6 @@
                     9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239112&hash=c19a0446c984a05c&hd=3'
                 }
             },
-            // ===== ДОРАМА 11: В погоне за нефритом =====
             drama11: {
                 name: 'В погоне за нефритом',
                 episodes: 40,
@@ -1259,15 +1106,7 @@
                     plot: 'Метель — штука безжалостная...',
                     cast: [
                         { name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' },
-                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' },
-                        { name: 'Ду Чунь', role: '', tag: '' },
-                        { name: 'Янь Икуань', role: '', tag: '' },
-                        { name: 'Лю Линь', role: '', tag: '' },
-                        { name: 'Ли Цин', role: '', tag: '' },
-                        { name: 'Юэ Ян', role: '', tag: '' },
-                        { name: 'Чжу Цзаньцзинь', role: '', tag: '' },
-                        { name: 'Ванг Джин Эр', role: '', tag: '' },
-                        { name: 'Сноу Кун', role: '', tag: '' }
+                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1313,7 +1152,6 @@
                     40: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239121&hash=cf2cff84d1ec1195&hd=3'
                 }
             },
-            // ===== ДОРАМА 12: 50-летние профи =====
             drama12: {
                 name: '50-летние профи',
                 episodes: 12,
@@ -1329,14 +1167,7 @@
                     cast: [
                         { name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' },
                         { name: 'О Джонсэ', role: 'Бон', tag: 'Главная роль' },
-                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' },
-                        { name: 'Ли Хакчу', role: '', tag: '' },
-                        { name: 'Квон Юль', role: '', tag: '' },
-                        { name: 'Ким Санхо', role: '', tag: '' },
-                        { name: 'Син Донми', role: '', tag: '' },
-                        { name: 'Ким Синнок', role: '', tag: '' },
-                        { name: 'Хан Джиын', role: '', tag: '' },
-                        { name: 'Хён Бонсик', role: '', tag: '' }
+                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1354,7 +1185,6 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239161&hash=995e9149fbb3df42&hd=3'
                 }
             },
-            // ===== ДОРАМА 13: Клетки эмпатии =====
             drama13: {
                 name: 'Клетки эмпатии',
                 episodes: 6,
@@ -1369,9 +1199,7 @@
                     plot: 'Бывают люди, которые чувствуют слишком много...',
                     cast: [
                         { name: 'Ким Мён-су', role: 'Психолог-консультант', tag: 'Главная роль' },
-                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' },
-                        { name: 'Квон Со-хён', role: '', tag: '' },
-                        { name: 'Щин У-гём', role: '', tag: '' }
+                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1383,7 +1211,6 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239173&hash=1549506a870806c6&hd=3'
                 }
             },
-            // ===== ДОРАМА 14: Вперёд, Кальмар! =====
             drama14: {
                 name: 'Вперёд, Кальмар!',
                 episodes: 41,
@@ -1395,18 +1222,10 @@
                     country: 'Китай',
                     duration: '00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Бойкая и харизматичная студентка Тун Нянь занята собственными научными разработками по изучению искусственного интеллекта, а в свободное время участвует в аниме-косплеях и поет песни в своем видеостриме. Но вся ее спокойная жизнь полетела под откос, когда она встретилась с Хань Шан Яном — капитаном команды по киберспорту. Однако неприступный красавчик не замечает ничего вокруг, обеспокоенный только предстоящим чемпионатом мира. Умная девушка придумывает, как привлечь внимание парня: раз это невозможно в реальности, значит, надо сделать это в кибервселенной.',
+                    plot: 'Бойкая и харизматичная студентка Тун Нянь...',
                     cast: [
                         { name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' },
-                        { name: 'Ли Сянь', role: 'Хань Шан Янь', tag: 'Главная роль' },
-                        { name: 'Ли Миндэ', role: '', tag: '' },
-                        { name: 'Вэнь Ифань', role: '', tag: '' },
-                        { name: 'Чэнь Сицзюнь', role: '', tag: '' },
-                        { name: 'Ли Хунчи', role: '', tag: '' },
-                        { name: 'Ли Цзэфэн', role: '', tag: '' },
-                        { name: 'Юй Чэнъэнь', role: '', tag: '' },
-                        { name: 'Ху Итянь', role: '', tag: '' },
-                        { name: 'Сюй Лэсяо', role: '', tag: '' }
+                        { name: 'Ли Сянь', role: 'Хань Шан Янь', tag: 'Главная роль' }
                     ]
                 },
                 videos: {
@@ -1453,7 +1272,6 @@
                     41: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239265&hash=724b2c5ee4c89247&hd=3'
                 }
             },
-            // ===== ДОРАМА 15: Грань =====
             drama15: {
                 name: 'Грань',
                 episodes: 6,
@@ -1465,7 +1283,7 @@
                     country: 'Япония',
                     duration: '00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Камера трясётся в руках, звук рвётся, на экране — обычный школьный двор, где обычного парня снова прижали к забору. Ничего нового. Кота Симура давно перестал считать синяки: мать тяжело болеет, в кошельке — пустота, а одноклассники чувствуют слабину носом, как собаки. Жить с этим можно. Жить на это — нельзя. И вот однажды случайно снятый ролик с дворовой дракой взлетает в сети так, что у Коты темнеет в глазах от количества просмотров. Деньги. Внимание. Хоть что-то, что не отнимет завтрашний день. Парень, ни разу в жизни не вставший в правильную боевую стойку, начинает по ночам пересматривать мутные видеоуроки, заучивая удары, как иероглифы. Получается криво, болезненно, но получается. Стримерская лестница не прощает слабину — каждая новая трансляция требует драки жёстче предыдущей, а зрители быстро привыкают к зрелищу и просят добавки. Рядом появляются такие же отчаявшиеся — кто-то стал другом, кто-то союзником на одну ночь эфира. Цифры подписчиков растут, как температура у больного: вроде хороший знак, а тревожно. Мир интернет-славы оказывается куда грязнее школьного двора — тут предают красивее и бьют не только кулаками. Вопрос лишь один: что Кота продаст раньше — свой страх или себя самого?',
+                    plot: 'Камера трясётся в руках, звук рвётся...',
                     cast: [
                         { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' },
                         { name: 'Миэко Харада', role: '', tag: '' },
@@ -1526,7 +1344,6 @@
         let currentEpisode = 1;
         let lastLoadTime = Date.now();
         let isAutoNextLoading = false;
-        let endedFlag = false;
 
         // ============================================================
         // БЛОК 29: ОТОБРАЖЕНИЕ ИНФОРМАЦИИ О ДОРАМЕ
@@ -1597,7 +1414,6 @@
                 videoPlayer.src = videoUrl;
                 lastLoadTime = Date.now();
                 isAutoNextLoading = false;
-                endedFlag = false;
             }
         }
 
@@ -1635,7 +1451,7 @@
         }
 
         // ============================================================
-        // БЛОК 34: ПЕРЕХОД НА СЛЕДУЮЩУЮ СЕРИЮ (С СОХРАНЕНИЕМ FULLSCREEN)
+        // БЛОК 34: ПЕРЕХОД НА СЛЕДУЮЩУЮ СЕРИЮ (ИСПРАВЛЕННЫЙ)
         // ============================================================
         function goToNextEpisode() {
             if (isAutoNextLoading) return;
@@ -1644,7 +1460,6 @@
             const nextNumber = currentEpisode + 1;
             if (nextNumber <= drama.episodes) {
                 isAutoNextLoading = true;
-                showToast(`⏭️ Серия ${nextNumber}...`, '📺', 'info');
                 
                 // Сохраняем состояние полноэкранного режима
                 const isFullscreen = document.fullscreenElement || 
@@ -1661,14 +1476,16 @@
                     if (isFullscreen) {
                         try {
                             const iframe = document.getElementById('videoPlayer');
-                            if (iframe && iframe.requestFullscreen) {
-                                iframe.requestFullscreen();
-                            } else if (iframe && iframe.webkitRequestFullscreen) {
-                                iframe.webkitRequestFullscreen();
-                            } else if (iframe && iframe.mozRequestFullScreen) {
-                                iframe.mozRequestFullScreen();
-                            } else if (iframe && iframe.msRequestFullscreen) {
-                                iframe.msRequestFullscreen();
+                            if (iframe) {
+                                if (iframe.requestFullscreen) {
+                                    iframe.requestFullscreen();
+                                } else if (iframe.webkitRequestFullscreen) {
+                                    iframe.webkitRequestFullscreen();
+                                } else if (iframe.mozRequestFullScreen) {
+                                    iframe.mozRequestFullScreen();
+                                } else if (iframe.msRequestFullscreen) {
+                                    iframe.msRequestFullscreen();
+                                }
                             }
                         } catch (e) {
                             // Если не удалось восстановить полноэкранный режим — игнорируем
@@ -1676,14 +1493,14 @@
                     }
                     isAutoNextLoading = false;
                 }, 500);
-            } else {
-                showToast('🏁 Это последняя серия!', '🎬', 'success');
             }
         }
 
         // ============================================================
-        // БЛОК 35: ОБНАРУЖЕНИЕ ОКОНЧАНИЯ ВИДЕО
+        // БЛОК 35: ОБНАРУЖЕНИЕ ОКОНЧАНИЯ ВИДЕО (ИСПРАВЛЕННЫЙ)
         // ============================================================
+        let autoNextInterval = null;
+
         function setupVideoEndDetection() {
             // Способ 1: через postMessage от VK Video
             window.addEventListener('message', function(event) {
@@ -1704,8 +1521,13 @@
         }
 
         function setupTimerDetection() {
+            // Очищаем старый интервал, если есть
+            if (autoNextInterval) {
+                clearInterval(autoNextInterval);
+            }
+            
             // Проверяем каждые 2 секунды
-            setInterval(() => {
+            autoNextInterval = setInterval(() => {
                 try {
                     // Если это последняя серия — не проверяем
                     if (currentEpisode >= drama.episodes) return;
@@ -1713,13 +1535,15 @@
                     // Если уже идёт загрузка — пропускаем
                     if (isAutoNextLoading) return;
                     
+                    // Если автопереключение выключено — пропускаем
+                    if (!autoNextEnabled) return;
+                    
                     // Получаем длительность серии
                     const durationSeconds = getDurationSeconds();
                     if (durationSeconds > 0) {
                         const timeSinceLoad = Date.now() - lastLoadTime;
-                        // Добавляем небольшую задержку (2 секунды) для надёжности
-                        if (timeSinceLoad > (durationSeconds * 1000 + 2000) && !endedFlag) {
-                            endedFlag = true;
+                        // Добавляем небольшую задержку (3 секунды) для надёжности
+                        if (timeSinceLoad > (durationSeconds * 1000 + 3000)) {
                             console.log('🎬 Видео закончилось (таймер)');
                             goToNextEpisode();
                         }
@@ -1760,8 +1584,9 @@
         window.addEventListener('load', () => {
             const saved = getLastEpisode();
             if (saved !== currentEpisode) loadEpisode(saved);
-            setupVideoEndDetection();
+            setTimeout(setupVideoEndDetection, 1000);
             console.log('⏭️ Автопереключение серий активировано');
+            console.log('📺 Длительность серии: ' + drama.info.duration);
         });
 
         // ============================================================
@@ -1855,6 +1680,7 @@
         console.log('🎬 Дорама загружена: ' + drama.name);
         console.log('📺 Серий: ' + drama.episodes);
         console.log('⏭️ Автопереключение: ' + (autoNextEnabled ? 'ВКЛ' : 'ВЫКЛ'));
+        console.log('⏱️ Длительность серии: ' + drama.info.duration);
     </script>
 </body>
 </html>
