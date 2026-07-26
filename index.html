@@ -1304,7 +1304,7 @@
     <div class="controls-bar">
         <div class="controls-inner">
             <div class="sort-wrapper">
-                <label for="sortSelect"></label>
+                <label for="sortSelect">Сортировка:</label>
                 <select id="sortSelect">
                     <option value="default">По умолчанию</option>
                     <option value="rating">По рейтингу ↓</option>
@@ -1337,7 +1337,7 @@
         </div>
     </div>
 
-    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">Верх</button>
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
@@ -1422,35 +1422,28 @@
         // ===== ДАННЫЕ О ДОРАМАХ =====
         // =====================================================
         const DRAMAS = {
-           drama1: {
-    name: 'Завтра снова на работу!',
-    episodes: 6,
-    storageKey: 'lastDramaEpisode1',
-    info: {
-        year: '2024',
-        director: 'Чо Ын-соль',
-        genre: 'мелодрама, комедия',
-        country: 'Республика Корея',
-        duration: '01:10:00',
-        translation: 'Профессиональный многоголосый',
-        plot: 'Увлекательная история о жизни и любви. Кан Си У и Ча Джи Юн — двое совершенно разных людей, чьи судьбы переплетаются в вихре событий. Он — известный архитектор, она — талантливый дизайнер. Смогут ли они преодолеть все преграды на пути к счастью?',
-        cast: [
-            { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
-            { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
-            { name: 'Кан Ми На', role: 'Юн Но А', tag: 'Второстепенная роль' },
-            { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: 'Второстепенная роль' },
-            { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: 'Второстепенная роль' },
-            { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: 'Второстепенная роль' }
-        ]
-    },
-    videos: {
-        1: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239017&hash=840fe3708e6631e2&hd=3',
-        2: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239018&hash=beca558dabab47be&hd=3',
-        3: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239019&hash=2d01bbbcca816411&hd=3',
-        4: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239020&hash=11e776e7ffbe1859&hd=3',
-        5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239021&hash=3e2b94d232d22eef&hd=3',
-        6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
-    }
+            drama1: {
+                name: 'Завтра снова на работу!',
+                episodes: 6,
+                storageKey: 'lastDramaEpisode1',
+                poster: 'DR.jpg',
+                info: {
+                    year: '2024',
+                    director: 'Чо Ын-соль',
+                    genre: 'мелодрама, комедия',
+                    country: 'Республика Корея',
+                    duration: '—',
+                    translation: '—',
+                    plot: 'Увлекательная история о жизни и любви.',
+                    cast: [
+                        { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
+                        { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
+                        { name: 'Кан Ми На', role: 'Юн Но А', tag: '' },
+                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: '' },
+                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
+                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
+                    ]
+                }
             },
             drama2: {
                 name: 'Лазурная весна',
@@ -2164,7 +2157,7 @@
                     dramaData = { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg',
                         details: `<strong>Оригинальное название:</strong> 亲爱的，热爱的 (Go Go Squid!)<br><strong>Год выпуска:</strong> 2019<br><strong>Страна:</strong> Китай<br><strong>Жанр:</strong> комедия, мелодрама, романтика, молодость, спорт<br><strong>Режиссёры:</strong> Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else if (dId === 'drama15') {
-                    dramaData = { name: 'Борьба в прямом эфире', year: 2026, rating: 8.2, poster: 'HY.jpg',
+                    dramaData = { name: 'Грань', year: 2026, rating: 8.2, poster: 'HY.jpg',
                         details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Хидэки Такэути<br><strong>Жанр:</strong> Триллер, Драма, Боевик<br><strong>Страна:</strong> Япония<br><strong>Продолжительность:</strong> 00:45:00<br><strong>Перевод:</strong> Профессиональный многоголосый` };
                 } else {
                     dramaData = { name: movie.name, year: movie.year, rating: movie.rating, poster: movie.poster,
