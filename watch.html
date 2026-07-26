@@ -672,7 +672,7 @@
 
         <div class="comments-section" id="commentsSection">
             <div class="comments-title">
-                💬 Комментарии <span id="commentsCount">(0)</span>
+                 Комментарии <span id="commentsCount">(0)</span>
             </div>
 
             <div class="comment-form">
@@ -682,7 +682,7 @@
             </div>
 
             <div class="comments-list" id="commentsList">
-                <div class="no-comments">Пока нет комментариев. Будьте первым! 🎬</div>
+                <div class="no-comments">Пока нет комментариев. Будьте первым! </div>
             </div>
         </div>
     </main>
@@ -703,7 +703,7 @@
         themeSwitch.addEventListener('click', () => {
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(newTheme);
-            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '🎨', 'info');
+            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '', 'info');
         });
 
         applyTheme(currentTheme);
@@ -1480,7 +1480,7 @@
             countSpan.textContent = `(${comments.length})`;
 
             if (comments.length === 0) {
-                container.innerHTML = '<div class="no-comments">Пока нет комментариев. Будьте первым! 🎬</div>';
+                container.innerHTML = '<div class="no-comments">Пока нет комментариев. Будьте первым! </div>';
                 return;
             }
 
