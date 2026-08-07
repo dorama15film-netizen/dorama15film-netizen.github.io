@@ -69,8 +69,6 @@
             gap: 20px;
             flex-wrap: wrap;
             transition: background 0.3s ease, border-color 0.3s ease;
-            z-index: 100;
-            position: relative;
         }
 
         .header .back-btn {
@@ -97,7 +95,10 @@
             font-size: 22px;
             font-weight: 700;
             color: #1a4d2e;
-            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5), 0 0 20px rgba(241, 196, 15, 0.3), 0 0 40px rgba(241, 196, 15, 0.1);
+            text-shadow:
+                0 0 10px rgba(241, 196, 15, 0.5),
+                0 0 20px rgba(241, 196, 15, 0.3),
+                0 0 40px rgba(241, 196, 15, 0.1);
             -webkit-text-stroke: 1px var(--accent-color);
             text-stroke: 1px var(--accent-color);
             text-transform: uppercase;
@@ -193,9 +194,6 @@
             flex-direction: column;
         }
 
-        /* =====================================================
-           ПЛЕЕР - ОСНОВНОЙ КОНТЕЙНЕР
-           ===================================================== */
         .player-wrapper {
             width: 100%;
             background: #000;
@@ -212,278 +210,8 @@
             height: 100%;
             border: none;
             display: block;
-            pointer-events: auto;
         }
 
-        /* =====================================================
-           МЕНЮ ВНУТРИ ПЛЕЕРА (всегда поверх iframe)
-           ===================================================== */
-        .player-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .player-controls .top-left {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            pointer-events: auto;
-            z-index: 21;
-        }
-
-        .player-controls .bottom-left {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            pointer-events: none;
-            z-index: 21;
-        }
-
-        /* КНОПКА МЕНЮ СЕРИЙ */
-        .episode-menu-btn {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s ease;
-            font-family: system-ui, sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            user-select: none;
-            pointer-events: auto;
-        }
-
-        .episode-menu-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
-        .episode-menu-btn .arrow {
-            transition: 0.3s ease;
-        }
-
-        .episode-menu-btn .arrow.open {
-            transform: rotate(180deg);
-        }
-
-        /* ВЫПАДАЮЩЕЕ МЕНЮ СЕРИЙ */
-        .episode-dropdown {
-            position: absolute;
-            top: 52px;
-            left: 0;
-            z-index: 30;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 10px 12px;
-            max-height: 0;
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        opacity 0.3s ease,
-                        visibility 0.3s ease;
-            min-width: 120px;
-            max-width: 260px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
-            pointer-events: auto;
-            overflow-y: auto;
-        }
-
-        .episode-dropdown.open {
-            max-height: 320px;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .episode-dropdown::-webkit-scrollbar {
-            width: 4px;
-        }
-        .episode-dropdown::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-        .episode-dropdown::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 10px;
-        }
-
-        .episode-dropdown .episode-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s ease;
-            white-space: nowrap;
-            border: none;
-            background: transparent;
-            width: 100%;
-            font-family: system-ui, sans-serif;
-        }
-
-        .episode-dropdown .episode-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-
-        .episode-dropdown .episode-item.active {
-            background: rgba(241, 196, 15, 0.2);
-            color: var(--accent-color);
-            border: 1px solid rgba(241, 196, 15, 0.3);
-        }
-
-        .episode-dropdown .episode-item .num {
-            font-weight: 700;
-            min-width: 28px;
-            color: var(--text-muted);
-        }
-
-        .episode-dropdown .episode-item.active .num {
-            color: var(--accent-color);
-        }
-
-        .episode-dropdown .episode-item .check {
-            margin-left: auto;
-            color: var(--accent-color);
-            font-size: 16px;
-            opacity: 0;
-            transition: 0.2s ease;
-        }
-
-        .episode-dropdown .episode-item.active .check {
-            opacity: 1;
-        }
-
-        /* ИНФОРМАЦИЯ О СЕРИИ НА ПЛЕЕРЕ (снизу) */
-        .player-episode-info {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
-            font-family: system-ui, sans-serif;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-        }
-
-        .player-episode-info .ep-num {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        /* КНОПКА ПОЛНОЭКРАННОГО РЕЖИМА (своя) */
-        .fullscreen-btn {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            z-index: 21;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            pointer-events: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-        }
-
-        .fullscreen-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
-            transform: scale(1.1);
-            border-color: var(--accent-color);
-        }
-
-        /* =====================================================
-           ПОЛНОЭКРАННЫЙ РЕЖИМ (через фиксированное позиционирование)
-           ===================================================== */
-        .player-wrapper.fullscreen-mode {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: 100vw !important;
-            max-height: 100vh !important;
-            border-radius: 0 !important;
-            border: none !important;
-            z-index: 9999 !important;
-            aspect-ratio: auto !important;
-            background: #000;
-        }
-
-        .player-wrapper.fullscreen-mode .player-controls .top-left {
-            top: 20px;
-            left: 20px;
-        }
-
-        .player-wrapper.fullscreen-mode .player-controls .bottom-left {
-            bottom: 30px;
-            left: 30px;
-        }
-
-        .player-wrapper.fullscreen-mode .fullscreen-btn {
-            bottom: 30px;
-            right: 30px;
-        }
-
-        /* ПОДСКАЗКА */
-        .fullscreen-hint {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 22;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            font-weight: 400;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
-            pointer-events: none;
-            font-family: system-ui, sans-serif;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            padding: 6px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            white-space: nowrap;
-        }
-
-        .fullscreen-hint.show {
-            opacity: 1;
-        }
-
-        /* =====================================================
-           ВЫБОР СЕРИЙ ПОД ПЛЕЕРОМ
-           ===================================================== */
         .episode-info {
             display: flex;
             justify-content: space-between;
@@ -506,119 +234,39 @@
             transition: color 0.3s ease;
         }
 
-        .episodes-selector {
+        .episodes-list {
             display: flex;
-            align-items: center;
             gap: 12px;
-            padding: 10px 0 14px;
             flex-wrap: wrap;
+            padding: 10px 0 20px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 20px;
             transition: border-color 0.3s ease;
         }
 
-        .episodes-selector .label {
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-            transition: color 0.3s ease;
-        }
-
-        .episodes-scroll {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            flex: 1;
-            max-height: 60px;
-            overflow-y: auto;
-            padding: 4px 2px;
-            scroll-behavior: smooth;
-        }
-
-        .episodes-scroll::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        .episodes-scroll::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 10px;
-        }
-        .episodes-scroll::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 10px;
-        }
-
-        .episode-btn {
+        .episodes-list .episode-btn {
             background: var(--bg-secondary);
             border: 2px solid var(--border-light);
             color: var(--text-secondary);
-            padding: 6px 16px;
-            border-radius: 20px;
+            padding: 10px 24px;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             transition: 0.25s ease;
-            white-space: nowrap;
-            flex-shrink: 0;
         }
 
-        .episode-btn:hover {
+        .episodes-list .episode-btn:hover {
             border-color: var(--accent-color);
             color: var(--text-primary);
-            transform: scale(1.05);
         }
 
-        .episode-btn.active {
+        .episodes-list .episode-btn.active {
             background: var(--accent-color);
             border-color: var(--accent-color);
             color: #0b0e14;
-            box-shadow: 0 0 20px rgba(241, 196, 15, 0.3);
         }
 
-        .episode-btn.active:hover {
-            transform: scale(1.02);
-        }
-
-        .episode-nav-buttons {
-            display: flex;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .episode-nav-btn {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border-light);
-            color: var(--text-secondary);
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: 0.25s ease;
-        }
-
-        .episode-nav-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--text-primary);
-            transform: scale(1.05);
-        }
-
-        .episode-nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .episode-nav-btn:disabled:hover {
-            border-color: var(--border-light);
-            color: var(--text-secondary);
-            transform: none;
-        }
-
-        /* =====================================================
-           ИНФОРМАЦИЯ О ДОРАМЕ
-           ===================================================== */
         .drama-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -711,9 +359,6 @@
             transition: color 0.3s ease;
         }
 
-        /* =====================================================
-           КОММЕНТАРИИ
-           ===================================================== */
         .comments-section {
             margin-top: 30px;
             padding-top: 20px;
@@ -899,7 +544,7 @@
             position: fixed;
             bottom: 100px;
             right: 30px;
-            z-index: 99999;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -922,11 +567,21 @@
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        .toast.success { border-color: #2ecc71; }
-        .toast.error { border-color: #e74c3c; }
-        .toast.info { border-color: var(--accent-color); }
+        .toast.success {
+            border-color: #2ecc71;
+        }
 
-        .toast .toast-icon { font-size: 20px; }
+        .toast.error {
+            border-color: #e74c3c;
+        }
+
+        .toast.info {
+            border-color: var(--accent-color);
+        }
+
+        .toast .toast-icon {
+            font-size: 20px;
+        }
 
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
@@ -958,16 +613,6 @@
             .comment-form { flex-direction: column; }
             .comment-form input { min-width: auto; }
             .comment-form textarea { min-width: auto; min-height: 50px; }
-            .episodes-selector { flex-direction: column; align-items: stretch; gap: 8px; }
-            .episodes-scroll { max-height: 80px; }
-            .episode-nav-buttons { justify-content: center; }
-            .episode-menu-btn { font-size: 12px; padding: 6px 12px; top: 8px; left: 8px; }
-            .episode-dropdown { top: 44px; left: 0; min-width: 100px; max-width: 200px; }
-            .episode-dropdown .episode-item { font-size: 12px; padding: 4px 10px; }
-            .player-episode-info { font-size: 11px; bottom: 10px; left: 10px; padding: 3px 10px; }
-            .fullscreen-hint { font-size: 11px; padding: 4px 12px; bottom: 60px; }
-            .fullscreen-btn { font-size: 16px; padding: 4px 10px; bottom: 10px; right: 10px; }
-            .player-wrapper.fullscreen-mode .fullscreen-btn { bottom: 20px; right: 20px; }
         }
 
         @media (max-width: 480px) {
@@ -989,13 +634,6 @@
             .comment-item .comment-text { font-size: 13px; }
             .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
             .toast { font-size: 12px; padding: 10px 14px; }
-            .episode-btn { font-size: 12px; padding: 4px 12px; }
-            .episode-nav-btn { font-size: 12px; padding: 4px 10px; }
-            .episode-menu-btn { font-size: 11px; padding: 4px 10px; }
-            .episode-dropdown .episode-item { font-size: 11px; padding: 3px 8px; }
-            .player-episode-info { font-size: 10px; bottom: 8px; left: 8px; padding: 2px 8px; }
-            .fullscreen-hint { font-size: 10px; padding: 3px 10px; bottom: 50px; }
-            .fullscreen-btn { font-size: 14px; padding: 3px 8px; bottom: 8px; right: 8px; }
         }
     </style>
 </head>
@@ -1017,36 +655,10 @@
     </header>
 
     <main class="main-content">
-        <div class="player-wrapper" id="playerWrapper">
+        <div class="player-wrapper">
             <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
-
-            <!-- ===== КОНТРОЛЫ ПЛЕЕРА (поверх iframe) ===== -->
-            <div class="player-controls" id="playerControls">
-                <!-- Верхний левый угол: меню серий -->
-                <div class="top-left">
-                    <button class="episode-menu-btn" id="episodeMenuBtn">
-                        <span id="menuCurrentEpisode">Серия 1</span>
-                        <span class="arrow" id="menuArrow">▼</span>
-                    </button>
-                    <div class="episode-dropdown" id="episodeDropdown"></div>
-                </div>
-
-                <!-- Нижний левый угол: информация о серии -->
-                <div class="bottom-left">
-                    <div class="player-episode-info">
-                        <span class="ep-num" id="playerEpNum">Серия 1</span>
-                    </div>
-                </div>
-
-                <!-- Нижний правый угол: своя кнопка полноэкранного режима -->
-                <button class="fullscreen-btn" id="fullscreenBtn" title="На весь экран">⛶</button>
-
-                <!-- Подсказка -->
-                <div class="fullscreen-hint" id="fullscreenHint">Нажмите на меню для выбора серии</div>
-            </div>
         </div>
 
-        <!-- ===== СТАРЫЙ ВЫБОР СЕРИЙ ПОД ПЛЕЕРОМ ===== -->
         <div class="episode-info">
             <div>
                 <span class="current-episode" id="currentEpisode">Серия 1</span>
@@ -1054,14 +666,7 @@
             </div>
         </div>
 
-        <div class="episodes-selector">
-            <span class="label">Серии:</span>
-            <div class="episodes-scroll" id="episodesScroll"></div>
-            <div class="episode-nav-buttons">
-                <button class="episode-nav-btn" id="prevEpisodeBtn" title="Предыдущая серия">◀</button>
-                <button class="episode-nav-btn" id="nextEpisodeBtn" title="Следующая серия">▶</button>
-            </div>
-        </div>
+        <div class="episodes-list" id="episodesList"></div>
 
         <div class="drama-info" id="dramaInfo"></div>
 
@@ -1129,6 +734,7 @@
         // ===== ДАННЫЕ О ДОРАМАХ (ВСЕ 20) =====
         // =====================================================
         const DRAMAS = {
+            // ===== ДОРАМА 1: Завтра снова на работу! =====
             drama1: {
                 name: 'Завтра снова на работу!',
                 episodes: 6,
@@ -1144,10 +750,10 @@
                     cast: [
                         { name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' },
                         { name: 'Пак Джи Хён', role: 'Ча Джи Юн', tag: 'Главная роль' },
-                        { name: 'Кан Ми На', role: 'Юн Но А', tag: '' },
-                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: '' },
-                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: '' },
-                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: '' }
+                        { name: 'Кан Ми На', role: 'Юн Но А', tag: 'Второстепенная роль' },
+                        { name: 'Чхве Гён Хун', role: 'Чо Га Ыль', tag: 'Второстепенная роль' },
+                        { name: 'Вон Гю Бин', role: 'Ли Чжэ Ин', tag: 'Второстепенная роль' },
+                        { name: 'Пак Е Ён', role: 'Чхве Су Джин', tag: 'Второстепенная роль' }
                     ]
                 },
                 videos: {
@@ -1159,6 +765,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
                 }
             },
+            // ===== ДОРАМА 2: Лазурная весна =====
             drama2: {
                 name: 'Лазурная весна',
                 episodes: 6,
@@ -1170,10 +777,12 @@
                     country: 'Корея Южная',
                     duration: '00:40:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Говорят, море умеет слушать...',
+                    plot: 'Говорят, море умеет слушать. Не отвечает, не осуждает — просто шумит, перекатывая гальку, и ждёт. Именно к нему и приходят двое, каждый со своим грузом, каждый — на последнем издыхании в той жизни, которую уже не в силах тащить дальше. Юн Док Хён давно перестал ждать чего-то от будущего. Прошлое прилипло к нему, как морская соль к коже — незаметно, намертво, и уже не смыть. Со Ан На когда-то бежала вперёд быстрее всех, но однажды упала — и не просто разбила колено. Разбилась вся жизнь, которую она строила. Теперь тревога стала её постоянным спутником, тихим и удушающим, как туман над водой ранним утром. Они встречаются в маленьком прибрежном посёлке, где время течёт иначе. Без суеты. Без дедлайнов. Здесь рыбаки чинят сети, пахнет водорослями и жареной рыбой, и кажется, что мир снаружи — это просто сон, который никак не хочет заканчиваться. Нырять без снаряжения — странный выбор для людей, которые едва держатся на поверхности. Но именно под водой что-то меняется. Там нет голосов, нет воспоминаний, нет страха перед завтрашним днём. Только холод, темнота и собственное сердцебиение. И — странным образом — покой.',
                     cast: [
                         { name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' },
-                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' }
+                        { name: 'Кан Сан-джун', role: 'Юн Док Хён', tag: 'Главная роль' },
+                        { name: 'Ко Джу-хи', role: 'Второстепенная роль', tag: '' },
+                        { name: 'Чон Хён-мин', role: 'Второстепенная роль', tag: '' }
                     ]
                 },
                 videos: {
@@ -1185,6 +794,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239028&hash=77eede5363ac751f&hd=3'
                 }
             },
+            // ===== ДОРАМА 3: Абсолютная величина любви =====
             drama3: {
                 name: 'Абсолютная величина любви',
                 episodes: 16,
@@ -1196,10 +806,12 @@
                     country: 'Корея Южная',
                     duration: '00:59:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Днём — серая мышка за последней партой...',
+                    plot: 'Днём — серая мышка за последней партой, та самая ученица, которую учителя путают с соседкой по парте. Ночью — автор бойких веб-романов, где слова льются куда смелее, чем в реальной жизни Е И-джу когда-либо получалось вести себя. Дома — мать с хваткой, не оставляющей пространства для своевольных решений. На бумаге же — свобода без границ. Вдохновением для нового хита становятся четверо молодых учителей, только-только переступивших порог школы: живые, настоящие, с разными голосами и разными взглядами. И вот тонкая грань между вымыслом и явью начинает плавиться, особенно когда в поле зрения попадает загадочный учитель математики — слишком спокойный, слишком наблюдательный, слишком похожий на героя из её собственных текстов. 16 серий нежной неловкости, первых румянцев и того особого корейского обаяния, когда комедия щекочет, а в следующую секунду внезапно сжимает сердце. Где кончается строка романа и начинается настоящее чувство — провести эту черту окажется куда сложнее, чем писать главы по ночам.',
                     cast: [
                         { name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' },
-                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' }
+                        { name: 'Ким Джэ-хён', role: 'Ким Джи-сок', tag: 'Главная роль' },
+                        { name: 'Чха Хаг-ён', role: 'Чхве Су-мин', tag: '' },
+                        { name: 'Сон Джон-хёк', role: 'Ким Дон-гю', tag: '' }
                     ]
                 },
                 videos: {
@@ -1221,6 +833,7 @@
                     16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239282&hash=f0c1d2451e2205ee&hd=3'
                 }
             },
+            // ===== ДОРАМА 4: Атхит - это я =====
             drama4: {
                 name: 'Атхит - это я',
                 episodes: 6,
@@ -1232,10 +845,15 @@
                     country: 'Таиланд',
                     duration: '00:44:00',
                     translation: 'Озвучка, Субтитры',
-                    plot: 'Сун работает сборщиком долгов...',
+                    plot: 'Сун работает сборщиком долгов, но его успех в этой роли оставляет желать лучшего. Он часто сталкивается с трудностями при попытках возврата денежных средств от должников. Ситуация усугубляется тем, что его отец, стоящий на грани банкротства, настоятельно требует от Суна возвращения долга с одного из клиентов, молодого человека по имени Атхит. Суну нужно как можно скорее найти способ эффективно разрешить эту задачу, чтобы избежать финансового коллапса своей семьи и сохранить деловую репутацию. Однако его обычные методы работают плохо — подход с прямым давлением и угрозами не приносит ожидаемых результатов. Необходимо, чтобы Сун пересмотрел свои методы и возможно нашел более гуманный и эффективный подход к взысканию задолженностей, чтобы добиться положительных изменений и успеха в своей работе.',
                     cast: [
                         { name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
-                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }
+                        { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' },
+                        { name: 'Parinya Angsanan', role: 'Мек (Mek)', tag: '' },
+                        { name: 'Papungkorn Sakunsong', role: 'Най (Nai)', tag: '' },
+                        { name: 'Nathas Tunjaroen', role: 'Манкон (Mangkorn)', tag: '' },
+                        { name: 'Weerapat Toemmaneerat', role: 'Тай (Thai)', tag: '' },
+                        { name: 'Tanawat Hudchaleelaha', role: 'Немо (Nemo)', tag: '' }
                     ]
                 },
                 videos: {
@@ -1247,6 +865,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239048&hash=d9466f01ce9b0a00&hd=3'
                 }
             },
+            // ===== ДОРАМА 5: Бойфренд по запросу =====
             drama5: {
                 name: 'Бойфренд по запросу',
                 episodes: 10,
@@ -1258,10 +877,24 @@
                     country: 'Южная Корея',
                     duration: '00:55:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Со Ми Рэ живёт работой...',
+                    plot: 'Со Ми Рэ живёт работой. Продюсер вебтунов — звучит круто, да? На деле это бесконечные дедлайны, капризные авторы и постоянное ощущение, что времени катастрофически не хватает ни на что. Романтика? Да она про неё даже думать забыла. Свидания, цветы, бабочки в животе — всё это кажется какой-то сказкой из манхвы, которую она сама редактирует. И тут ей подсовывают новое приложение. "Парень по подписке". Виртуальная реальность, идеальные парни на любой вкус — красавцы, умницы, романтики. Со Ми Рэ сначала скептически фыркает, но... любопытство берёт своё. Надевает шлем — и погружается. Там всё не по-настоящему, конечно. Но чувства? О, чувства очень даже настоящие. Сердце колотится, щёки горят, хочется улыбаться без причины. Она будто заново учится влюбляться. Параллельно в офисе её достаёт коллега Пак Кён Нам. Амбициозный, успешный, вечно всех переплюнуть пытается. Они постоянно спорят, соревнуются, огрызаются друг на друга. Но с недавних пор... споры перестали раздражать. Более того — работа вообще стала легче как-то. Неужели виртуальные свидания настолько меняют настроение? Вопрос назревает сам собой: где кончается фантазия и где начинается реальность? И что если самый идеальный парень давно рядом — просто ты его не замечала? А если Кён Нам знает о приложении больше, чем кажется? Если он тоже играет в эту игру — но по своим правилам?',
                     cast: [
                         { name: 'Ким Джи Су', role: '', tag: 'Главная роль' },
-                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' }
+                        { name: 'Со Ин Гук', role: '', tag: 'Главная роль' },
+                        { name: 'Рю Абель', role: '', tag: '' },
+                        { name: 'Ким Сон Чхоль', role: '', tag: '' },
+                        { name: 'Пак Чи-ху', role: '', tag: '' },
+                        { name: 'Кон Мин Чжон', role: '', tag: '' },
+                        { name: 'Ко Гю Пхиль', role: '', tag: '' },
+                        { name: 'Кан Мин У', role: '', tag: '' },
+                        { name: 'Сон Ха-На', role: '', tag: '' },
+                        { name: 'Ю Сон Хо', role: '', tag: '' },
+                        { name: 'Хё Рим Со', role: '', tag: '' },
+                        { name: 'Сон Хо Ён', role: '', tag: '' },
+                        { name: 'Хун Ли', role: '', tag: '' },
+                        { name: 'Ким А Ён', role: '', tag: '' },
+                        { name: 'Пак Хэ-лин', role: '', tag: '' },
+                        { name: 'Тинюй Лу', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1277,6 +910,7 @@
                     10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239058&hash=4cd0477c2a8825b2&hd=3'
                 }
             },
+            // ===== ДОРАМА 6: Жена принца XXI века =====
             drama6: {
                 name: 'Жена принца XXI века',
                 episodes: 12,
@@ -1288,10 +922,16 @@
                     country: 'Корея Южная',
                     duration: '01:14:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема...',
+                    plot: 'Корея, которой не существует — и всё же она до боли узнаваема. Небоскрёбы, смартфоны, пробки на хайвеях, и где-то над всем этим — королевский дворец, живой и настоящий, с флагом, гвардией и протоколом на каждый чих. Монархия здесь — не музейный экспонат, а работающий механизм. Со своими правилами, своими жертвами и своими играми. Сон Хи Джу умеет многое. Острый ум, внешность, которая заставляет оборачиваться, воля — хоть гвозди забивай. Дочь влиятельного чеболя, казалось бы, у неё есть всё. Но одно маленькое "но" перечёркивает многое: она незаконнорождённая. В мире, где статус — это воздух, это звучит как приговор. Шёпот за спиной она слышит давно, научилась не вздрагивать. Но внутри — накопилось. Принц Ли Ан — второй сын. Не наследник, не символ, почти тень. Старший брат получил всё: внимание, привилегии, будущее. Ли Ан существует на периферии собственной семьи — и устал от этого так, что иногда хочется просто исчезнуть. Оказаться обычным человеком, хотя бы на один день. Их встреча — случайная, нелепая, немного неловкая — могла бы ничем не кончиться. Но судьба, она такая: редко спрашивает разрешения. Предложение, которое Хи Джу решается сделать, звучит холодно и по-деловому: фиктивный брак. Ей — защита и статус, ему — видимость реальной роли. Всё просто. Всё под контролем. Так обычно говорят в самом начале истории, которая потом выходит из-под контроля полностью.',
                     cast: [
                         { name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' },
-                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' }
+                        { name: 'Пён Усок', role: 'Принц Ли Ан', tag: 'Главная роль' },
+                        { name: 'Стив Санхён Но', role: '', tag: '' },
+                        { name: 'Гон Сын Ён', role: '', tag: '' },
+                        { name: 'Ю Су Бин', role: '', tag: '' },
+                        { name: 'Ли Ён', role: '', tag: '' },
+                        { name: 'Пак Джун Мён', role: '', tag: '' },
+                        { name: 'Пён Со Юн', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1309,6 +949,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239070&hash=27d8c0f57c73886f&hd=3'
                 }
             },
+            // ===== ДОРАМА 7: Весенняя лихорадка =====
             drama7: {
                 name: 'Весенняя лихорадка',
                 episodes: 12,
@@ -1320,10 +961,18 @@
                     country: 'Корея Южная',
                     duration: '01:02:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Юн Бом сбегает из Сеула...',
+                    plot: 'Юн Бом сбегает из Сеула. Ну то есть официально она просто берёт перевод по обмену в маленький городишко Шинсу, работать учителем. Но по факту — да, сбегает, от чего-то что болит так сильно, что молчать об этом легче чем объяснять. Приезжает, а там всё как в провинции обычно бывает: все всех знают, сплетни разносятся быстрее интернета, и новенькая учительница из столицы — это событие года, считай. Поначалу Юн Бом держит дистанцию. Холодная, замкнутая, делает свою работу и всё. Пытается построить стену между собой и этим миром где все лезут с вопросами. А потом в её жизни появляется Сон Джэ Гю. Дядя одного из учеников, местная знаменитость, причём не самого положительного толка — связан с криминалом, решает вопросы по своему, грубовато так. Но парадокс в том, что за этой грубостью прячется что-то настоящее. Искреннее, что ли. Сначала их общение — чисто по школьным делам. Но Джэ-гю видит как местные начинают "прижимать" новенькую учительницу намёками, сплетнями, давлением. И начинает вмешиваться. А Юн Бом — она же независимая, ей эта защита не нужна вообще! Пытается границы выстроить, но обстоятельства заставляют их всё чаще пересекаться. Конфликты с родителями учеников, старые долги Джэ-гю, прошлое Юн Бом которое не отпускает... Постепенно между ними что то возникает. Не сразу понятно что именно, но точно больше чем просто знакомство. И теперь Юн Бом стоит перед выбором: продолжать прятаться в спокойной жизни или наконец разобраться со своим прошлым и впустить кого-то по-настоящему близко.',
                     cast: [
                         { name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' },
-                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' }
+                        { name: 'Ли Джу-бин', role: 'Юн Бом', tag: 'Главная роль' },
+                        { name: 'Чха Со-вон', role: '', tag: '' },
+                        { name: 'Чо Джун-ён', role: '', tag: '' },
+                        { name: 'Ли Джэ-ин', role: '', tag: '' },
+                        { name: 'Чин Гён', role: '', tag: '' },
+                        { name: 'Пэ Джон-нам', role: '', tag: '' },
+                        { name: 'Ким Бён-чхун', role: '', tag: '' },
+                        { name: 'О Ман-сок', role: '', tag: '' },
+                        { name: 'Чон Ён-ги', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1341,6 +990,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239082&hash=60863793b7acf836&hd=3'
                 }
             },
+            // ===== ДОРАМА 8: Босс компании «Тайфун» =====
             drama8: {
                 name: 'Босс компании «Тайфун»',
                 episodes: 16,
@@ -1352,10 +1002,18 @@
                     country: 'Корея Южная',
                     duration: '01:17:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами...',
+                    plot: '1997 год. Южная Корея. Азиатский финансовый кризис бьёт по стране, как цунами. Компании рушатся одна за другой, люди теряют всё. В престижном районе Апкучжон умирает основатель торговой фирмы «Тайфун» — человек, который создавал это дело с нуля. А его сын Кан Тхэ-пун (имя буквально значит «тайфун») всю жизнь был беззаботным наследником. Деньги, тусовки, никакой ответственности. И вот теперь — бац! — он вынужден возглавить компанию, которая на грани банкротства. Тхэ-пун садится в кресло генерального директора, но понятия не имеет, что делать. Он путает факс с телефоном, не знает, что такое просроченный платёж, усердно конспектирует на совещаниях, как первоклашка. Кредиторы требуют долги, поставщики разрывают контракты, сотрудники в панике. Особенно О Ми-сук из бухгалтерии — старшая дочь в бедной семье, которая годами тянет родных на себе. Для неё работа в «Тайфуне» — единственный источник дохода. И тут появляется этот неопытный босс со своими идеями? Но Тхэ-пун не сдаётся. Он меняет яркую одежду на строгий костюм и начинает учиться заново — с нуля, как отец когда-то. Предлагает рискованный план: искать клиентов среди мелких провинциальных магазинов, которых игнорируют большие корпорации. Стать посредником, помочь им выжить в кризис. Ми-сук, перфекционистка до мозга костей, видит в этом плане шанс. Она соглашается возглавить проект, хотя сомнения гложут изнутри. Команда раскалывается: Ми-сук уезжает по городам, сталкиваясь с отказами и недоверием. Тхэ-пун остаётся в Сеуле, ведёт переговоры с кредиторами... и узнаёт страшную правду: его отец заложил личное имущество ради бизнеса. Эта жертва меняет всё. Тхэ-пун понимает: «Тайфун» — это не просто компания. Это наследие, любовь, символ стихии, которая может как разрушить, так и очистить путь для нового начала. И если он не справится, всё рухнет окончательно.',
                     cast: [
                         { name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' },
-                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' }
+                        { name: 'Ким Мин-ха', role: 'О Ми-сук', tag: 'Главная роль' },
+                        { name: 'Сон Дон-иль', role: '', tag: '' },
+                        { name: 'Ким Джи-ён', role: '', tag: '' },
+                        { name: 'Ким Мин-сок', role: '', tag: '' },
+                        { name: 'Му Джин-сон', role: '', tag: '' },
+                        { name: 'Квон Хан-соль', role: '', tag: '' },
+                        { name: 'Ли Чхан-хун', role: '', tag: '' },
+                        { name: 'Ким Джэ-хва', role: '', tag: '' },
+                        { name: 'Ким Сон-иль', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1377,6 +1035,7 @@
                     16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239083&hash=bd27462a88e0354c&hd=3'
                 }
             },
+            // ===== ДОРАМА 9: Все твои желания исполнятся =====
             drama9: {
                 name: 'Все твои желания исполнятся',
                 episodes: 13,
@@ -1388,10 +1047,23 @@
                     country: 'Корея Южная',
                     duration: '00:55:00',
                     translation: 'Любительский многоголосый',
-                    plot: 'Га Ён разучилась мечтать...',
+                    plot: 'Га Ён разучилась мечтать. Точнее, она и не умела толком. Чувства? Выражать эмоции? Зачем, если можно просто существовать, не высовываясь, не надеясь ни на что. Окружающая реальность приносит разочарования, так к чему тогда позитивное мышление и вся эта мишура про силу желаний? Но однажды случается чудо. Старинная лампа, пылившаяся где-то на антресолях, оказывается в её руках. И оттуда появляется... джинн. Настоящий, живой, эмоциональный до неприличия. Дух, который томился в заточении веками, изнывая от одиночества, жаждущий хоть какого-то общения. И вот судьба сводит его с девушкой, которая вообще не знает, чего хочет. Три желания. Классика жанра. Казалось бы, мечта любого человека — получить шанс изменить жизнь одним щелчком пальцев. Но Га Ён ошеломлена. Её мозг отказывается работать в категориях "хочу". Она отвыкла представлять себя счастливой, обладательницей чего-то ценного. Мечты стали чем-то абстрактным, недостижимым, бессмысленным. А джинн — навязчивый, неугомонный, яркий как фейерверк — не даёт ей покоя. Требует загадать желания, чтобы наконец освободиться из проклятой лампы. Но как загадать, если не знаешь, чего хочешь? Как поверить в возможность счастья, если годами убеждал себя, что это не для тебя? Наука утверждает: мозг не отличает реальность от воображения. Мечты могут влиять на жизнь, если их правильно использовать. Но грёзы — коварная штука, они не знают границ, а разочарование от несбывшихся надежд бьёт больнее любой реальной неудачи. Два существа — девушка, запершая себя в клетку равнодушия, и древний дух, переполненный эмоциями. Их встреча обещает быть взрывоопасной. Потому что иногда, чтобы исполнились желания, нужно сначала научиться их чувствовать. А это — самая сложная магия из всех возможных.',
                     cast: [
                         { name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' },
-                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' }
+                        { name: 'У Бин Ким', role: 'Джинн', tag: 'Главная роль' },
+                        { name: 'Ын Джин Ан', role: '', tag: '' },
+                        { name: 'Стив Но', role: '', tag: '' },
+                        { name: 'Гю Пхиль Го', role: '', tag: '' },
+                        { name: 'Джу Ён Ли', role: '', tag: '' },
+                        { name: 'Ми Гён Ким', role: '', tag: '' },
+                        { name: 'Шин Э Шин', role: '', tag: '' },
+                        { name: 'Мён Син Пак', role: '', tag: '' },
+                        { name: 'Док Джу Ким', role: '', tag: '' },
+                        { name: 'Дон Ёп Го', role: '', tag: '' },
+                        { name: 'Дэниэл Хенни', role: '', tag: '' },
+                        { name: 'Чжи Хун Ким (I)', role: '', tag: '' },
+                        { name: 'Хё Кё Сон', role: '', tag: '' },
+                        { name: 'Му Сэн Ли', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1410,6 +1082,7 @@
                     13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239099&hash=6cabc9bafeaebb9c&hd=3'
                 }
             },
+            // ===== ДОРАМА 10: Полярная звезда =====
             drama10: {
                 name: 'Полярная звезда',
                 episodes: 9,
@@ -1421,10 +1094,18 @@
                     country: 'Корея Южная',
                     duration: '00:53:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона...',
+                    plot: 'Мун Джу когда-то была звездой дипломатического небосклона — умная, решительная, безупречная в каждом жесте и слове. Её уважали коллеги, ею гордилась страна. Казалось, ей по плечу любые международные переговоры и самые запутанные политические интриги. Но одно убийство способно разрушить даже самую блестящую карьеру. Влиятельный чиновник найден мёртвым, а все улики ведут в такие дебри, где дипломатический иммунитет не поможет. Между Севером и Югом разгорается игра, ставки в которой — человеческие жизни. В центре этого водоворота появляется Сан Хо — человек без прошлого, имени и, кажется, совести. Наёмник, который умеет решать проблемы радикально и бесшумно. Его руки помнят запах пороха, а глаза видели столько крови, что уже ничему не удивляются. Теперь Мун Джу и этот загадочный незнакомец должны работать в паре. Она — с её дипломатической мудростью, он — с его жестокими методами. Правда где-то рядом, но за неё придётся заплатить такую цену, которая может оказаться слишком высокой даже для закалённых в боях сердец.',
                     cast: [
                         { name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' },
-                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' }
+                        { name: 'Кан Дон-вон', role: 'Сан Хо', tag: 'Главная роль' },
+                        { name: 'Джон Чо', role: '', tag: '' },
+                        { name: 'Ли Ми-сук', role: '', tag: '' },
+                        { name: 'Пак Хэ-джун', role: '', tag: '' },
+                        { name: 'Ким Хэ-сук', role: '', tag: '' },
+                        { name: 'О Джон-сэ', role: '', tag: '' },
+                        { name: 'Ли Сан-хи', role: '', tag: '' },
+                        { name: 'Чу Джон-хёк', role: '', tag: '' },
+                        { name: 'Вон Джи-ан', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1439,6 +1120,7 @@
                     9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239112&hash=c19a0446c984a05c&hd=3'
                 }
             },
+            // ===== ДОРАМА 11: В погоне за нефритом =====
             drama11: {
                 name: 'В погоне за нефритом',
                 episodes: 40,
@@ -1450,10 +1132,18 @@
                     country: 'Китай',
                     duration: '00:46:50',
                     translation: 'Любительский многоголосый',
-                    plot: 'Метель — штука безжалостная...',
+                    plot: 'Метель — штука безжалостная, заносит следы быстрее, чем успеваешь оглянуться. Именно в такую непогоду судьба сталкивает Фань Чанъюй, простую девушку из мясной лавки, с раненым, полузамёрзшим мужчиной у обочины. Пройти мимо она не смогла — то ли совесть не позволила, то ли что-то ещё, чему сама Чанъюй пока не может подобрать название. А зря бы прошла: перед ней, оказывается, не бродяга, а Се Чжэн, маркиз, чью семью недавно вырезали жестоко и без сожаления, и теперь он вынужден скрываться, точно загнанный зверь, от врагов, что не остановятся, пока не доведут дело до конца. Фань Чанъюй — не кисейная барышня, а женщина с крепкими руками и характером под стать: работа в мясной лавке закалила и тело, и волю. Родственники у неё, как назло, из тех, что готовы обобрать до нитки при первой возможности, поэтому, когда подворачивается шанс через фиктивный брак защититься от их посягательств и заодно спасти найденного незнакомца, героиня решается — без особых раздумий, на голом расчёте пополам с состраданием. Поначалу это чистая сделка: он получает укрытие, она — защиту от жадных родичей. Она понятия не имеет, что перед ней не какой-то безродный бедолага, а наследник знатного рода. Но, как это часто случается, фальшивые чувства начинают потихоньку прорастать чем-то настоящим, будто трава сквозь трещины в камне. Между двумя людьми, которых свело чистое совпадение, зарождается связь — сначала настороженная, потом всё более крепкая, и вот уже ни он, ни она не могут сказать наверняка, где кончается расчёт и начинается любовь. Только вот радоваться рано: как только чувства становятся явными, влюблённые оказываются в самом центре смертельно опасной игры. Тайны Се Чжэна нагоняют беду, и парочке приходится расстаться — не по своей воле, а чтобы просто выжить. Но Фань Чанъюй не из тех, кто смиряется с несправедливостью: она отправляется прямиком на поле боя, вооружённая ножом мясника вместо меча, и это не метафора, а буквальная деталь, ставшая символом всей истории. Ради любимого и ради справедливости она готова на многое, а рядом с ней — верные друзья, без которых такие бои не выигрывают. Постепенно линии судьбы вновь пересекаются: влюблённые встречаются посреди хаоса войны и вместе идут против общего врага, мечтая только об одном — вернуться домой, туда, где начиналась их история, ещё до всех этих метелей, интриг и крови.',
                     cast: [
                         { name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' },
-                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' }
+                        { name: 'Сивэй Тянь', role: 'Фань Чанъюй', tag: 'Главная роль' },
+                        { name: 'Ду Чунь', role: '', tag: '' },
+                        { name: 'Янь Икуань', role: '', tag: '' },
+                        { name: 'Лю Линь', role: '', tag: '' },
+                        { name: 'Ли Цин', role: '', tag: '' },
+                        { name: 'Юэ Ян', role: '', tag: '' },
+                        { name: 'Чжу Цзаньцзинь', role: '', tag: '' },
+                        { name: 'Ванг Джин Эр', role: '', tag: '' },
+                        { name: 'Сноу Кун', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1499,6 +1189,7 @@
                     40: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239121&hash=cf2cff84d1ec1195&hd=3'
                 }
             },
+            // ===== ДОРАМА 12: 50-летние профи =====
             drama12: {
                 name: '50-летние профи',
                 episodes: 12,
@@ -1510,11 +1201,18 @@
                     country: 'Корея Южная',
                     duration: '01:10:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Есть такая поговорка — покой нам только снится...',
+                    plot: 'Есть такая поговорка — покой нам только снится, и трое героев этой истории убедились в этом на собственной шкуре. Каждому из них давно перевалило за пятьдесят, у каждого за плечами — жизнь, полная риска, а теперь вроде бы наступило время тихой гавани. Да только гавань оказалась с подвохом. Чон Хомён когда-то был агентом национальной разведки — человеком, чья работа состояла в том, чтобы оставаться невидимым. После ложного обвинения ему пришлось исчезнуть по-настоящему: сменить имя, лицо жизни и осесть на острове Ёнсон под личиной скромного повара китайского ресторанчика. Готовит, между прочим, неплохо — но руки, которые когда-то держали оружие, иногда предательски вздрагивают при виде ножа для разделки мяса. Бон — фигура ещё более трагичная. Северокорейский спецагент, потерявший память в результате давнего инцидента. Он живёт как будто половинкой себя: старые навыки — рефлексы, реакция, умение читать людей — временами всплывают из глубин подсознания, точно рыба, на миг показавшаяся над водой и снова канувшая в омут. Сам он этого не осознаёт, а окружающие лишь диву даются, откуда в тихом соседе вдруг берётся такая прыть. Третий — Кан, человек с криминальным прошлым, некогда занимавший не последнее место в преступной иерархии. Теперь он старается держаться подальше от бывших подельников, от всего, что напоминает о прежней жизни. Но прошлое, как назло, липнет к пяткам похлеще смолы.',
                     cast: [
                         { name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' },
                         { name: 'О Джонсэ', role: 'Бон', tag: 'Главная роль' },
-                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' }
+                        { name: 'Хо Сонтхэ', role: 'Кан', tag: 'Главная роль' },
+                        { name: 'Ли Хакчу', role: '', tag: '' },
+                        { name: 'Квон Юль', role: '', tag: '' },
+                        { name: 'Ким Санхо', role: '', tag: '' },
+                        { name: 'Син Донми', role: '', tag: '' },
+                        { name: 'Ким Синнок', role: '', tag: '' },
+                        { name: 'Хан Джиын', role: '', tag: '' },
+                        { name: 'Хён Бонсик', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1532,6 +1230,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239161&hash=995e9149fbb3df42&hd=3'
                 }
             },
+            // ===== ДОРАМА 13: Клетки эмпатии =====
             drama13: {
                 name: 'Клетки эмпатии',
                 episodes: 6,
@@ -1543,10 +1242,12 @@
                     country: 'Корея Южная',
                     duration: '00:49:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Бывают люди, которые чувствуют слишком много...',
+                    plot: 'Бывают люди, которые чувствуют слишком много, и те, кто не чувствует почти ничего — по разным причинам, но одинаково больно. Психолог-консультант день за днём впитывает чужую боль, как губка, пока границы между «моим» и «твоим» переживанием не начинают стираться совсем. Он слышит чужие слёзы раньше, чем клиент успевает их произнести. По другую сторону — бывшая айдол-звезда, которая с детства училась запирать эмоции на замок. Её лицо — маска, отточенная годами перед камерами и публикой; внутри, впрочем, давно что-то потрескивает. Актёрская карьера трещит следом: холодность, которая раньше читалась как загадочность, теперь выглядит просто пустотой. Их встреча — случайность, из тех, что потом называют судьбой. Что-то происходит в момент столкновения этих двух противоположностей: чувства одного будто просачиваются в другого, минуя все привычные фильтры и защиты. Смех отражается смехом, тревога — тревогой, и оба вдруг оказываются голыми перед чужими переживаниями, как перед зеркалом без права отвернуться. Это уже не просто симпатия и не просто профессиональный интерес — это нечто вроде эмоционального заражения, от которого нет прививки. Комедийные нотки соседствуют с настоящей тревогой, лёгкость — с вопросом о том, где заканчивается «я» и начинается «другой». Что случится, когда чужая боль станет неотличима от собственной?',
                     cast: [
                         { name: 'Ким Мён-су', role: 'Психолог-консультант', tag: 'Главная роль' },
-                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }
+                        { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' },
+                        { name: 'Квон Со-хён', role: '', tag: '' },
+                        { name: 'Щин У-гём', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1558,6 +1259,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239173&hash=1549506a870806c6&hd=3'
                 }
             },
+            // ===== ДОРАМА 14: Вперёд, Кальмар! =====
             drama14: {
                 name: 'Вперёд, Кальмар!',
                 episodes: 41,
@@ -1569,10 +1271,18 @@
                     country: 'Китай',
                     duration: '00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Бойкая и харизматичная студентка Тун Нянь занята собственными научными разработками...',
+                    plot: 'Бойкая и харизматичная студентка Тун Нянь занята собственными научными разработками по изучению искусственного интеллекта, а в свободное время участвует в аниме-косплеях и поет песни в своем видеостриме. Но вся ее спокойная жизнь полетела под откос, когда она встретилась с Хань Шан Яном — капитаном команды по киберспорту. Однако неприступный красавчик не замечает ничего вокруг, обеспокоенный только предстоящим чемпионатом мира. Умная девушка придумывает, как привлечь внимание парня: раз это невозможно в реальности, значит, надо сделать это в кибервселенной.',
                     cast: [
                         { name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' },
-                        { name: 'Ли Сянь', role: 'Хань Шан Янь', tag: 'Главная роль' }
+                        { name: 'Ли Сянь', role: 'Хань Шан Янь', tag: 'Главная роль' },
+                        { name: 'Ли Миндэ', role: '', tag: '' },
+                        { name: 'Вэнь Ифань', role: '', tag: '' },
+                        { name: 'Чэнь Сицзюнь', role: '', tag: '' },
+                        { name: 'Ли Хунчи', role: '', tag: '' },
+                        { name: 'Ли Цзэфэн', role: '', tag: '' },
+                        { name: 'Юй Чэнъэнь', role: '', tag: '' },
+                        { name: 'Ху Итянь', role: '', tag: '' },
+                        { name: 'Сюй Лэсяо', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1619,6 +1329,7 @@
                     41: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239265&hash=724b2c5ee4c89247&hd=3'
                 }
             },
+            // ===== ДОРАМА 15: Борьба в прямом эфире =====
             drama15: {
                 name: 'Борьба в прямом эфире',
                 episodes: 6,
@@ -1630,9 +1341,14 @@
                     country: 'Япония',
                     duration: '00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Камера трясётся в руках, звук рвётся...',
+                    plot: 'Камера трясётся в руках, звук рвётся, на экране — обычный школьный двор, где обычного парня снова прижали к забору. Ничего нового. Кота Симура давно перестал считать синяки: мать тяжело болеет, в кошельке — пустота, а одноклассники чувствуют слабину носом, как собаки. Жить с этим можно. Жить на это — нельзя. И вот однажды случайно снятый ролик с дворовой дракой взлетает в сети так, что у Коты темнеет в глазах от количества просмотров. Деньги. Внимание. Хоть что-то, что не отнимет завтрашний день. Парень, ни разу в жизни не вставший в правильную боевую стойку, начинает по ночам пересматривать мутные видеоуроки, заучивая удары, как иероглифы. Получается криво, болезненно, но получается. Стримерская лестница не прощает слабину — каждая новая трансляция требует драки жёстче предыдущей, а зрители быстро привыкают к зрелищу и просят добавки. Рядом появляются такие же отчаявшиеся — кто-то стал другом, кто-то союзником на одну ночь эфира. Цифры подписчиков растут, как температура у больного: вроде хороший знак, а тревожно. Мир интернет-славы оказывается куда грязнее школьного двора — тут предают красивее и бьют не только кулаками. Вопрос лишь один: что Кота продаст раньше — свой страх или себя самого?',
                     cast: [
-                        { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' }
+                        { name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' },
+                        { name: 'Миэко Харада', role: '', tag: '' },
+                        { name: 'Нана Асакава', role: '', tag: '' },
+                        { name: 'Аи Миками', role: '', tag: '' },
+                        { name: 'Араки Суго', role: '', tag: '' },
+                        { name: 'Такуро Осада', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1644,6 +1360,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239266&hash=53734edc5b946baf&hd=3'
                 }
             },
+            // ===== ДОРАМА 16: Золотое место =====
             drama16: {
                 name: 'Золотое место',
                 episodes: 10,
@@ -1655,9 +1372,17 @@
                     country: 'Корея Южная',
                     duration: '00:52:50',
                     translation: 'Любительский двухголосый',
-                    plot: 'Ким Хи Джу умеет быть невидимкой...',
+                    plot: 'Ким Хи Джу умеет быть невидимкой. Восемь часов в форме, проверяешь сумки, смотришь в документы, киваешь, пропускаешь. Аэропорт — место, где все куда-то летят, а ты стоишь на месте. Дома — ссоры, усталость, тупик. Она давно привыкла, что её жизнь — это узкий коридор без окон: вперёд идти можно, но куда — непонятно. Один знакомый пилот попросил подержать сумку. Обычную, с виду ничем не примечательную. Внутри оказалось золото. Вот тут всё и началось. Блеск металла делает с людьми странные вещи — гасит осторожность, разжигает что-то такое, о чём потом неловко вспоминать. Хи Джу не сразу, но поддалась. Кажется, что наконец-то — вот оно, шанс, которого так долго не было. Выход из коридора. Дверь в другую жизнь. Только золото — вещь такая: оно всегда чьё-то. И за ним уже идут. Директор Пак отправил людей. Преступники почуяли запах. Детектив Джин Ман тоже двигается по следу. А из прошлого появляется Чан Ук — человек, которого она когда-то знала, и который теперь смотрит на неё так, будто читает мысли. Спасаясь, Хи Джу бежит туда, куда меньше всего хотела возвращаться — в Gold Land, бывший шахтёрский город, пропахший азартом и старыми обидами. Здесь её знают. Здесь её помнят. Здесь её боятся — или, наоборот, ждут.',
                     cast: [
-                        { name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' }
+                        { name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' },
+                        { name: 'Сон Чхоль Ким', role: '', tag: '' },
+                        { name: 'Хён Ук Ли', role: '', tag: '' },
+                        { name: 'Хи Вон Ким', role: '', tag: '' },
+                        { name: 'Чжон Хи Мун', role: '', tag: '' },
+                        { name: 'Кван Су Ли', role: '', tag: '' },
+                        { name: 'Соль Ли', role: '', tag: '' },
+                        { name: 'Док Мун Чхве', role: '', tag: '' },
+                        { name: 'Мин Чжэ Ким', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1673,6 +1398,7 @@
                     10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239272&hash=9e735ac633368aba&hd=3'
                 }
             },
+            // ===== ДОРАМА 17: Судьба, поцелованная дождем =====
             drama17: {
                 name: 'Судьба, поцелованная дождем',
                 episodes: 30,
@@ -1684,10 +1410,12 @@
                     country: 'Китай',
                     duration: '30 x 00:12:00',
                     translation: 'Любительский многоголосый',
-                    plot: 'Шесть лет — это много или мало?...',
+                    plot: 'Шесть лет — это много или мало? Смотря что считать. Для Хэ Юй Чэня это была целая жизнь: из перспективного боксёра — в человека, которому, как говорится, дали подножку в самый неподходящий момент. Скандал, крах карьеры, и где-то на дне всего этого — воспоминание об одной ночи. Об одной женщине. О Бу Янь, которая появилась как гроза — ярко, оглушительно — и исчезла, не объяснив зачем. Он думал, что давно перестал думать о ней. Ошибался. Она вернулась. Причём вернулась не с извинениями — с предложением. Формальным, холодным, почти деловым: контракт, подпись, деньги. И ещё кое-что, о чём она предпочитает не говорить вслух. Бу Янь всегда умела носить маску — аристократичная, уверенная в себе наследница, которой, судя по всему, всё даётся легко. Только вот глаза иногда выдают: что-то внутри неё давно сломано, и она очень старательно делает вид, что это не так. А ещё — дети. Двое. И даты, которые совпадают слишком точно, чтобы быть случайностью. Что скрывает эта женщина? Почему она ушла тогда — и почему вернулась сейчас? И самое главное: что делать мужчине, который умеет держать удар на ринге, но совершенно беззащитен перед единственным человеком, которого никогда по-настоящему не забывал?',
                     cast: [
                         { name: 'Чэнь Фантун', role: '', tag: 'Главная роль' },
-                        { name: 'Дай Гаочжэн', role: '', tag: 'Главная роль' }
+                        { name: 'Дай Гаочжэн', role: '', tag: 'Главная роль' },
+                        { name: 'Фань Сяодун', role: '', tag: '' },
+                        { name: 'Чжан Синьюэ', role: '', tag: '' }
                     ]
                 },
                 videos: {
@@ -1723,6 +1451,7 @@
                     30: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239298&hash=9f81ad4e262a9c4b&hd=3'
                 }
             },
+            // ===== ДОРАМА 18: Ты мой герой =====
             drama18: {
                 name: 'Ты мой герой',
                 episodes: 40,
@@ -1734,10 +1463,14 @@
                     country: 'Китай',
                     duration: '40 x 00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'История о настоящей любви и героизме в повседневной жизни...',
+                    plot: 'История о настоящей любви и героизме в повседневной жизни. Главные герои проходят через испытания, чтобы понять, что настоящее счастье — рядом. В центре сюжета — молодая девушка, которая мечтает стать врачом, и парень, который работает спасателем. Их пути пересекаются, когда случается трагедия, и они понимают, что судьба свела их не случайно. Смогут ли они преодолеть все преграды и быть вместе?',
                     cast: [
                         { name: 'Сун Цзянь', role: 'Чжан И', tag: 'Главная роль' },
-                        { name: 'Ли Цинь', role: 'Хэ Хуань', tag: 'Главная роль' }
+                        { name: 'Ли Цинь', role: 'Хэ Хуань', tag: 'Главная роль' },
+                        { name: 'Сун Ифэй', role: 'Чэнь Хань', tag: 'Второстепенная роль' },
+                        { name: 'Чжан И', role: 'Лю Цзин', tag: 'Второстепенная роль' },
+                        { name: 'Ван Янь', role: 'Мать Чжан И', tag: 'Второстепенная роль' },
+                        { name: 'Чжэн Хун', role: 'Отец Хэ Хуань', tag: 'Второстепенная роль' }
                     ]
                 },
                 videos: {
@@ -1783,6 +1516,7 @@
                     40: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239367&hash=40360227ffd5af73&hd=3'
                 }
             },
+            // ===== ДОРАМА 19: Профессионал-одиночка =====
             drama19: {
                 name: 'Профессионал-одиночка',
                 episodes: 24,
@@ -1794,10 +1528,11 @@
                     country: 'Китай',
                     duration: '24 x 00:45:00',
                     translation: 'Профессиональный многоголосый',
-                    plot: 'Сюжет разворачивается вокруг двух студентов скульптурного факультета...',
+                    plot: 'Сюжет разворачивается вокруг двух студентов скульптурного факультета. Цинь Шэнь — талантливый, умный и очень сосредоточенный на учёбе парень. Он холоден, замкнутый и искренне считает, что романтические отношения — это пустая трата времени. Юань Цянь — девушка с живым, упрямым и решительным характером. Она не обладает таким же врождённым талантом, как Цинь Шэнь, но очень любит скульптуру, много работает и не сдаётся. При этом она довольно критична к окружающим и часто замечает в людях то, что другие могут упустить. Их пути пересекаются: Юань Цянь постоянно попадает в ситуации, которые усложняют жизнь Цинь Шэню. Поначалу это его раздражает, но постепенно, наблюдая за девушкой, он сам того не замечает, как проникается к ней симпатией. А Юань Цянь видит, что отношение Цинь Шэня меняется. Вместе им предстоит преодолевать не только рабочие и учебные трудности, но и постепенно узнавать друг друга, расти и учиться строить отношения. В сюжете также есть линия с другим персонажем — студентом спортивного факультета Сун Си И, который тоже проявляет к Юань Цянь интерес. Дорама создаёт уютную, «студенческую» атмосферу — много сцен с учёбой, проектами, совместными выездами. В ней есть и забавные, и трогательные моменты, связанные с первой любовью и взрослением.',
                     cast: [
                         { name: 'Дэн Чаоюань', role: 'Цинь Шэнь', tag: 'Главная роль' },
-                        { name: 'Ирене Сун', role: 'Юань Цянь', tag: 'Главная роль' }
+                        { name: 'Ирене Сун', role: 'Юань Цянь', tag: 'Главная роль' },
+                        { name: 'Ван Жуньцзэ', role: 'Сун Си И', tag: '' }
                     ]
                 },
                 videos: {
@@ -1827,6 +1562,7 @@
                     24: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239369&hash=a9d13d6faa805cb4&hd=3'
                 }
             },
+            // ===== НОВАЯ ДОРАМА 20: Жутко влюблённые =====
             drama20: {
                 name: 'Жутко влюблённые',
                 episodes: 6,
@@ -1838,7 +1574,7 @@
                     country: 'Корея Южная',
                     duration: '01:10:30',
                     translation: 'Проф. Многоголосый',
-                    plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом...',
+                    plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом — красота, деньги, положение в обществе. Вот и наша героиня, Чон Ён Ри, живёт будто в глянцевом журнале: собственная гостиничная империя, шикарные апартаменты, машины, от которых глаза разбегаются. Соседки по кампусу в своё время локти кусали от зависти, что уж говорить. Только оболочка эта — красивая обёртка, под которой прячется штука пострашнее любого скелета в шкафу. Девушка видит мертвецов. И не в смысле "чувствую неладное", а по-настоящему, во плоти (ну, почти) — по ночам к ней наведываются души тех, кого убили несправедливо, кто не смог упокоиться. Прикиньте: ложишься спать в спальне за миллион вон, а к тебе приходит призрак с покалеченной судьбой и явно не для того, чтобы пожелать спокойной ночи. Никакие деньги от такого не спасают, хоть тресни. И вот в эту и без того непростую жизнь врывается прокурор Ма Ган Ук — полная её противоположность. Не человек, а ходячий кодекс справедливости, из тех, что спать не могут спокойно, пока подонок гуляет на свободе. Целыми днями (да что там, ночами тоже) роется в пыльных нераскрытых делах об убийствах, ищет зацепки там, где остальные давно опустили руки. Есть в нём что-то от бультерьера — вцепится и не отпустит. Ну и как водится, две противоположности сталкиваются лбами и — вот это поворот — начинают работать сообща. Ён Ри становится этаким секретным оружием следствия: духи-то знают то, чего ни в одном протоколе не сыщешь. Вдвоём они берутся за тех, кому закон обычно не по зубам — зазнавшихся чеболей, привыкших откупаться от любых проблем, и обычных мерзавцев, прячущих жестокость за закрытыми дверями. Опасно? Ещё бы. Жутко? Временами до дрожи в коленках. Но именно в этом хаосе, среди воплей неупокоенных душ и полицейских протоколов, между героями проскакивает та самая искра, ради которой, собственно, всё и затевалось. Пугающий роман — потому что и вправду страшно, и вправду роман.',
                     cast: [
                         { name: 'Пак Ынбин', role: 'Чон Ён Ри', tag: 'Главная роль' },
                         { name: 'Ян Сэджон', role: 'Ма Ган Ук', tag: 'Главная роль' },
@@ -1885,7 +1621,7 @@
             episodes.push({ number: i, title: '' });
         }
 
-        const episodesScroll = document.getElementById('episodesScroll');
+        const episodesList = document.getElementById('episodesList');
         const videoPlayer = document.getElementById('videoPlayer');
         const currentEpisodeSpan = document.getElementById('currentEpisode');
         const episodeTitleSpan = document.getElementById('episodeTitle');
@@ -1893,24 +1629,8 @@
         const dramaEpisodes = document.getElementById('dramaEpisodes');
         const dramaInfoDiv = document.getElementById('dramaInfo');
 
-        // Элементы управления плеером
-        const episodeMenuBtn = document.getElementById('episodeMenuBtn');
-        const episodeDropdown = document.getElementById('episodeDropdown');
-        const menuCurrentEpisode = document.getElementById('menuCurrentEpisode');
-        const menuArrow = document.getElementById('menuArrow');
-        const playerEpNum = document.getElementById('playerEpNum');
-        const fullscreenHint = document.getElementById('fullscreenHint');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const playerWrapper = document.getElementById('playerWrapper');
-
         let currentEpisode = 1;
-        let isDropdownOpen = false;
-        let hintTimeout = null;
-        let isFullscreen = false;
 
-        // =====================================================
-        // ===== ФУНКЦИИ =====
-        // =====================================================
         function renderInfo() {
             const info = drama.info;
             dramaTitle.textContent = drama.name;
@@ -1946,58 +1666,15 @@
         }
 
         function renderEpisodes() {
-            episodesScroll.innerHTML = '';
+            episodesList.innerHTML = '';
             for (let i = 1; i <= drama.episodes; i++) {
                 const btn = document.createElement('button');
                 btn.className = 'episode-btn' + (i === currentEpisode ? ' active' : '');
-                btn.textContent = i;
+                btn.textContent = `Серия ${i}`;
                 btn.dataset.number = i;
                 btn.addEventListener('click', () => loadEpisode(i));
-                episodesScroll.appendChild(btn);
+                episodesList.appendChild(btn);
             }
-            updateNavButtons();
-        }
-
-        function renderDropdown() {
-            episodeDropdown.innerHTML = '';
-            for (let i = 1; i <= drama.episodes; i++) {
-                const item = document.createElement('button');
-                item.className = 'episode-item' + (i === currentEpisode ? ' active' : '');
-                item.innerHTML = `
-                    <span class="num">${i}</span>
-                    <span>Серия ${i}</span>
-                    <span class="check">✓</span>
-                `;
-                item.dataset.number = i;
-                item.addEventListener('click', () => {
-                    loadEpisode(i);
-                    closeDropdown();
-                });
-                episodeDropdown.appendChild(item);
-            }
-        }
-
-        function toggleDropdown() {
-            isDropdownOpen = !isDropdownOpen;
-            episodeDropdown.classList.toggle('open', isDropdownOpen);
-            menuArrow.classList.toggle('open', isDropdownOpen);
-            if (isDropdownOpen) {
-                showHint();
-            }
-        }
-
-        function closeDropdown() {
-            isDropdownOpen = false;
-            episodeDropdown.classList.remove('open');
-            menuArrow.classList.remove('open');
-        }
-
-        function showHint() {
-            fullscreenHint.classList.add('show');
-            clearTimeout(hintTimeout);
-            hintTimeout = setTimeout(() => {
-                fullscreenHint.classList.remove('show');
-            }, 3000);
         }
 
         function loadEpisode(number) {
@@ -2005,41 +1682,14 @@
             const episode = episodes.find(e => e.number === number);
             currentEpisodeSpan.textContent = `Серия ${number}`;
             episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
-            menuCurrentEpisode.textContent = `Серия ${number}`;
-            playerEpNum.textContent = `Серия ${number}`;
-
-            // Обновляем кнопки под плеером
             document.querySelectorAll('.episode-btn').forEach(btn => {
                 btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
-            });
-
-            // Обновляем меню внутри плеера
-            document.querySelectorAll('.episode-item').forEach(item => {
-                item.classList.toggle('active', parseInt(item.dataset.number) === number);
             });
 
             const videoUrl = drama.videos[number];
             if (videoUrl) {
                 videoPlayer.src = videoUrl;
             }
-
-            saveLastEpisode(number);
-            updateNavButtons();
-            scrollToActiveEpisode();
-        }
-
-        function scrollToActiveEpisode() {
-            const activeBtn = episodesScroll.querySelector('.episode-btn.active');
-            if (activeBtn) {
-                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-            }
-        }
-
-        function updateNavButtons() {
-            const prevBtn = document.getElementById('prevEpisodeBtn');
-            const nextBtn = document.getElementById('nextEpisodeBtn');
-            prevBtn.disabled = currentEpisode <= 1;
-            nextBtn.disabled = currentEpisode >= drama.episodes;
         }
 
         function saveLastEpisode(number) {
@@ -2050,81 +1700,19 @@
             try { return parseInt(localStorage.getItem(drama.storageKey)) || 1; } catch(e) { return 1; }
         }
 
-        // =====================================================
-        // ===== ПОЛНОЭКРАННЫЙ РЕЖИМ (СВОЯ РЕАЛИЗАЦИЯ) =====
-        // =====================================================
-        function toggleFullscreen() {
-            isFullscreen = !isFullscreen;
-            if (isFullscreen) {
-                playerWrapper.classList.add('fullscreen-mode');
-                fullscreenBtn.textContent = '✕';
-                fullscreenBtn.title = 'Выйти из полноэкранного режима';
-                document.body.style.overflow = 'hidden';
-                // Показываем подсказку при входе в полноэкран
-                setTimeout(() => showHint(), 500);
-            } else {
-                playerWrapper.classList.remove('fullscreen-mode');
-                fullscreenBtn.textContent = '⛶';
-                fullscreenBtn.title = 'На весь экран';
-                document.body.style.overflow = 'auto';
-                closeDropdown();
-            }
-        }
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-        // Клавиша Escape для выхода из полноэкранного режима
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isFullscreen) {
-                toggleFullscreen();
-            }
-        });
-
-        // =====================================================
-        // ===== ОБРАБОТЧИКИ =====
-        // =====================================================
-
-        // Кнопка меню внутри плеера
-        episodeMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown();
-        });
-
-        // Закрываем меню при клике вне плеера
-        document.addEventListener('click', (e) => {
-            const wrapper = document.getElementById('playerWrapper');
-            if (!wrapper.contains(e.target)) {
-                closeDropdown();
-            }
-        });
-
-        // Клавиши клавиатуры
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft' && currentEpisode > 1) loadEpisode(currentEpisode - 1);
-            if (e.key === 'ArrowRight' && currentEpisode < drama.episodes) loadEpisode(currentEpisode + 1);
-            if (e.key === 'Escape') {
-                closeDropdown();
-                if (isFullscreen) toggleFullscreen();
-            }
-        });
-
-        // Кнопки навигации под плеером
-        document.getElementById('prevEpisodeBtn').addEventListener('click', () => {
-            if (currentEpisode > 1) loadEpisode(currentEpisode - 1);
-        });
-
-        document.getElementById('nextEpisodeBtn').addEventListener('click', () => {
-            if (currentEpisode < drama.episodes) loadEpisode(currentEpisode + 1);
-        });
-
-        // =====================================================
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        // =====================================================
         renderInfo();
         renderEpisodes();
-        renderDropdown();
         loadEpisode(getLastEpisode());
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.episode-btn');
+            if (btn) saveLastEpisode(parseInt(btn.dataset.number));
+        });
+
+        window.addEventListener('load', () => {
+            const saved = getLastEpisode();
+            if (saved !== currentEpisode) loadEpisode(saved);
+        });
 
         // =====================================================
         // ===== КОММЕНТАРИИ =====
