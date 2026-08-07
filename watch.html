@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Смотреть дораму</title>
     <link rel="icon" href="Log.png" type="image/png">
     <style>
@@ -69,8 +69,6 @@
             gap: 20px;
             flex-wrap: wrap;
             transition: background 0.3s ease, border-color 0.3s ease;
-            z-index: 100;
-            position: relative;
         }
 
         .header .back-btn {
@@ -97,7 +95,10 @@
             font-size: 22px;
             font-weight: 700;
             color: #1a4d2e;
-            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5), 0 0 20px rgba(241, 196, 15, 0.3), 0 0 40px rgba(241, 196, 15, 0.1);
+            text-shadow:
+                0 0 10px rgba(241, 196, 15, 0.5),
+                0 0 20px rgba(241, 196, 15, 0.3),
+                0 0 40px rgba(241, 196, 15, 0.1);
             -webkit-text-stroke: 1px var(--accent-color);
             text-stroke: 1px var(--accent-color);
             text-transform: uppercase;
@@ -193,9 +194,6 @@
             flex-direction: column;
         }
 
-        /* =====================================================
-           ПЛЕЕР
-           ===================================================== */
         .player-wrapper {
             width: 100%;
             background: #000;
@@ -212,295 +210,8 @@
             height: 100%;
             border: none;
             display: block;
-            pointer-events: auto;
         }
 
-        /* =====================================================
-           КОНТРОЛЫ ПЛЕЕРА (поверх iframe)
-           ===================================================== */
-        .player-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .player-controls .top-left {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            pointer-events: auto;
-            z-index: 21;
-        }
-
-        .player-controls .bottom-left {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            pointer-events: none;
-            z-index: 21;
-        }
-
-        .player-controls .bottom-right {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            pointer-events: auto;
-            z-index: 21;
-        }
-
-        /* КНОПКА МЕНЮ СЕРИЙ */
-        .episode-menu-btn {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s ease;
-            font-family: system-ui, sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            user-select: none;
-            pointer-events: auto;
-        }
-
-        .episode-menu-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
-        .episode-menu-btn .arrow {
-            transition: 0.3s ease;
-        }
-
-        .episode-menu-btn .arrow.open {
-            transform: rotate(180deg);
-        }
-
-        /* ВЫПАДАЮЩЕЕ МЕНЮ СЕРИЙ */
-        .episode-dropdown {
-            position: absolute;
-            top: 52px;
-            left: 0;
-            z-index: 30;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 10px 12px;
-            max-height: 0;
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        opacity 0.3s ease,
-                        visibility 0.3s ease;
-            min-width: 120px;
-            max-width: 260px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
-            pointer-events: auto;
-            overflow-y: auto;
-        }
-
-        .episode-dropdown.open {
-            max-height: 320px;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .episode-dropdown::-webkit-scrollbar {
-            width: 4px;
-        }
-        .episode-dropdown::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-        .episode-dropdown::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 10px;
-        }
-
-        .episode-dropdown .episode-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.2s ease;
-            white-space: nowrap;
-            border: none;
-            background: transparent;
-            width: 100%;
-            font-family: system-ui, sans-serif;
-        }
-
-        .episode-dropdown .episode-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-        }
-
-        .episode-dropdown .episode-item.active {
-            background: rgba(241, 196, 15, 0.2);
-            color: var(--accent-color);
-            border: 1px solid rgba(241, 196, 15, 0.3);
-        }
-
-        .episode-dropdown .episode-item .num {
-            font-weight: 700;
-            min-width: 28px;
-            color: var(--text-muted);
-        }
-
-        .episode-dropdown .episode-item.active .num {
-            color: var(--accent-color);
-        }
-
-        .episode-dropdown .episode-item .check {
-            margin-left: auto;
-            color: var(--accent-color);
-            font-size: 16px;
-            opacity: 0;
-            transition: 0.2s ease;
-        }
-
-        .episode-dropdown .episode-item.active .check {
-            opacity: 1;
-        }
-
-        /* ИНФОРМАЦИЯ О СЕРИИ НА ПЛЕЕРЕ (снизу слева) */
-        .player-episode-info {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
-            font-family: system-ui, sans-serif;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-        }
-
-        .player-episode-info .ep-num {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        /* КНОПКА ПОЛНОЭКРАННОГО РЕЖИМА (перекрывает стандартную) */
-        .fullscreen-btn {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            pointer-events: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            min-width: 40px;
-            min-height: 36px;
-        }
-
-        .fullscreen-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
-            transform: scale(1.1);
-            border-color: var(--accent-color);
-        }
-
-        /* ПОДСКАЗКА */
-        .fullscreen-hint {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 22;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            font-weight: 400;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
-            pointer-events: none;
-            font-family: system-ui, sans-serif;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            padding: 6px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            white-space: nowrap;
-        }
-
-        .fullscreen-hint.show {
-            opacity: 1;
-        }
-
-        /* =====================================================
-           ПОЛНОЭКРАННЫЙ РЕЖИМ (СВОЯ РЕАЛИЗАЦИЯ)
-           ===================================================== */
-        .player-wrapper.fullscreen-mode {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: 100vw !important;
-            max-height: 100vh !important;
-            border-radius: 0 !important;
-            border: none !important;
-            z-index: 9999 !important;
-            aspect-ratio: auto !important;
-            background: #000;
-        }
-
-        /* Принудительный альбомный вид на Android */
-        .player-wrapper.fullscreen-mode.landscape-force {
-            width: 100vw !important;
-            height: 100vh !important;
-        }
-
-        .player-wrapper.fullscreen-mode .player-controls .top-left {
-            top: 20px;
-            left: 20px;
-        }
-
-        .player-wrapper.fullscreen-mode .player-controls .bottom-left {
-            bottom: 30px;
-            left: 30px;
-        }
-
-        .player-wrapper.fullscreen-mode .player-controls .bottom-right {
-            bottom: 30px;
-            right: 30px;
-        }
-
-        .player-wrapper.fullscreen-mode .fullscreen-btn {
-            background: rgba(0, 0, 0, 0.7);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* =====================================================
-           ВЫБОР СЕРИЙ ПОД ПЛЕЕРОМ
-           ===================================================== */
         .episode-info {
             display: flex;
             justify-content: space-between;
@@ -556,9 +267,6 @@
             color: #0b0e14;
         }
 
-        /* =====================================================
-           ИНФОРМАЦИЯ О ДОРАМЕ
-           ===================================================== */
         .drama-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -651,9 +359,6 @@
             transition: color 0.3s ease;
         }
 
-        /* =====================================================
-           КОММЕНТАРИИ
-           ===================================================== */
         .comments-section {
             margin-top: 30px;
             padding-top: 20px;
@@ -839,7 +544,7 @@
             position: fixed;
             bottom: 100px;
             right: 30px;
-            z-index: 99999;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -862,11 +567,21 @@
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
-        .toast.success { border-color: #2ecc71; }
-        .toast.error { border-color: #e74c3c; }
-        .toast.info { border-color: var(--accent-color); }
+        .toast.success {
+            border-color: #2ecc71;
+        }
 
-        .toast .toast-icon { font-size: 20px; }
+        .toast.error {
+            border-color: #e74c3c;
+        }
+
+        .toast.info {
+            border-color: var(--accent-color);
+        }
+
+        .toast .toast-icon {
+            font-size: 20px;
+        }
 
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
@@ -898,15 +613,6 @@
             .comment-form { flex-direction: column; }
             .comment-form input { min-width: auto; }
             .comment-form textarea { min-width: auto; min-height: 50px; }
-            .episode-menu-btn { font-size: 12px; padding: 6px 12px; top: 8px; left: 8px; }
-            .episode-dropdown { top: 44px; left: 0; min-width: 100px; max-width: 200px; }
-            .episode-dropdown .episode-item { font-size: 12px; padding: 4px 10px; }
-            .player-episode-info { font-size: 11px; bottom: 10px; left: 10px; padding: 3px 10px; }
-            .fullscreen-hint { font-size: 11px; padding: 4px 12px; bottom: 60px; }
-            .fullscreen-btn { font-size: 16px; padding: 4px 10px; min-width: 34px; min-height: 30px; }
-            .player-wrapper.fullscreen-mode .fullscreen-btn { bottom: 20px; right: 20px; }
-            .player-wrapper.fullscreen-mode .player-controls .bottom-left { bottom: 20px; left: 20px; }
-            .player-wrapper.fullscreen-mode .player-controls .top-left { top: 16px; left: 16px; }
         }
 
         @media (max-width: 480px) {
@@ -928,25 +634,6 @@
             .comment-item .comment-text { font-size: 13px; }
             .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
             .toast { font-size: 12px; padding: 10px 14px; }
-            .episode-menu-btn { font-size: 11px; padding: 4px 10px; }
-            .episode-dropdown .episode-item { font-size: 11px; padding: 3px 8px; }
-            .player-episode-info { font-size: 10px; bottom: 8px; left: 8px; padding: 2px 8px; }
-            .fullscreen-hint { font-size: 10px; padding: 3px 10px; bottom: 50px; }
-            .fullscreen-btn { font-size: 14px; padding: 3px 8px; min-width: 30px; min-height: 26px; }
-            .episode-btn { font-size: 12px; padding: 6px 14px; }
-        }
-
-        /* Специально для Android - принудительный альбомный вид */
-        @media screen and (orientation: portrait) {
-            .player-wrapper.fullscreen-mode {
-                transform: rotate(90deg) !important;
-                transform-origin: center center !important;
-                width: 100vh !important;
-                height: 100vw !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) rotate(90deg) !important;
-            }
         }
     </style>
 </head>
@@ -968,35 +655,8 @@
     </header>
 
     <main class="main-content">
-        <div class="player-wrapper" id="playerWrapper">
+        <div class="player-wrapper">
             <iframe id="videoPlayer" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" frameborder="0" allowfullscreen></iframe>
-
-            <!-- ===== КОНТРОЛЫ ПЛЕЕРА (поверх iframe) ===== -->
-            <div class="player-controls" id="playerControls">
-                <!-- Верхний левый угол: меню серий -->
-                <div class="top-left">
-                    <button class="episode-menu-btn" id="episodeMenuBtn">
-                        <span id="menuCurrentEpisode">Серия 1</span>
-                        <span class="arrow" id="menuArrow">▼</span>
-                    </button>
-                    <div class="episode-dropdown" id="episodeDropdown"></div>
-                </div>
-
-                <!-- Нижний левый угол: информация о серии -->
-                <div class="bottom-left">
-                    <div class="player-episode-info">
-                        <span class="ep-num" id="playerEpNum">Серия 1</span>
-                    </div>
-                </div>
-
-                <!-- Нижний правый угол: своя кнопка полноэкранного режима (перекрывает стандартную) -->
-                <div class="bottom-right">
-                    <button class="fullscreen-btn" id="fullscreenBtn" title="На весь экран">⛶</button>
-                </div>
-
-                <!-- Подсказка -->
-                <div class="fullscreen-hint" id="fullscreenHint">Нажмите на меню для выбора серии</div>
-            </div>
         </div>
 
         <div class="episode-info">
@@ -1074,6 +734,7 @@
         // ===== ДАННЫЕ О ДОРАМАХ (ВСЕ 20) =====
         // =====================================================
         const DRAMAS = {
+            // ===== ДОРАМА 1: Завтра снова на работу! =====
             drama1: {
                 name: 'Завтра снова на работу!',
                 episodes: 6,
@@ -1104,6 +765,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239022&hash=d2c59399f439985e&hd=3'
                 }
             },
+            // ===== ДОРАМА 2: Лазурная весна =====
             drama2: {
                 name: 'Лазурная весна',
                 episodes: 6,
@@ -1132,6 +794,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239028&hash=77eede5363ac751f&hd=3'
                 }
             },
+            // ===== ДОРАМА 3: Абсолютная величина любви =====
             drama3: {
                 name: 'Абсолютная величина любви',
                 episodes: 16,
@@ -1170,6 +833,7 @@
                     16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239282&hash=f0c1d2451e2205ee&hd=3'
                 }
             },
+            // ===== ДОРАМА 4: Атхит - это я =====
             drama4: {
                 name: 'Атхит - это я',
                 episodes: 6,
@@ -1201,6 +865,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239048&hash=d9466f01ce9b0a00&hd=3'
                 }
             },
+            // ===== ДОРАМА 5: Бойфренд по запросу =====
             drama5: {
                 name: 'Бойфренд по запросу',
                 episodes: 10,
@@ -1245,6 +910,7 @@
                     10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239058&hash=4cd0477c2a8825b2&hd=3'
                 }
             },
+            // ===== ДОРАМА 6: Жена принца XXI века =====
             drama6: {
                 name: 'Жена принца XXI века',
                 episodes: 12,
@@ -1283,6 +949,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239070&hash=27d8c0f57c73886f&hd=3'
                 }
             },
+            // ===== ДОРАМА 7: Весенняя лихорадка =====
             drama7: {
                 name: 'Весенняя лихорадка',
                 episodes: 12,
@@ -1323,6 +990,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239082&hash=60863793b7acf836&hd=3'
                 }
             },
+            // ===== ДОРАМА 8: Босс компании «Тайфун» =====
             drama8: {
                 name: 'Босс компании «Тайфун»',
                 episodes: 16,
@@ -1367,6 +1035,7 @@
                     16: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239083&hash=bd27462a88e0354c&hd=3'
                 }
             },
+            // ===== ДОРАМА 9: Все твои желания исполнятся =====
             drama9: {
                 name: 'Все твои желания исполнятся',
                 episodes: 13,
@@ -1413,6 +1082,7 @@
                     13: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239099&hash=6cabc9bafeaebb9c&hd=3'
                 }
             },
+            // ===== ДОРАМА 10: Полярная звезда =====
             drama10: {
                 name: 'Полярная звезда',
                 episodes: 9,
@@ -1450,6 +1120,7 @@
                     9: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239112&hash=c19a0446c984a05c&hd=3'
                 }
             },
+            // ===== ДОРАМА 11: В погоне за нефритом =====
             drama11: {
                 name: 'В погоне за нефритом',
                 episodes: 40,
@@ -1518,6 +1189,7 @@
                     40: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239121&hash=cf2cff84d1ec1195&hd=3'
                 }
             },
+            // ===== ДОРАМА 12: 50-летние профи =====
             drama12: {
                 name: '50-летние профи',
                 episodes: 12,
@@ -1558,6 +1230,7 @@
                     12: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239161&hash=995e9149fbb3df42&hd=3'
                 }
             },
+            // ===== ДОРАМА 13: Клетки эмпатии =====
             drama13: {
                 name: 'Клетки эмпатии',
                 episodes: 6,
@@ -1586,6 +1259,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239173&hash=1549506a870806c6&hd=3'
                 }
             },
+            // ===== ДОРАМА 14: Вперёд, Кальмар! =====
             drama14: {
                 name: 'Вперёд, Кальмар!',
                 episodes: 41,
@@ -1655,6 +1329,7 @@
                     41: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239265&hash=724b2c5ee4c89247&hd=3'
                 }
             },
+            // ===== ДОРАМА 15: Борьба в прямом эфире =====
             drama15: {
                 name: 'Борьба в прямом эфире',
                 episodes: 6,
@@ -1685,6 +1360,7 @@
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239266&hash=53734edc5b946baf&hd=3'
                 }
             },
+            // ===== ДОРАМА 16: Золотое место =====
             drama16: {
                 name: 'Золотое место',
                 episodes: 10,
@@ -1722,6 +1398,7 @@
                     10: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239272&hash=9e735ac633368aba&hd=3'
                 }
             },
+            // ===== ДОРАМА 17: Судьба, поцелованная дождем =====
             drama17: {
                 name: 'Судьба, поцелованная дождем',
                 episodes: 30,
@@ -1774,6 +1451,7 @@
                     30: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239298&hash=9f81ad4e262a9c4b&hd=3'
                 }
             },
+            // ===== ДОРАМА 18: Ты мой герой =====
             drama18: {
                 name: 'Ты мой герой',
                 episodes: 40,
@@ -1838,6 +1516,7 @@
                     40: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239367&hash=40360227ffd5af73&hd=3'
                 }
             },
+            // ===== ДОРАМА 19: Профессионал-одиночка =====
             drama19: {
                 name: 'Профессионал-одиночка',
                 episodes: 24,
@@ -1883,6 +1562,7 @@
                     24: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239369&hash=a9d13d6faa805cb4&hd=3'
                 }
             },
+            // ===== НОВАЯ ДОРАМА 20: Жутко влюблённые =====
             drama20: {
                 name: 'Жутко влюблённые',
                 episodes: 6,
@@ -1949,20 +1629,7 @@
         const dramaEpisodes = document.getElementById('dramaEpisodes');
         const dramaInfoDiv = document.getElementById('dramaInfo');
 
-        // Элементы управления плеером
-        const episodeMenuBtn = document.getElementById('episodeMenuBtn');
-        const episodeDropdown = document.getElementById('episodeDropdown');
-        const menuCurrentEpisode = document.getElementById('menuCurrentEpisode');
-        const menuArrow = document.getElementById('menuArrow');
-        const playerEpNum = document.getElementById('playerEpNum');
-        const fullscreenHint = document.getElementById('fullscreenHint');
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const playerWrapper = document.getElementById('playerWrapper');
-
         let currentEpisode = 1;
-        let isDropdownOpen = false;
-        let hintTimeout = null;
-        let isFullscreen = false;
 
         function renderInfo() {
             const info = drama.info;
@@ -2010,70 +1677,19 @@
             }
         }
 
-        function renderDropdown() {
-            episodeDropdown.innerHTML = '';
-            for (let i = 1; i <= drama.episodes; i++) {
-                const item = document.createElement('button');
-                item.className = 'episode-item' + (i === currentEpisode ? ' active' : '');
-                item.innerHTML = `
-                    <span class="num">${i}</span>
-                    <span>Серия ${i}</span>
-                    <span class="check">✓</span>
-                `;
-                item.dataset.number = i;
-                item.addEventListener('click', () => {
-                    loadEpisode(i);
-                    closeDropdown();
-                });
-                episodeDropdown.appendChild(item);
-            }
-        }
-
-        function toggleDropdown() {
-            isDropdownOpen = !isDropdownOpen;
-            episodeDropdown.classList.toggle('open', isDropdownOpen);
-            menuArrow.classList.toggle('open', isDropdownOpen);
-            if (isDropdownOpen) {
-                showHint();
-            }
-        }
-
-        function closeDropdown() {
-            isDropdownOpen = false;
-            episodeDropdown.classList.remove('open');
-            menuArrow.classList.remove('open');
-        }
-
-        function showHint() {
-            fullscreenHint.classList.add('show');
-            clearTimeout(hintTimeout);
-            hintTimeout = setTimeout(() => {
-                fullscreenHint.classList.remove('show');
-            }, 3000);
-        }
-
         function loadEpisode(number) {
             currentEpisode = number;
             const episode = episodes.find(e => e.number === number);
             currentEpisodeSpan.textContent = `Серия ${number}`;
             episodeTitleSpan.textContent = `— ${episode ? episode.title : ''}`;
-            menuCurrentEpisode.textContent = `Серия ${number}`;
-            playerEpNum.textContent = `Серия ${number}`;
-
             document.querySelectorAll('.episode-btn').forEach(btn => {
                 btn.classList.toggle('active', parseInt(btn.dataset.number) === number);
-            });
-
-            document.querySelectorAll('.episode-item').forEach(item => {
-                item.classList.toggle('active', parseInt(item.dataset.number) === number);
             });
 
             const videoUrl = drama.videos[number];
             if (videoUrl) {
                 videoPlayer.src = videoUrl;
             }
-
-            saveLastEpisode(number);
         }
 
         function saveLastEpisode(number) {
@@ -2084,80 +1700,19 @@
             try { return parseInt(localStorage.getItem(drama.storageKey)) || 1; } catch(e) { return 1; }
         }
 
-        // =====================================================
-        // ===== ПОЛНОЭКРАННЫЙ РЕЖИМ =====
-        // =====================================================
-        function toggleFullscreen() {
-            isFullscreen = !isFullscreen;
-            if (isFullscreen) {
-                playerWrapper.classList.add('fullscreen-mode');
-                // Принудительно поворачиваем на Android
-                if (/android/i.test(navigator.userAgent)) {
-                    playerWrapper.classList.add('landscape-force');
-                    // Запрос альбомной ориентации
-                    if (screen.orientation && screen.orientation.lock) {
-                        screen.orientation.lock('landscape').catch(() => {});
-                    }
-                }
-                fullscreenBtn.textContent = '✕';
-                fullscreenBtn.title = 'Выйти из полноэкранного режима';
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => showHint(), 500);
-            } else {
-                playerWrapper.classList.remove('fullscreen-mode');
-                playerWrapper.classList.remove('landscape-force');
-                if (screen.orientation && screen.orientation.unlock) {
-                    screen.orientation.unlock();
-                }
-                fullscreenBtn.textContent = '⛶';
-                fullscreenBtn.title = 'На весь экран';
-                document.body.style.overflow = 'auto';
-                closeDropdown();
-            }
-        }
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-        // Клавиша Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isFullscreen) {
-                toggleFullscreen();
-            }
-        });
-
-        // =====================================================
-        // ===== ОБРАБОТЧИКИ =====
-        // =====================================================
-
-        episodeMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown();
-        });
-
-        document.addEventListener('click', (e) => {
-            const wrapper = document.getElementById('playerWrapper');
-            if (!wrapper.contains(e.target)) {
-                closeDropdown();
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft' && currentEpisode > 1) loadEpisode(currentEpisode - 1);
-            if (e.key === 'ArrowRight' && currentEpisode < drama.episodes) loadEpisode(currentEpisode + 1);
-            if (e.key === 'Escape') {
-                closeDropdown();
-                if (isFullscreen) toggleFullscreen();
-            }
-        });
-
-        // =====================================================
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        // =====================================================
         renderInfo();
         renderEpisodes();
-        renderDropdown();
         loadEpisode(getLastEpisode());
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.episode-btn');
+            if (btn) saveLastEpisode(parseInt(btn.dataset.number));
+        });
+
+        window.addEventListener('load', () => {
+            const saved = getLastEpisode();
+            if (saved !== currentEpisode) loadEpisode(saved);
+        });
 
         // =====================================================
         // ===== КОММЕНТАРИИ =====
@@ -2168,6 +1723,7 @@
         function renderComments() {
             const container = document.getElementById('commentsList');
             const countSpan = document.getElementById('commentsCount');
+
             countSpan.textContent = `(${comments.length})`;
 
             if (comments.length === 0) {
