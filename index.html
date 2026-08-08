@@ -88,7 +88,7 @@
         }
 
         /* ============================================================
-           БЛОК 3: ЛОГОТИП И ЖАНРЫ
+           БЛОК 3: ЛОГОТИП
            ============================================================ */
         .logo-overlay {
             position: absolute;
@@ -112,93 +112,8 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        .genres-wrapper {
-            position: absolute;
-            top: 70px;
-            left: 0px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 90vw;
-        }
-
-        .genres-slide {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 6px;
-            max-height: 0;
-            opacity: 0;
-            visibility: hidden;
-            overflow: hidden;
-            transition: max-height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        opacity 0.6s ease,
-                        visibility 0.6s ease;
-            padding: 0;
-            background: rgba(11, 14, 20, 0.98);
-            border-radius: 12px;
-            border: 1px solid transparent;
-            backdrop-filter: blur(10px);
-            width: 100%;
-            min-width: 200px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 4px;
-        }
-
-        .genres-slide.open {
-            max-height: 2000px;
-            opacity: 1;
-            visibility: visible;
-            padding: 12px 14px;
-            border: 1px solid #2a313f;
-        }
-
-        .genres-slide .genre-item {
-            color: #f1c40f;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 6px 14px;
-            cursor: pointer;
-            transition: 0.2s ease;
-            border-radius: 20px;
-            white-space: nowrap;
-            width: 100%;
-            border: 2px solid #ff0000;
-            background: rgba(0, 0, 0, 0.3);
-            text-align: left;
-        }
-
-        .genres-slide .genre-item:hover {
-            color: #ffffff;
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff3333;
-            transform: scale(1.02);
-        }
-
-        .genres-slide .genre-item.active {
-            color: #f1c40f;
-            background: rgba(255, 0, 0, 0.25);
-            border-color: #ff3333;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-        }
-
-        .genres-slide .genre-item .count {
-            color: #ff6666;
-            font-size: 11px;
-            margin-left: 8px;
-        }
-
-        .genres-slide .genre-item.active .count {
-            color: #f1c40f;
-        }
-
         /* ============================================================
-           БЛОК 4: СЧЁТЧИК ОНЛАЙНА (ПОСЛЕ ЛОГОТИПА, СЛЕВА)
+           БЛОК 4: СЧЁТЧИК ОНЛАЙНА
            ============================================================ */
         .online-counter {
             position: absolute;
@@ -485,7 +400,7 @@
         }
 
         /* ============================================================
-           БЛОК 8: ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + ИЗБРАННОЕ)
+           БЛОК 8: ПАНЕЛЬ УПРАВЛЕНИЯ (КНОПКА ЖАНРОВ + ИЗБРАННОЕ)
            ============================================================ */
         .controls-bar {
             width: 100%;
@@ -497,6 +412,7 @@
             gap: 12px;
             align-items: center;
             transition: background 0.3s ease;
+            position: relative;
         }
 
         .controls-bar .controls-inner {
@@ -507,58 +423,118 @@
             gap: 12px;
             align-items: center;
             justify-content: space-between;
+            position: relative;
         }
 
-        .sort-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .sort-wrapper select {
+        /* ===== КНОПКА ЖАНРОВ ===== */
+        .genres-btn {
             background: var(--bg-secondary);
-            border: 2px solid #2ecc71;
+            border: 2px solid #ff0000;
             border-radius: 30px;
             color: var(--text-primary);
-            padding: 8px 16px;
+            padding: 8px 24px;
             font-family: system-ui, -apple-system, sans-serif;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            outline: none;
             transition: 0.3s ease;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232ecc71' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
-            min-width: 160px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             height: 38px;
         }
 
-        .sort-wrapper select:hover {
-            border-color: #27ae60;
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.15);
+        .genres-btn:hover {
+            border-color: #ff3333;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        .sort-wrapper select:focus {
-            border-color: #27ae60;
-            box-shadow: 0 0 40px rgba(46, 204, 113, 0.2);
+        .genres-btn .arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
         }
 
-        .sort-wrapper select option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
+        .genres-btn .arrow.open {
+            transform: rotate(180deg);
         }
 
-        .action-buttons {
+        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЖАНРОВ ===== */
+        .genres-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 6px;
+            background: rgba(11, 14, 20, 0.98);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            border: 1px solid #2a313f;
+            padding: 10px 14px;
+            min-width: 200px;
+            max-width: 400px;
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.4s ease,
+                        visibility 0.4s ease,
+                        padding 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            z-index: 1000;
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 14px;
         }
 
+        .genres-dropdown.open {
+            max-height: 600px;
+            opacity: 1;
+            visibility: visible;
+            padding: 12px 14px;
+        }
+
+        .genres-dropdown .genre-item {
+            color: #f1c40f;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            border-radius: 20px;
+            border: 2px solid #ff0000;
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .genres-dropdown .genre-item:hover {
+            color: #ffffff;
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff3333;
+            transform: scale(1.02);
+        }
+
+        .genres-dropdown .genre-item.active {
+            color: #f1c40f;
+            background: rgba(255, 0, 0, 0.25);
+            border-color: #ff3333;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .genres-dropdown .genre-item .count {
+            color: #ff6666;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .genres-dropdown .genre-item.active .count {
+            color: #f1c40f;
+        }
+
+        /* ===== ИЗБРАННОЕ ===== */
         .action-btn {
             background: var(--bg-secondary);
             border: 2px solid #2a313f;
@@ -1267,13 +1243,11 @@
             .search-wrapper .search-btn { padding: 8px 18px; font-size: 14px; height: 38px; }
             .logo-overlay img { height: 38px; }
             .logo-overlay { top: 12px; left: 12px; }
-            .genres-wrapper { top: 58px; left: 0px; }
-            .genres-slide .genre-item { font-size: 13px; padding: 5px 12px; }
-            .controls-bar .controls-inner { flex-direction: column; align-items: stretch; }
-            .sort-wrapper { justify-content: center; }
-            .sort-wrapper select { min-width: 140px; height: 36px; }
-            .action-buttons { justify-content: center; }
-            .action-btn { height: 36px; }
+            .controls-bar .controls-inner { flex-direction: column; align-items: stretch; gap: 8px; }
+            .genres-btn { justify-content: center; }
+            .genres-dropdown { max-width: 100%; left: 0; right: 0; }
+            .genres-dropdown .genre-item { font-size: 12px; padding: 4px 10px; }
+            .action-btn { height: 36px; font-size: 13px; align-self: center; }
             .modal-content { max-width: 380px; max-height: 92vh; }
             .modal-content .modal-title { font-size: 18px; }
             .modal-content .modal-info { padding: 14px 16px 16px; }
@@ -1313,13 +1287,11 @@
             .search-wrapper .search-btn { padding: 6px 14px; font-size: 12px; height: 32px; right: 4px; }
             .logo-overlay img { height: 32px; }
             .logo-overlay { top: 8px; left: 8px; }
-            .genres-wrapper { top: 46px; left: 0px; max-width: 92vw; }
-            .genres-slide.open { padding: 10px 10px; }
-            .genres-slide .genre-item { font-size: 12px; padding: 4px 10px; border-width: 1.5px; }
-            .genres-slide .genre-item .count { font-size: 10px; margin-left: 4px; }
             .controls-bar { padding: 8px 10px 4px 10px; }
-            .sort-wrapper select { font-size: 12px; padding: 6px 12px; min-width: 120px; height: 32px; background-size: 10px; background-position: right 8px center; padding-right: 28px; }
-            .action-btn { font-size: 12px; padding: 6px 14px; height: 32px; }
+            .genres-btn { font-size: 12px; padding: 6px 16px; height: 32px; }
+            .genres-dropdown .genre-item { font-size: 10px; padding: 3px 8px; border-width: 1.5px; }
+            .genres-dropdown .genre-item .count { font-size: 9px; }
+            .action-btn { font-size: 11px; padding: 6px 14px; height: 30px; }
             .modal-overlay { padding: 10px; }
             .modal-content { max-width: 95%; max-height: 95vh; }
             .modal-content .modal-title { font-size: 16px; }
@@ -1345,17 +1317,14 @@
         <img src="Pr.jpeg" alt="Изображение" />
 
         <!-- ============================================================
-        БЛОК 19: ЛОГОТИП И ЖАНРЫ
+        БЛОК 19: ЛОГОТИП
         ============================================================ -->
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип" />
-            <div class="genres-wrapper">
-                <div class="genres-slide" id="genresSlide"></div>
-            </div>
         </div>
 
         <!-- ============================================================
-        БЛОК 20: СЧЁТЧИК ОНЛАЙНА (ПОСЛЕ ЛОГОТИПА)
+        БЛОК 20: СЧЁТЧИК ОНЛАЙНА
         ============================================================ -->
         <div class="online-counter" id="onlineCounter">
             <span class="dot"></span>
@@ -1400,25 +1369,20 @@
     </div>
 
     <!-- ============================================================
-    БЛОК 24: ПАНЕЛЬ УПРАВЛЕНИЯ (СОРТИРОВКА + ИЗБРАННОЕ)
+    БЛОК 24: ПАНЕЛЬ УПРАВЛЕНИЯ (КНОПКА ЖАНРОВ + ИЗБРАННОЕ)
     ============================================================ -->
     <div class="controls-bar">
         <div class="controls-inner">
-            <div class="sort-wrapper">
-                <select id="sortSelect">
-                    <option value="default">По умолчанию</option>
-                    <option value="rating">По рейтингу ↓</option>
-                    <option value="rating-asc">По рейтингу ↑</option>
-                    <option value="year">По году ↓</option>
-                    <option value="year-asc">По году ↑</option>
-                    <option value="name">По названию А-Я</option>
-                </select>
-            </div>
-            <div class="action-buttons">
-                <button class="action-btn favorite-btn" id="favoritesToggle">
-                    Избранное <span class="badge" id="favoritesCount">0</span>
-                </button>
-            </div>
+            <!-- КНОПКА ЖАНРОВ С ВЫПАДАЮЩИМ МЕНЮ -->
+            <button class="genres-btn" id="genresBtn">
+                📂 Жанры <span class="arrow" id="genresArrow">▼</span>
+            </button>
+            <div class="genres-dropdown" id="genresDropdown"></div>
+
+            <!-- ИЗБРАННОЕ -->
+            <button class="action-btn favorite-btn" id="favoritesToggle">
+                Избранное <span class="badge" id="favoritesCount">0</span>
+            </button>
         </div>
     </div>
 
@@ -2069,7 +2033,6 @@
             { name: 'Ты мой герой', year: 2024, rating: 7.5, poster: 'kdfgj.jpg', isDrama: true, isSeries: true, genre: 'Мелодрама, комедия, романтика', dramaId: 'drama18' },
             { name: 'Профессионал-одиночка', year: 2020, rating: 7.8, poster: '1920x.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия, романтика', dramaId: 'drama19' },
             { name: 'Жутко влюблённые', year: 2026, rating: 8.8, poster: 'ldf.jpg', isDrama: true, isSeries: true, genre: 'мелодрама, комедия, фэнтези, детектив', dramaId: 'drama20' },
-            // ===== НОВАЯ ДОРАМА 21 В СПИСКЕ =====
             { name: 'История леди Ок', year: 2024, rating: 8.7, poster: 'kdjH.png', isDrama: true, isSeries: true, genre: 'драма', dramaId: 'drama21' },
             { name: 'Титаник', year: 1997, rating: 8.3, poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
         ];
@@ -2132,9 +2095,10 @@
         }
 
         // =====================================================
-        // БЛОК 39: ЖАНРЫ
+        // БЛОК 39: ЖАНРЫ (ВЫПАДАЮЩЕЕ МЕНЮ)
         // =====================================================
-        function getAllGenres() {
+        function renderGenres() {
+            const container = document.getElementById('genresDropdown');
             const genresSet = new Set();
             movies.forEach(movie => {
                 if (movie.genre) {
@@ -2146,15 +2110,11 @@
                     });
                 }
             });
-            return Array.from(genresSet).sort();
-        }
+            const genres = Array.from(genresSet).sort();
 
-        function renderGenres() {
-            const container = document.getElementById('genresSlide');
-            const genres = getAllGenres();
             let html = `<span class="genre-item active" data-genre="all"> Все <span class="count">${movies.length}</span></span>`;
             genres.forEach(genre => {
-                const count = movies.filter(m => m.genre && m.genre.includes(genre)).length;
+                const count = movies.filter(m => m.genre && m.genre.toLowerCase().includes(genre.toLowerCase())).length;
                 html += `<span class="genre-item" data-genre="${genre}">${genre} <span class="count">${count}</span></span>`;
             });
             container.innerHTML = html;
@@ -2167,28 +2127,37 @@
                     applyFilters();
                     container.querySelectorAll('.genre-item').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
+                    // Закрываем меню после выбора
                     closeGenres();
                 });
             });
         }
 
+        // ===== ОТКРЫТИЕ/ЗАКРЫТИЕ МЕНЮ =====
         function toggleGenres() {
-            document.getElementById('genresSlide').classList.toggle('open');
+            const dropdown = document.getElementById('genresDropdown');
+            const arrow = document.getElementById('genresArrow');
+            dropdown.classList.toggle('open');
+            arrow.classList.toggle('open');
         }
 
         function closeGenres() {
-            document.getElementById('genresSlide').classList.remove('open');
+            const dropdown = document.getElementById('genresDropdown');
+            const arrow = document.getElementById('genresArrow');
+            dropdown.classList.remove('open');
+            arrow.classList.remove('open');
         }
 
-        document.getElementById('logoWrapper').addEventListener('click', function(e) {
+        document.getElementById('genresBtn').addEventListener('click', function(e) {
             e.stopPropagation();
             toggleGenres();
         });
 
+        // Закрываем при клике вне меню
         document.addEventListener('click', function(e) {
-            const wrapper = document.getElementById('logoWrapper');
-            const slide = document.getElementById('genresSlide');
-            if (!wrapper.contains(e.target) && !slide.contains(e.target)) {
+            const btn = document.getElementById('genresBtn');
+            const dropdown = document.getElementById('genresDropdown');
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
                 closeGenres();
             }
         });
@@ -2239,11 +2208,10 @@
         });
 
         // =====================================================
-        // БЛОК 41: ФИЛЬТРАЦИЯ + СОРТИРОВКА
+        // БЛОК 41: ФИЛЬТРАЦИЯ (БЕЗ СОРТИРОВКИ)
         // =====================================================
         let currentGenre = 'all';
         let currentSearchQuery = '';
-        let currentSort = 'default';
 
         function getFilteredMovies() {
             let filtered = [...movies];
@@ -2253,7 +2221,7 @@
             }
 
             if (currentGenre !== 'all') {
-                filtered = filtered.filter(m => m.genre && m.genre.includes(currentGenre));
+                filtered = filtered.filter(m => m.genre && m.genre.toLowerCase().includes(currentGenre.toLowerCase()));
             }
 
             if (currentYear !== 'all') {
@@ -2263,26 +2231,6 @@
             if (currentSearchQuery.trim()) {
                 const lowerQuery = currentSearchQuery.toLowerCase().trim();
                 filtered = filtered.filter(m => m.name.toLowerCase().includes(lowerQuery));
-            }
-
-            switch (currentSort) {
-                case 'rating':
-                    filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                    break;
-                case 'rating-asc':
-                    filtered.sort((a, b) => (a.rating || 0) - (b.rating || 0));
-                    break;
-                case 'year':
-                    filtered.sort((a, b) => (b.year || 0) - (a.year || 0));
-                    break;
-                case 'year-asc':
-                    filtered.sort((a, b) => (a.year || 0) - (b.year || 0));
-                    break;
-                case 'name':
-                    filtered.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                default:
-                    break;
             }
 
             return filtered;
@@ -2372,16 +2320,7 @@
         });
 
         // =====================================================
-        // БЛОК 44: СОРТИРОВКА
-        // =====================================================
-        document.getElementById('sortSelect').addEventListener('change', function() {
-            currentSort = this.value;
-            applyFilters();
-            showToast('Сортировка обновлена', '', 'info');
-        });
-
-        // =====================================================
-        // БЛОК 45: ПОИСК
+        // БЛОК 44: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2425,7 +2364,7 @@
         });
 
         // =====================================================
-        // БЛОК 46: МОДАЛЬНОЕ ОКНО
+        // БЛОК 45: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2501,7 +2440,6 @@
                     dramaData = { name: 'Жутко влюблённые', year: 2026, rating: 8.8, poster: 'ldf.jpg',
                         details: `<strong>Год выпуска:</strong> 2026<br><strong>Режиссёр:</strong> Ли Минсу<br><strong>Жанр:</strong> мелодрама, комедия, фэнтези, детектив<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 01:10:30<br><strong>Перевод:</strong> Проф. Многоголосый<br><br><strong>В ролях:</strong> Пак Ынбин (Чон Ён Ри), Ян Сэджон (Ма Ган Ук), Он Сону<br><br><strong>Описание:</strong> Есть люди, которым, кажется, судьба выдала все козыри разом — красота, деньги, положение в обществе. Вот и наша героиня, Чон Ён Ри, живёт будто в глянцевом журнале: собственная гостиничная империя, шикарные апартаменты, машины, от которых глаза разбегаются. Соседки по кампусу в своё время локти кусали от зависти, что уж говорить. Только оболочка эта — красивая обёртка, под которой прячется штука пострашнее любого скелета в шкафу. Девушка видит мертвецов. И не в смысле "чувствую неладное", а по-настоящему, во плоти (ну, почти) — по ночам к ней наведываются души тех, кого убили несправедливо, кто не смог упокоиться. Прикиньте: ложишься спать в спальне за миллион вон, а к тебе приходит призрак с покалеченной судьбой и явно не для того, чтобы пожелать спокойной ночи. Никакие деньги от такого не спасают, хоть тресни. И вот в эту и без того непростую жизнь врывается прокурор Ма Ган Ук — полная её противоположность. Не человек, а ходячий кодекс справедливости, из тех, что спать не могут спокойно, пока подонок гуляет на свободе. Целыми днями (да что там, ночами тоже) роется в пыльных нераскрытых делах об убийствах, ищет зацепки там, где остальные давно опустили руки. Есть в нём что-то от бультерьера — вцепится и не отпустит. Ну и как водится, две противоположности сталкиваются лбами и — вот это поворот — начинают работать сообща. Ён Ри становится этаким секретным оружием следствия: духи-то знают то, чего ни в одном протоколе не сыщешь. Вдвоём они берутся за тех, кому закон обычно не по зубам — зазнавшихся чеболей, привыкших откупаться от любых проблем, и обычных мерзавцев, прячущих жестокость за закрытыми дверями. Опасно? Ещё бы. Жутко? Временами до дрожи в коленках. Но именно в этом хаосе, среди воплей неупокоенных душ и полицейских протоколов, между героями проскакивает та самая искра, ради которой, собственно, всё и затевалось. Пугающий роман — потому что и вправду страшно, и вправду роман.` };
                 } else if (dId === 'drama21') {
-                    // ===== НОВАЯ ДОРАМА 21 В МОДАЛЬНОМ ОКНЕ =====
                     dramaData = { name: 'История леди Ок', year: 2024, rating: 8.7, poster: 'kdjH.png',
                         details: `<strong>Год выпуска:</strong> 2024<br><strong>Режиссёр:</strong> Чин Хёк<br><strong>Жанр:</strong> драма<br><strong>Страна:</strong> Корея Южная<br><strong>Продолжительность:</strong> 16 x 01:23:00<br><strong>Перевод:</strong> Профессиональный многоголосый<br><br><strong>В ролях:</strong> Син Сын Хван (Ок Тэ Ён), Чху Ён У (Чхон Сын Хи), Ха Юль Ри, Чон Ик Рён, Ли Чан Ю, Ким Дон Гюн, Ли Чжэ Вон, Пэк Сын Хён, Сон Дон Иль, Ён У, Ким Ми Сук, О Дэ Хван, Ким Джэ Хва, Чхве Кён Хун, Хо Джун Сок, Юн Джи Хе, Ли Со Хван, Ким Чон Тхэ, Ким Чжон Ён, Юн Хи Сок, Юн Со А, Чон Су Ён, Сон На Ын, Сон Ён Гю<br><br><strong>Описание:</strong> Ок Тэ Ён — женщина, которая привыкла прятаться за своими делами. Её имя шепчут с уважением, её помощь ищут те, кому больше некуда идти. Но в её жизни слишком много полутонов — между правдой и ложью, прошлым и настоящим. Она плетёт свою судьбу, как тончайшую паутину, надеясь, что никто не заметит, что за идеальным фасадом скрывается хрупкая душа. Когда на её пути появляется Чхон Сын Хи — человек с талантом оживлять истории, — всё начинает меняться. Он словно видит сквозь неё, не задаёт лишних вопросов, но каждый его взгляд — это вызов. В мире, где правда может стать смертельным оружием, их союз — как нож, который можно держать либо за лезвие, либо за рукоять. Но разве стоит бояться порезов, если на кону — настоящая жизнь?` };
                 } else {
@@ -2576,7 +2514,7 @@
         });
 
         // =====================================================
-        // БЛОК 47: ПРОДОЛЖИТЬ ПРОСМОТР
+        // БЛОК 46: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2607,7 +2545,7 @@
         }
 
         // =====================================================
-        // БЛОК 48: КНОПКА "НАВЕРХ"
+        // БЛОК 47: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2618,7 +2556,7 @@
         });
 
         // =====================================================
-        // БЛОК 49: ИНИЦИАЛИЗАЦИЯ
+        // БЛОК 48: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
@@ -2632,7 +2570,7 @@
         }
 
         console.log(' Сайт Дорамы от Дианы успешно загружен!');
-        console.log(' Функции: Сортировка | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
+        console.log(' Функции: Жанры (выпадающее меню) | Избранное | Светлая/Тёмная тема | Рейтинг | Анимации');
         console.log(' Дорам на сайте: ' + Object.keys(DRAMAS).length);
     </script>
 </body>
