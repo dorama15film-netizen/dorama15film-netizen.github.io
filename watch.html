@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Смотреть дораму</title>
     <link rel="icon" href="Log.png" type="image/png">
+    
+    <!-- ===== КОД ЗАГРУЗЧИКА РСЯ ===== -->
+    <script>
+        window.yaContextCb = window.yaContextCb || [];
+    </script>
+    <script src="https://yandex.ru/ads/system/context.js" async></script>
+    <!-- ===== КОНЕЦ КОДА ЗАГРУЗЧИКА ===== -->
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -265,6 +273,29 @@
             background: var(--accent-color);
             border-color: var(--accent-color);
             color: #0b0e14;
+        }
+
+        /* ===== РЕКЛАМНЫЙ БАННЕР ===== */
+        .ad-banner {
+            margin: 16px 0 20px;
+            min-height: 90px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 4px;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .ad-banner .ad-label {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
 
         .drama-info {
@@ -598,6 +629,112 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ============================================================
+           ПОДВАЛ (FOOTER) С ПОДДЕРЖКОЙ
+           ============================================================ */
+        .site-footer {
+            width: 100%;
+            background: var(--bg-header);
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px 20px;
+            flex-shrink: 0;
+            margin-top: auto;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .footer-column h4 {
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column p {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .footer-column .email-link {
+            display: inline-block;
+            background: #1e232c;
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid #2a313f;
+            color: var(--accent-color);
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+
+        .footer-column .email-link:hover {
+            background: #2a313f;
+            border-color: var(--accent-color);
+            text-decoration: none;
+            transform: scale(1.02);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 16px;
+            border-top: 1px solid #1a212b;
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bottom .social-links a {
+            color: var(--text-muted);
+            font-size: 18px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .footer-bottom .social-links a:hover {
+            color: var(--accent-color);
+        }
+
         @media (max-width: 768px) {
             .header { padding: 12px 16px; }
             .header .title { font-size: 18px; }
@@ -613,6 +750,9 @@
             .comment-form { flex-direction: column; }
             .comment-form input { min-width: auto; }
             .comment-form textarea { min-width: auto; min-height: 50px; }
+            .ad-banner { min-height: 60px; margin: 12px 0 16px; }
+            .footer-content { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
         }
 
         @media (max-width: 480px) {
@@ -634,6 +774,10 @@
             .comment-item .comment-text { font-size: 13px; }
             .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
             .toast { font-size: 12px; padding: 10px 14px; }
+            .ad-banner { min-height: 50px; margin: 10px 0 12px; }
+            .footer-content { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-column .email-link { font-size: 13px; padding: 6px 16px; }
         }
     </style>
 </head>
@@ -668,6 +812,20 @@
 
         <div class="episodes-list" id="episodesList"></div>
 
+        <!-- ===== РЕКЛАМНЫЙ БАННЕР ===== -->
+        <div class="ad-banner">
+            <!-- Yandex.RTB R-A-19737404-1 -->
+            <div id="yandex_rtb_R-A-19737404-1"></div>
+            <script>
+            window.yaContextCb.push(() => {
+                Ya.Context.AdvManager.render({
+                    "blockId": "R-A-19737404-1",
+                    "renderTo": "yandex_rtb_R-A-19737404-1"
+                })
+            })
+            </script>
+        </div>
+
         <div class="drama-info" id="dramaInfo"></div>
 
         <div class="comments-section" id="commentsSection">
@@ -686,6 +844,32 @@
             </div>
         </div>
     </main>
+
+    <!-- ============================================================
+    ПОДВАЛ (FOOTER) С ПОДДЕРЖКОЙ
+    ============================================================ -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>О сайте</h4>
+                <p><strong>Дорамы от Дианы</strong> — ваш гид в мире дорам и фильмов.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Информация</h4>
+                <p>© 2026 Дорамы от Дианы</p>
+                <p><a href="privacy.html" style="color: var(--accent-color); text-decoration: none;">Политика конфиденциальности</a></p>
+            </div>
+            <div class="footer-column">
+                <h4>Контакты и поддержка</h4>
+                <p>По всем вопросам пишите на почту:</p>
+                <a href="mailto:dorama15film@gmail.com" class="email-link"> dorama15film@gmail.com</a>
+                <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">Ответ в течение 24 часов</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Дорамы от Дианы. Все права защищены.</p>
+        </div>
+    </footer>
 
     <script>
         // =====================================================
@@ -1589,7 +1773,7 @@
                     5: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239394&hash=df29b7819bfd84b8&hd=3',
                     6: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239393&hash=d712020f89634e18&hd=3',
                     7: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239434&hash=a5ca7c7abb56463c&hd=3',
-                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239438&hash=c79e7d7ce15844d7&hd=3'  // НОВАЯ 8-Я СЕРИЯ
+                    8: 'https://vkvideo.ru/video_ext.php?oid=-240209939&id=456239438&hash=c79e7d7ce15844d7&hd=3'
                 }
             },
             // ===== ДОРАМА 21: История леди Ок =====
