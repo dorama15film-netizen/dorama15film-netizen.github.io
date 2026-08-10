@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика конфиденциальности — Дорамы от Дианы</title>
+    <link rel="icon" href="Log.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-secondary: #151b24;
+            --bg-header: #0f141c;
+            --text-primary: #f0f2f5;
+            --text-secondary: #8892a8;
+            --text-muted: #6a7288;
+            --border-color: #1f2631;
+            --accent-color: #f1c40f;
+            --accent-hover: #f39c12;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #e8f4f8;
+            --bg-secondary: #ffffff;
+            --bg-header: #d4ecf5;
+            --text-primary: #1a2a3a;
+            --text-secondary: #3a5a6a;
+            --text-muted: #5a7a8a;
+            --border-color: #b0d4e0;
+            --accent-color: #00bcd4;
+            --accent-hover: #0097a7;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .header {
+            padding: 16px 30px;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .header .back-btn {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 24px;
+            background: #1a4d2e;
+            border: 2px solid var(--accent-color);
+            border-radius: 30px;
+            transition: 0.3s ease;
+            display: inline-block;
+        }
+
+        .header .back-btn:hover {
+            background: #2a6d3e;
+            border-color: var(--accent-hover);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.15);
+        }
+
+        .header .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a4d2e;
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5), 0 0 20px rgba(241, 196, 15, 0.3), 0 0 40px rgba(241, 196, 15, 0.1);
+            -webkit-text-stroke: 1px var(--accent-color);
+            text-stroke: 1px var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: text-shadow 0.3s ease, -webkit-text-stroke 0.3s ease;
+        }
+
+        .header .title span {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 16px;
+            margin-left: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle-wrapper {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle-label {
+            color: var(--text-secondary);
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #2a313f;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border: 2px solid #3a4555;
+            flex-shrink: 0;
+        }
+
+        [data-theme="light"] .theme-switch {
+            background: #00bcd4;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .theme-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: #8892a8;
+            border-radius: 50%;
+            transition: 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] .theme-switch .slider {
+            left: 28px;
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 212, 255, 0.4);
+        }
+
+        .theme-switch:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .theme-switch .theme-icons {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 6px;
+            align-items: center;
+            height: 100%;
+            font-size: 14px;
+            color: #6a7288;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
+        [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
+
+        .main-content {
+            flex: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px 60px;
+            width: 100%;
+        }
+
+        .privacy-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .privacy-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 30px;
+            transition: color 0.3s ease;
+        }
+
+        .privacy-section {
+            margin-bottom: 28px;
+        }
+
+        .privacy-section h2 {
+            color: var(--text-primary);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .privacy-section p,
+        .privacy-section li {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .privacy-section ul {
+            padding-left: 24px;
+            list-style: disc;
+        }
+
+        .privacy-section ul li {
+            margin-bottom: 4px;
+        }
+
+        .privacy-section .highlight {
+            color: var(--accent-color);
+            transition: color 0.3s ease;
+        }
+
+        .privacy-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 14px;
+            text-align: center;
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .privacy-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .privacy-footer a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .site-footer {
+            width: 100%;
+            background: var(--bg-header);
+            border-top: 1px solid var(--border-color);
+            padding: 20px 20px;
+            flex-shrink: 0;
+            margin-top: auto;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-content p {
+            color: var(--text-muted);
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-content a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-content a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 12px 16px; }
+            .header .title { font-size: 18px; }
+            .main-content { padding: 24px 16px 40px; }
+            .privacy-title { font-size: 26px; }
+            .privacy-section h2 { font-size: 18px; }
+            .privacy-section p,
+            .privacy-section li { font-size: 14px; }
+            .theme-toggle-wrapper { gap: 6px; }
+            .theme-switch { width: 48px; height: 26px; }
+            .theme-switch .slider { width: 18px; height: 18px; }
+            [data-theme="light"] .theme-switch .slider { left: 24px; }
+            .theme-toggle-label { font-size: 11px; }
+        }
+
+        @media (max-width: 480px) {
+            .header .title { font-size: 15px; }
+            .header .title span { font-size: 13px; display: block; margin-left: 0; }
+            .theme-toggle-wrapper { gap: 4px; }
+            .theme-switch { width: 42px; height: 22px; }
+            .theme-switch .slider { width: 16px; height: 16px; top: 1px; left: 1px; }
+            [data-theme="light"] .theme-switch .slider { left: 22px; }
+            .theme-toggle-label { font-size: 10px; }
+            .theme-switch .theme-icons { font-size: 11px; padding: 0 4px; }
+            .main-content { padding: 16px 12px 30px; }
+            .privacy-title { font-size: 20px; }
+            .privacy-section h2 { font-size: 16px; }
+            .privacy-section p,
+            .privacy-section li { font-size: 13px; line-height: 1.6; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ШАПКА ===== -->
+    <header class="header">
+        <a href="index.html" class="back-btn"> На главную</a>
+        <div class="title"> <span>Политика конфиденциальности</span></div>
+
+        <div class="theme-toggle-wrapper">
+            <span class="theme-toggle-label" id="themeLabel">Тема</span>
+            <div class="theme-switch" id="themeSwitch">
+                <div class="slider"></div>
+                <div class="theme-icons">
+                    <span class="moon-icon">🌙</span>
+                    <span class="sun-icon">☀️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <main class="main-content">
+        <h1 class="privacy-title">Политика конфиденциальности</h1>
+        <p class="privacy-subtitle">Сайт «Дорамы от Дианы» — dorama15film-netizen.github.io</p>
+
+        <div class="privacy-section">
+            <h2>1. Общие положения</h2>
+            <p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сайта <span class="highlight">«Дорамы от Дианы»</span> (далее — Сайт).</p>
+            <p>Администрация Сайта уважает ваше право на конфиденциальность и обязуется защищать любую информацию, которую вы предоставляете при использовании Сайта.</p>
+            <p>Настоящая Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>2. Какие данные мы собираем</h2>
+            <p>На сайте <span class="highlight">не проводится</span> сбор и обработка персональных данных пользователей в традиционном понимании. Мы не используем формы авторизации, не запрашиваем ваше имя, email, телефон или другие личные данные.</p>
+            <p>Единственная информация, которая может быть передана третьим лицам:</p>
+            <ul>
+                <li><strong>Комментарии:</strong> Имя и текст комментария, которые вы оставляете добровольно. Эти данные хранятся в локальном хранилище (localStorage) вашего браузера и не передаются на сервер.</li>
+                <li><strong>Статистика:</strong> Для анализа посещаемости сайта может использоваться встроенная статистика Яндекса, которая собирает обезличенные данные (IP-адрес, тип браузера, страницы просмотра).</li>
+                <li><strong>Реклама:</strong> Рекламные блоки Яндекса (РСЯ) могут использовать файлы cookie для показа релевантной рекламы.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>3. Как используются данные</h2>
+            <ul>
+                <li><strong>Комментарии:</strong> Отображаются на странице с дорамой, чтобы другие пользователи могли видеть ваше мнение. Вы можете удалить свой комментарий в любой момент.</li>
+                <li><strong>Статистика:</strong> Для улучшения работы сайта и понимания, какие разделы наиболее популярны.</li>
+                <li><strong>Реклама:</strong> Для показа рекламных объявлений, соответствующих вашим интересам.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>4. Файлы cookie</h2>
+            <p>Сайт может использовать файлы cookie для:</p>
+            <ul>
+                <li>Сохранения настроек темы (светлая/тёмная).</li>
+                <li>Запоминания последней просмотренной серии.</li>
+                <li>Анализа посещаемости через сервисы Яндекса.</li>
+                <li>Показа рекламы через Рекламную сеть Яндекса.</li>
+            </ul>
+            <p>Вы можете отключить файлы cookie в настройках вашего браузера, однако это может повлиять на работу некоторых функций сайта.</p>
+            <p>Файлы cookie не используются для сбора персональных данных и не передаются третьим лицам.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>5. Передача данных третьим лицам</h2>
+            <p>Мы <span class="highlight">не передаём</span> ваши персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством Российской Федерации.</p>
+            <p>Ваши комментарии видны другим пользователям сайта, так как они публикуются на страницах с дорамами.</p>
+            <p>Обезличенные данные могут передаваться рекламным сервисам (Яндекс.Реклама) для показа целевой рекламы.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>6. Хранение данных</h2>
+            <p>Все пользовательские данные (комментарии, настройки темы, история просмотра) хранятся <span class="highlight">исключительно в локальном хранилище вашего браузера (localStorage)</span>. Это означает, что данные не передаются на сервер и хранятся только на вашем устройстве.</p>
+            <p>Вы можете очистить эти данные в любой момент через настройки вашего браузера.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>7. Безопасность</h2>
+            <p>Мы принимаем все необходимые меры для защиты ваших данных от несанкционированного доступа, изменения, раскрытия или уничтожения.</p>
+            <p>Сайт использует защищённое соединение (HTTPS) для обеспечения безопасности передаваемых данных.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>8. Ссылки на сторонние ресурсы</h2>
+            <p>Сайт может содержать ссылки на внешние ресурсы (например, видео на VK Video). Мы не несём ответственности за политику конфиденциальности этих ресурсов.</p>
+            <p>Рекомендуем вам ознакомиться с политикой конфиденциальности каждого стороннего ресурса перед использованием.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>9. Права пользователей</h2>
+            <p>Вы имеете право:</p>
+            <ul>
+                <li>Удалить свои комментарии в любой момент.</li>
+                <li>Очистить локальное хранилище браузера.</li>
+                <li>Отключить файлы cookie в настройках браузера.</li>
+                <li>Отказаться от сбора статистики через сервисы Яндекса.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2>10. Возрастные ограничения</h2>
+            <p>Сайт предназначен для пользователей старше 18 лет. Мы не собираем целенаправленно данные несовершеннолетних.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>11. Изменения в политике</h2>
+            <p>Администрация сайта оставляет за собой право вносить изменения в настоящую Политику конфиденциальности. Новая версия вступает в силу с момента её публикации на сайте.</p>
+            <p>Рекомендуем периодически проверять эту страницу для ознакомления с актуальной версией Политики.</p>
+        </div>
+
+        <div class="privacy-section">
+            <h2>12. Контакты</h2>
+            <p>По всем вопросам, связанным с настоящей Политикой конфиденциальности, вы можете обратиться по адресу:</p>
+            <p style="margin-top: 6px;"><span class="highlight">📧 dorama15film@gmail.com</span></p>
+            <p style="margin-top: 4px; font-size: 14px; color: var(--text-muted);">Время ответа: до 48 часов</p>
+        </div>
+
+        <div class="privacy-footer">
+            <p>© 2026 <a href="index.html">Дорамы от Дианы</a> — Все права защищены.</p>
+            <p style="margin-top: 4px; font-size: 12px; color: var(--text-muted);">Дата последнего обновления: 10 августа 2026 года</p>
+        </div>
+    </main>
+
+    <!-- ===== ПОДВАЛ ===== -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>© 2026 <a href="index.html">Дорамы от Дианы</a> — Все права защищены.</p>
+            <p style="margin-top: 4px; font-size: 12px;">
+                <a href="privacy.html">Политика конфиденциальности</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // =====================================================
+        // ===== ТЕМА =====
+        // =====================================================
+        const themeSwitch = document.getElementById('themeSwitch');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        themeSwitch.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+
+        applyTheme(currentTheme);
+    </script>
+</body>
+</html>
