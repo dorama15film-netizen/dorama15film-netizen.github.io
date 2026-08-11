@@ -30,6 +30,8 @@
             --scrollbar-thumb: #f1c40f;
             --accent-color: #f1c40f;
             --accent-hover: #f39c12;
+            --token-valid: #2ecc71;
+            --token-invalid: #e74c3c;
         }
 
         [data-theme="light"] {
@@ -51,6 +53,8 @@
             --scrollbar-thumb: #00bcd4;
             --accent-color: #00bcd4;
             --accent-hover: #0097a7;
+            --token-valid: #27ae60;
+            --token-invalid: #c0392b;
         }
 
         html, body {
@@ -1126,7 +1130,62 @@
             min-width: 0;
         }
 
-        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ ===== */
+        /* ===== ТОКЕН ПОЛЕ С ИНДИКАТОРОМ ===== */
+        .admin-panel .token-field {
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 10px;
+            background: rgba(255,0,0,0.05);
+            transition: border-color 0.5s ease, background 0.5s ease;
+            position: relative;
+        }
+        .admin-panel .token-field.valid {
+            border-color: var(--token-valid);
+            background: rgba(46, 204, 113, 0.1);
+        }
+        .admin-panel .token-field.invalid {
+            border-color: var(--token-invalid);
+            background: rgba(231, 76, 60, 0.1);
+        }
+        .admin-panel .token-field .token-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+            transition: background 0.5s ease;
+            background: #6a7288;
+            flex-shrink: 0;
+        }
+        .admin-panel .token-field .token-status.valid {
+            background: var(--token-valid);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+        }
+        .admin-panel .token-field .token-status.invalid {
+            background: var(--token-invalid);
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
+        }
+        .admin-panel .token-field .token-label-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .admin-panel .token-field .token-label-row label {
+            margin-bottom: 0;
+            color: var(--text-secondary);
+        }
+        .admin-panel .token-field input {
+            border-color: #ff0000;
+        }
+        .admin-panel .token-field.valid input {
+            border-color: var(--token-valid);
+        }
+        .admin-panel .token-field.invalid input {
+            border-color: var(--token-invalid);
+        }
+
+        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ (С ВЫБОРОМ РОЛИ) ===== */
         .admin-panel .cast-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -1594,11 +1653,15 @@
             <button class="close-btn" id="adminCloseBtn">✕</button>
         </div>
 
-        <!-- ===== ПОЛЕ ДЛЯ GITHUB TOKEN (БЕЗОПАСНО) ===== -->
-        <div class="admin-field" style="border: 2px solid #ff0000; border-radius: 10px; padding: 10px; background: rgba(255,0,0,0.05);">
-            <label>🔑 GitHub Token (обязательно!)</label>
-            <input type="password" id="adminGitHubToken" placeholder="Вставьте GitHub Personal Access Token..." style="border-color: #ff0000;" />
-            <div class="hint" style="color: #ff6666;">⚠️ Токен НЕ сохраняется в коде. Вводите при каждом сеансе.</div>
+        <!-- ===== ТОКЕН ПОЛЕ С ИНДИКАТОРОМ ===== -->
+        <div class="admin-field token-field" id="tokenField">
+            <div class="token-label-row">
+                <label>🔑 GitHub Token</label>
+                <span class="token-status" id="tokenStatus"></span>
+                <span style="font-size: 11px; color: var(--text-muted); margin-left: auto;" id="tokenStatusText">Ожидание</span>
+            </div>
+            <input type="password" id="adminGitHubToken" placeholder="Вставьте GitHub Personal Access Token..." />
+            <div class="hint">Токен проверяется автоматически. Зелёный — ✅ валидный, Красный — ❌ неверный</div>
         </div>
 
         <div class="admin-field">
@@ -1665,14 +1728,13 @@
             <textarea id="adminDramaPlot" placeholder="Краткое описание дорамы..." rows="3"></textarea>
         </div>
 
-        <!-- ===== АКТЁРЫ ===== -->
+        <!-- ===== АКТЁРЫ (С ВЫБОРОМ РОЛИ) ===== -->
         <div class="admin-field">
             <label>Актёрский состав</label>
             <div class="cast-inputs" id="castInputs">
                 <div class="cast-row">
                     <input type="text" class="cast-name" placeholder="Имя актёра" />
-                    <input type="text" class="cast-role" placeholder="Роль" />
-                    <select class="cast-tag">
+                    <select class="cast-role-select">
                         <option value="Главная роль">⭐ Главная роль</option>
                         <option value="Второстепенная роль">🎭 Второстепенная роль</option>
                         <option value="Камео">🎬 Камео</option>
@@ -1681,7 +1743,7 @@
                 </div>
             </div>
             <button class="cast-add-btn" id="castAddBtn">➕ Добавить актёра</button>
-            <div class="hint">Укажите актёров и их роли (главные, второстепенные)</div>
+            <div class="hint">Укажите актёров и выберите тип роли</div>
         </div>
 
         <!-- ===== ССЫЛКИ НА СЕРИИ ===== -->
@@ -1749,12 +1811,80 @@
         const GITHUB_IMAGES_PATH = 'images/';
 
         // =====================================================
-        // БЛОК 3: ПОЛУЧЕНИЕ ТОКЕНА ИЗ ПОЛЯ (БЕЗОПАСНО)
+        // БЛОК 3: ПОЛУЧЕНИЕ И ПРОВЕРКА ТОКЕНА
         // =====================================================
+        let tokenValid = false;
+
+        async function checkToken(token) {
+            if (!token || token.length < 10) {
+                tokenValid = false;
+                updateTokenStatus(false, '❌ Слишком короткий');
+                return false;
+            }
+
+            try {
+                const response = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                    }
+                });
+
+                if (response.ok) {
+                    tokenValid = true;
+                    updateTokenStatus(true, '✅ Токен валидный');
+                    return true;
+                } else {
+                    tokenValid = false;
+                    updateTokenStatus(false, '❌ Неверный токен');
+                    return false;
+                }
+            } catch (error) {
+                tokenValid = false;
+                updateTokenStatus(false, '❌ Ошибка проверки');
+                return false;
+            }
+        }
+
+        function updateTokenStatus(valid, text) {
+            const field = document.getElementById('tokenField');
+            const status = document.getElementById('tokenStatus');
+            const statusText = document.getElementById('tokenStatusText');
+
+            field.classList.remove('valid', 'invalid');
+            status.classList.remove('valid', 'invalid');
+
+            if (valid) {
+                field.classList.add('valid');
+                status.classList.add('valid');
+                statusText.textContent = text;
+                statusText.style.color = 'var(--token-valid)';
+            } else {
+                field.classList.add('invalid');
+                status.classList.add('invalid');
+                statusText.textContent = text;
+                statusText.style.color = 'var(--token-invalid)';
+            }
+        }
+
+        // Проверка токена при вводе
+        document.getElementById('adminGitHubToken').addEventListener('input', function() {
+            const token = this.value.trim();
+            if (token.length >= 10) {
+                checkToken(token);
+            } else {
+                tokenValid = false;
+                updateTokenStatus(false, '⏳ Введите токен...');
+            }
+        });
+
         function getGitHubToken() {
             const token = document.getElementById('adminGitHubToken').value.trim();
             if (!token) {
                 showToast('⚠️ Введите GitHub Token в админ-панели!', '🔑', 'error');
+                return null;
+            }
+            if (!tokenValid) {
+                showToast('⚠️ Токен невалидный! Проверьте правильность.', '🔑', 'error');
                 return null;
             }
             return token;
@@ -1795,7 +1925,6 @@
         // БЛОК 6: ФУНКЦИИ ДЛЯ РАБОТЫ С GITHUB API
         // =====================================================
 
-        // Проверка существования файла/папки
         async function checkFileExists(path, token) {
             try {
                 const response = await fetch(
@@ -1814,7 +1943,6 @@
             }
         }
 
-        // Создание папки images/
         async function createImagesFolder(token) {
             try {
                 const existing = await checkFileExists(GITHUB_IMAGES_PATH + '.gitkeep', token);
@@ -1849,7 +1977,6 @@
             }
         }
 
-        // Загрузка постера на GitHub
         async function uploadPosterToGitHub(file, token) {
             try {
                 await createImagesFolder(token);
@@ -1907,7 +2034,6 @@
             }
         }
 
-        // Сохранение данных в dramas.js
         async function saveDramasToGitHub(dramasData, token) {
             try {
                 let fileContent = `// =====================================================
@@ -1999,11 +2125,126 @@
                     plot: 'Говорят, море умеет слушать...',
                     cast: [{ name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' }, { name: 'Кан Сан-джун',
                         role: 'Юн Док Хён', tag: 'Главная роль' }] } },
-            // ... (остальные дорамы такие же)
+            drama3: { name: 'Абсолютная величина любви', episodes: 16, poster: 'DD.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Тхэ Гон Ли',
+                    duration: '00:59:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Днём — серая мышка за последней партой...',
+                    cast: [{ name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' }, { name: 'Ким Джэ-хён',
+                        role: 'Ким Джи-сок', tag: 'Главная роль' }] } },
+            drama4: { name: 'Атхит - это я', episodes: 6, poster: 'i.jpg',
+                info: { year: '2022', genre: 'комедия, романтика', country: 'Таиланд', director: 'Bhandit Thongdee',
+                    duration: '00:44:00', translation: 'Озвучка, Субтитры',
+                    plot: 'Сун работает сборщиком долгов...',
+                    cast: [{ name: 'Nop Panut Guntachai', role: 'Атхит', tag: 'Главная роль' }, { name: 'Prem Warut',
+                        role: 'Сун', tag: 'Главная роль' }] } },
+            drama5: { name: 'Бойфренд по запросу', episodes: 10, poster: 'GT.jpg',
+                info: { year: '2026', genre: 'Комедия, мелодрама', country: 'Южная Корея', director: 'Ким Джон Щик',
+                    duration: '00:55:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Со Ми Рэ живёт работой...',
+                    cast: [{ name: 'Ким Джи Су', role: '', tag: 'Главная роль' }, { name: 'Со Ин Гук', role: '',
+                        tag: 'Главная роль' }] } },
+            drama6: { name: 'Жена принца XXI века', episodes: 12, poster: 'GR.jpg',
+                info: { year: '2026', genre: 'мелодрама', country: 'Корея Южная', director: 'Пак Джун Хва',
+                    duration: '01:14:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Корея, которой не существует...',
+                    cast: [{ name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' }, { name: 'Пён Усок',
+                        role: 'Принц Ли Ан', tag: 'Главная роль' }] } },
+            drama7: { name: 'Весенняя лихорадка', episodes: 12, poster: 'GN.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Пак Вон-гук',
+                    duration: '01:02:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Юн Бом сбегает из Сеула...',
+                    cast: [{ name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' }, { name: 'Ли Джу-бин',
+                        role: 'Юн Бом', tag: 'Главная роль' }] } },
+            drama8: { name: 'Босс компании «Тайфун»', episodes: 16, poster: 'LL.jpg',
+                info: { year: '2025', genre: 'Драма, семейный', country: 'Корея Южная', director: 'Ли На-джон',
+                    duration: '01:17:00', translation: 'Профессиональный многоголосый',
+                    plot: '1997 год. Южная Корея...',
+                    cast: [{ name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' }, { name: 'Ким Мин-ха',
+                        role: 'О Ми-сук', tag: 'Главная роль' }] } },
+            drama9: { name: 'Все твои желания исполнятся', episodes: 13, poster: 'FQ.jpg',
+                info: { year: '2025', genre: 'комедия, мелодрама, фэнтези', country: 'Корея Южная',
+                    director: 'Бён Хон Ли', duration: '00:55:00', translation: 'Любительский многоголосый',
+                    plot: 'Га Ён разучилась мечтать...',
+                    cast: [{ name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' }, { name: 'У Бин Ким',
+                        role: 'Джинн', tag: 'Главная роль' }] } },
+            drama10: { name: 'Полярная звезда', episodes: 9, poster: 'RR.jpg',
+                info: { year: '2025', genre: 'триллер, мелодрама, боевик', country: 'Корея Южная',
+                    director: 'Ким Хи-вон', duration: '00:53:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Мун Джу когда-то была звездой...',
+                    cast: [{ name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' }, { name: 'Кан Дон-вон',
+                        role: 'Сан Хо', tag: 'Главная роль' }] } },
+            drama11: { name: 'В погоне за нефритом', episodes: 40, poster: 'KK.jpg',
+                info: { year: '2026', genre: 'драма, мелодрама', country: 'Китай', director: 'Цзэн Цинцзе',
+                    duration: '00:46:50', translation: 'Любительский многоголосый',
+                    plot: 'Метель — штука безжалостная...',
+                    cast: [{ name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' }, { name: 'Сивэй Тянь',
+                        role: 'Фань Чанъюй', tag: 'Главная роль' }] } },
+            drama12: { name: '50-летние профи', episodes: 12, poster: 'God.jpg',
+                info: { year: '2026', genre: 'комедия, боевик, криминал', country: 'Корея Южная',
+                    director: 'Хан Донхва', duration: '01:10:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Есть такая поговорка — покой нам только снится...',
+                    cast: [{ name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' }, { name: 'О Джонсэ',
+                        role: 'Бон', tag: 'Главная роль' }, { name: 'Хо Сонтхэ', role: 'Кан',
+                        tag: 'Главная роль' }] } },
+            drama13: { name: 'Клетки эмпатии', episodes: 6, poster: 'AA.jpg',
+                info: { year: '2026', genre: 'Мелодрама, Фэнтези', country: 'Корея Южная', director: 'Ким Чхиль-бон',
+                    duration: '00:49:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Бывают люди, которые чувствуют слишком много...',
+                    cast: [{ name: 'Ким Мён-су', role: 'Психолог', tag: 'Главная роль' }, { name: 'Кан Мин-а',
+                        role: 'Айдол', tag: 'Главная роль' }] } },
+            drama14: { name: 'Вперёд, Кальмар!', episodes: 41, poster: 'WK.jpg',
+                info: { year: '2019', genre: 'комедия, мелодрама, романтика, молодость, спорт', country: 'Китай',
+                    director: 'Чэнь Хунжу', duration: '00:45:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Бойкая студентка Тун Нянь...',
+                    cast: [{ name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' }, { name: 'Ли Сянь',
+                        role: 'Хань Шан Янь', tag: 'Главная роль' }] } },
+            drama15: { name: 'Борьба в прямом эфире', episodes: 6, poster: 'HY.jpg',
+                info: { year: '2026', genre: 'Триллер, Драма, Боевик', country: 'Япония', director: 'Хидэки Такэути',
+                    duration: '00:45:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Камера трясётся в руках...',
+                    cast: [{ name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' }] } },
+            drama16: { name: 'Золотое место', episodes: 10, poster: 'LG.jpg',
+                info: { year: '2026', genre: 'криминал, триллер', country: 'Корея Южная', director: 'Сон Хун Ким',
+                    duration: '00:52:50', translation: 'Любительский двухголосый',
+                    plot: 'Ким Хи Джу умеет быть невидимкой...',
+                    cast: [{ name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' }] } },
+            drama17: { name: 'Судьба, поцелованная дождем', episodes: 30, poster: 'LASET.jpg',
+                info: { year: '2025', genre: 'Мелодрама', country: 'Китай', director: 'Линь Цин',
+                    duration: '30 x 00:12:00', translation: 'Любительский многоголосый',
+                    plot: 'Шесть лет — это много или мало?...',
+                    cast: [{ name: 'Чэнь Фантун', role: '', tag: 'Главная роль' }, { name: 'Дай Гаочжэн', role: '',
+                        tag: 'Главная роль' }] } },
+            drama18: { name: 'Ты мой герой', episodes: 40, poster: 'kdfgj.jpg',
+                info: { year: '2024', genre: 'Мелодрама, комедия, романтика', country: 'Китай', director: 'Ли Цзянь',
+                    duration: '40 x 00:45:00', translation: 'Профессиональный многоголосый',
+                    plot: 'История о настоящей любви...',
+                    cast: [{ name: 'Сун Цзянь', role: 'Чжан И', tag: 'Главная роль' }, { name: 'Ли Цинь',
+                        role: 'Хэ Хуань', tag: 'Главная роль' }] } },
+            drama19: { name: 'Профессионал-одиночка', episodes: 24, poster: '1920x.jpg',
+                info: { year: '2020', genre: 'мелодрама, комедия, романтика', country: 'Китай', director: 'Линь Янь',
+                    duration: '24 x 00:45:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Сюжет разворачивается вокруг двух студентов...',
+                    cast: [{ name: 'Дэн Чаоюань', role: 'Цинь Шэнь', tag: 'Главная роль' }, { name: 'Ирене Сун',
+                        role: 'Юань Цянь', tag: 'Главная роль' }] } },
+            drama20: { name: 'Жутко влюблённые', episodes: 8, poster: 'ldf.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия, фэнтези, детектив', country: 'Корея Южная',
+                    director: 'Ли Минсу', duration: '01:10:30', translation: 'Проф. Многоголосый',
+                    plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом...',
+                    cast: [{ name: 'Пак Ынбин', role: 'Чон Ён Ри', tag: 'Главная роль' }, { name: 'Ян Сэджон',
+                        role: 'Ма Ган Ук', tag: 'Главная роль' }] } },
+            drama21: { name: 'История леди Ок', episodes: 16, poster: 'kdjH.png',
+                info: { year: '2024', genre: 'драма', country: 'Корея Южная', director: 'Чин Хёк',
+                    duration: '16 x 01:23:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Ок Тэ Ён — женщина, которая привыкла прятаться...',
+                    cast: [{ name: 'Син Сын Хван', role: 'Ок Тэ Ён', tag: 'Главная роль' }, { name: 'Чху Ён У',
+                        role: 'Чхон Сын Хи', tag: 'Главная роль' }] } },
+            drama22: { name: 'Логическая ошибка', episodes: 8, poster: 'kdfh.jpeg',
+                info: { year: '2025', genre: 'мелодрама, комедия, BL', country: 'Корея Южная',
+                    director: 'Ким Хён Джун', duration: '00:45:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Студент факультета компьютерных наук Чу Сан У...',
+                    cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
+                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
         };
-
-        // Для краткости загружаем только первые 2, остальные добавляются автоматически
-        // В полной версии все 22 дорамы
 
         // Заполняем DRAMAS и movies
         Object.keys(baseDramas).forEach(id => {
@@ -2519,18 +2760,17 @@
             return 'drama' + (maxNum + 1);
         }
 
-        // ===== УПРАВЛЕНИЕ АКТЁРАМИ =====
-        function addCastRow(name = '', role = '', tag = 'Главная роль') {
+        // ===== УПРАВЛЕНИЕ АКТЁРАМИ (С ВЫБОРОМ РОЛИ) =====
+        function addCastRow(name = '', role = 'Главная роль') {
             const container = document.getElementById('castInputs');
             const row = document.createElement('div');
             row.className = 'cast-row';
             row.innerHTML = `
                 <input type="text" class="cast-name" placeholder="Имя актёра" value="${name}" />
-                <input type="text" class="cast-role" placeholder="Роль" value="${role}" />
-                <select class="cast-tag">
-                    <option value="Главная роль" ${tag === 'Главная роль' ? 'selected' : ''}>⭐ Главная роль</option>
-                    <option value="Второстепенная роль" ${tag === 'Второстепенная роль' ? 'selected' : ''}>🎭 Второстепенная роль</option>
-                    <option value="Камео" ${tag === 'Камео' ? 'selected' : ''}>🎬 Камео</option>
+                <select class="cast-role-select">
+                    <option value="Главная роль" ${role === 'Главная роль' ? 'selected' : ''}>⭐ Главная роль</option>
+                    <option value="Второстепенная роль" ${role === 'Второстепенная роль' ? 'selected' : ''}>🎭 Второстепенная роль</option>
+                    <option value="Камео" ${role === 'Камео' ? 'selected' : ''}>🎬 Камео</option>
                 </select>
                 <button class="cast-remove" onclick="removeCastRow(this)">✕</button>
             `;
@@ -2623,14 +2863,13 @@
             const posterFile = document.getElementById('adminDramaPosterFile').files[0];
             const posterUrl = document.getElementById('adminDramaPoster').value.trim();
 
-            // Собираем актёров
+            // Собираем актёров (с выбором роли)
             const cast = [];
             document.querySelectorAll('.cast-row').forEach(row => {
                 const name = row.querySelector('.cast-name').value.trim();
-                const role = row.querySelector('.cast-role').value.trim();
-                const tag = row.querySelector('.cast-tag').value;
+                const role = row.querySelector('.cast-role-select').value;
                 if (name) {
-                    cast.push({ name: name, role: role || '—', tag: tag });
+                    cast.push({ name: name, role: role, tag: role });
                 }
             });
 
@@ -2730,8 +2969,7 @@
                 castContainer.removeChild(castContainer.lastElementChild);
             }
             document.querySelector('.cast-name').value = '';
-            document.querySelector('.cast-role').value = '';
-            document.querySelector('.cast-tag').value = 'Главная роль';
+            document.querySelector('.cast-role-select').value = 'Главная роль';
 
             renderAdminDramaList();
             showToast(`✅ Дорама "${name}" добавлена и сохранена на GitHub!`, '🎉', 'success');
@@ -2778,7 +3016,6 @@
         // =====================================================
         async function loadAdminDramasFromGitHub() {
             try {
-                // Проверяем, есть ли файл dramas.js на GitHub
                 const response = await fetch(
                     `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/dramas.js`
                 );
@@ -2823,7 +3060,7 @@
 
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('🎬 Всего дорам: ' + movies.length);
-        console.log('🔑 GitHub Token НЕ хранится в коде! Вводите его в админ-панели.');
+        console.log('🔑 GitHub Token проверяется автоматически при вводе!');
     </script>
 </body>
 </html>
