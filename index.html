@@ -1811,7 +1811,87 @@
         const GITHUB_IMAGES_PATH = 'images/';
 
         // =====================================================
-        // БЛОК 3: ПОЛУЧЕНИЕ И ПРОВЕРКА ТОКЕНА
+        // БЛОК 3: СЧЁТЧИК ОНЛАЙНА (ИСПРАВЛЕННЫЙ)
+        // =====================================================
+        (function() {
+            const STORAGE_KEY = 'drama_online_users';
+            const HEARTBEAT_INTERVAL = 5000;
+            const TIMEOUT_INTERVAL = 15000;
+            const countElement = document.getElementById('onlineCount');
+
+            function getUserId() {
+                let userId = localStorage.getItem('drama_user_id');
+                if (!userId) {
+                    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('drama_user_id', userId);
+                }
+                return userId;
+            }
+
+            function getOnlineUsers() {
+                const now = Date.now();
+                let users = {};
+                try {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    if (stored) {
+                        users = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    users = {};
+                }
+                for (const [key, time] of Object.entries(users)) {
+                    if (now - time > TIMEOUT_INTERVAL) {
+                        delete users[key];
+                    }
+                }
+                return users;
+            }
+
+            function updateCounter() {
+                const userId = getUserId();
+                const now = Date.now();
+                let users = getOnlineUsers();
+                users[userId] = now;
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                } catch (e) {}
+                const onlineCount = Object.keys(users).length;
+                if (countElement) {
+                    countElement.textContent = onlineCount;
+                }
+                return onlineCount;
+            }
+
+            updateCounter();
+            const intervalId = setInterval(updateCounter, HEARTBEAT_INTERVAL);
+
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    updateCounter();
+                }
+            });
+
+            window.addEventListener('focus', function() {
+                updateCounter();
+            });
+
+            window.addEventListener('beforeunload', function() {
+                const userId = localStorage.getItem('drama_user_id');
+                if (userId) {
+                    try {
+                        let users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                        delete users[userId];
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                    } catch (e) {}
+                }
+                clearInterval(intervalId);
+            });
+
+            console.log('🟢 Счётчик онлайн запущен.');
+        })();
+
+        // =====================================================
+        // БЛОК 4: ПОЛУЧЕНИЕ И ПРОВЕРКА ТОКЕНА
         // =====================================================
         let tokenValid = false;
 
@@ -1866,7 +1946,6 @@
             }
         }
 
-        // Проверка токена при вводе
         document.getElementById('adminGitHubToken').addEventListener('input', function() {
             const token = this.value.trim();
             if (token.length >= 10) {
@@ -1891,7 +1970,7 @@
         }
 
         // =====================================================
-        // БЛОК 4: ТЕМА
+        // БЛОК 5: ТЕМА
         // =====================================================
         const themeSwitch = document.getElementById('themeSwitch');
         let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -1910,7 +1989,7 @@
         applyTheme(currentTheme);
 
         // =====================================================
-        // БЛОК 5: TOAST
+        // БЛОК 6: TOAST
         // =====================================================
         function showToast(message, icon = '', type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1922,7 +2001,7 @@
         }
 
         // =====================================================
-        // БЛОК 6: ФУНКЦИИ ДЛЯ РАБОТЫ С GITHUB API
+        // БЛОК 7: ФУНКЦИИ ДЛЯ РАБОТЫ С GITHUB API
         // =====================================================
 
         async function checkFileExists(path, token) {
@@ -2107,7 +2186,7 @@
         }
 
         // =====================================================
-        // БЛОК 7: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
+        // БЛОК 8: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
         // =====================================================
         const DRAMAS = {};
         const movies = [];
@@ -2246,7 +2325,6 @@
                         role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
         };
 
-        // Заполняем DRAMAS и movies
         Object.keys(baseDramas).forEach(id => {
             const d = baseDramas[id];
             DRAMAS[id] = {
@@ -2268,7 +2346,6 @@
             });
         });
 
-        // Добавляем Титаник
         movies.push({
             name: 'Титаник',
             year: 1997,
@@ -2278,7 +2355,7 @@
         });
 
         // =====================================================
-        // БЛОК 8: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
+        // БЛОК 9: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
         // =====================================================
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showFavoritesOnly = false;
@@ -2531,7 +2608,7 @@
         });
 
         // =====================================================
-        // БЛОК 9: ПОИСК
+        // БЛОК 10: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2575,7 +2652,7 @@
         });
 
         // =====================================================
-        // БЛОК 10: МОДАЛЬНОЕ ОКНО
+        // БЛОК 11: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2694,7 +2771,7 @@
         });
 
         // =====================================================
-        // БЛОК 11: ПРОДОЛЖИТЬ ПРОСМОТР
+        // БЛОК 12: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2725,7 +2802,7 @@
         }
 
         // =====================================================
-        // БЛОК 12: КНОПКА "НАВЕРХ"
+        // БЛОК 13: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2736,7 +2813,7 @@
         });
 
         // =====================================================
-        // БЛОК 13: АДМИН-ПАНЕЛЬ
+        // БЛОК 14: АДМИН-ПАНЕЛЬ
         // =====================================================
         const ADMIN_STORAGE_KEY = 'admin_dramas';
 
@@ -2760,7 +2837,7 @@
             return 'drama' + (maxNum + 1);
         }
 
-        // ===== УПРАВЛЕНИЕ АКТЁРАМИ (С ВЫБОРОМ РОЛИ) =====
+        // ===== УПРАВЛЕНИЕ АКТЁРАМИ =====
         function addCastRow(name = '', role = 'Главная роль') {
             const container = document.getElementById('castInputs');
             const row = document.createElement('div');
@@ -2863,7 +2940,6 @@
             const posterFile = document.getElementById('adminDramaPosterFile').files[0];
             const posterUrl = document.getElementById('adminDramaPoster').value.trim();
 
-            // Собираем актёров (с выбором роли)
             const cast = [];
             document.querySelectorAll('.cast-row').forEach(row => {
                 const name = row.querySelector('.cast-name').value.trim();
@@ -2873,7 +2949,6 @@
                 }
             });
 
-            // Собираем ссылки на серии
             const episodeLinks = {};
             document.querySelectorAll('.episode-link').forEach((input, index) => {
                 const val = input.value.trim();
@@ -2882,7 +2957,6 @@
                 }
             });
 
-            // Проверка
             if (!name) { showToast('Введите название дорамы!', '⚠️', 'error'); return; }
             if (!year || year < 1900) { showToast('Введите корректный год!', '⚠️', 'error'); return; }
             if (!genre) { showToast('Введите жанр!', '⚠️', 'error'); return; }
@@ -2898,7 +2972,6 @@
 
             let posterFileName = posterUrl;
 
-            // Если выбран файл — загружаем его на GitHub
             if (posterFile) {
                 try {
                     showToast('⏳ Загрузка постера на GitHub...', '📤', 'info');
@@ -2935,12 +3008,10 @@
                 addedAt: new Date().toISOString()
             };
 
-            // Сохраняем в localStorage
             const list = getAdminDramas();
             list.push(newDrama);
             saveAdminDramas(list);
 
-            // Сохраняем на GitHub
             try {
                 showToast('⏳ Сохранение данных на GitHub...', '💾', 'info');
                 await saveDramasToGitHub(list, token);
@@ -2949,7 +3020,6 @@
                 showToast('❌ Ошибка сохранения на GitHub: ' + error.message, '🚫', 'error');
             }
 
-            // Очищаем поля
             document.getElementById('adminDramaName').value = '';
             document.getElementById('adminDramaYear').value = '';
             document.getElementById('adminDramaRating').value = '';
@@ -2977,7 +3047,7 @@
         }
 
         // =====================================================
-        // БЛОК 14: ПОКАЗЫВАЕМ АДМИН-ПАНЕЛЬ ТОЛЬКО ВАМ
+        // БЛОК 15: ПОКАЗЫВАЕМ АДМИН-ПАНЕЛЬ ТОЛЬКО ВАМ
         // =====================================================
         if (isAdmin) {
             document.getElementById('adminToggleBtn').classList.add('visible');
@@ -3012,7 +3082,7 @@
         }
 
         // =====================================================
-        // БЛОК 15: ИНИЦИАЛИЗАЦИЯ АДМИН-ДОРАМ ИЗ GitHub
+        // БЛОК 16: ИНИЦИАЛИЗАЦИЯ АДМИН-ДОРАМ ИЗ GitHub
         // =====================================================
         async function loadAdminDramasFromGitHub() {
             try {
@@ -3044,7 +3114,7 @@
         }
 
         // =====================================================
-        // БЛОК 16: ИНИЦИАЛИЗАЦИЯ
+        // БЛОК 17: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
@@ -3061,6 +3131,7 @@
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('🎬 Всего дорам: ' + movies.length);
         console.log('🔑 GitHub Token проверяется автоматически при вводе!');
+        console.log('🟢 Счётчик онлайн работает!');
     </script>
 </body>
 </html>
