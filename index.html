@@ -1011,7 +1011,7 @@
         }
 
         /* ============================================================
-           АДМИН-ПАНЕЛЬ (ВИДНА ТОЛЬКО ВАМ)
+           АДМИН-ПАНЕЛЬ
            ============================================================ */
         .admin-panel {
             display: none;
@@ -1055,6 +1055,23 @@
             transition: 0.2s;
         }
         .admin-panel .admin-title .close-btn:hover { color: #e74c3c; }
+
+        .admin-panel .admin-title .admin-exit-btn {
+            background: #e74c3c;
+            border: 2px solid #c0392b;
+            border-radius: 20px;
+            color: #fff;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            margin-right: 8px;
+        }
+        .admin-panel .admin-title .admin-exit-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
 
         .admin-panel .admin-field {
             margin-bottom: 10px;
@@ -1185,7 +1202,7 @@
             border-color: var(--token-invalid);
         }
 
-        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ (С ВЫБОРОМ РОЛИ) ===== */
+        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ ===== */
         .admin-panel .cast-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -1642,7 +1659,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- ============================================================
-    АДМИН-ПАНЕЛЬ (ВИДНА ТОЛЬКО ВАМ)
+    АДМИН-ПАНЕЛЬ (СОХРАНЯЕТСЯ ПРИ ОБНОВЛЕНИИ)
     ============================================================ -->
     <div class="admin-badge" id="adminBadge">🔑 Админ</div>
     <button class="admin-toggle-btn" id="adminToggleBtn" title="Админ-панель">⚙️</button>
@@ -1650,7 +1667,10 @@
     <div class="admin-panel" id="adminPanel">
         <div class="admin-title">
             <span>📦 Добавление дорамы</span>
-            <button class="close-btn" id="adminCloseBtn">✕</button>
+            <div>
+                <button class="admin-exit-btn" id="adminExitBtn" title="Выйти из админ-режима">🚪 Выйти</button>
+                <button class="close-btn" id="adminCloseBtn">✕</button>
+            </div>
         </div>
 
         <!-- ===== ТОКЕН ПОЛЕ С ИНДИКАТОРОМ ===== -->
@@ -1728,7 +1748,7 @@
             <textarea id="adminDramaPlot" placeholder="Краткое описание дорамы..." rows="3"></textarea>
         </div>
 
-        <!-- ===== АКТЁРЫ (С ВЫБОРОМ РОЛИ) ===== -->
+        <!-- ===== АКТЁРЫ ===== -->
         <div class="admin-field">
             <label>Актёрский состав</label>
             <div class="cast-inputs" id="castInputs">
@@ -1795,15 +1815,66 @@
 
     <script>
         // =====================================================
-        // БЛОК 1: ПРОВЕРКА АДМИН-ДОСТУПА
+        // БЛОК 1: АДМИН-РЕЖИМ (СОХРАНЯЕТСЯ В localStorage)
         // =====================================================
         const ADMIN_SECRET_KEY = 'DianaSuperSecret2026';
         const urlParams = new URLSearchParams(window.location.search);
         const adminKey = urlParams.get('admin');
-        const isAdmin = (adminKey === ADMIN_SECRET_KEY);
+
+        let isAdmin = false;
+        const storedAdmin = localStorage.getItem('drama_admin_mode');
+        const storedSecret = localStorage.getItem('drama_admin_secret');
+
+        // Если в URL есть ключ — активируем админ-режим
+        if (adminKey === ADMIN_SECRET_KEY) {
+            isAdmin = true;
+            localStorage.setItem('drama_admin_mode', 'true');
+            localStorage.setItem('drama_admin_secret', ADMIN_SECRET_KEY);
+            // Убираем ключ из URL
+            if (window.history && window.history.replaceState) {
+                const newUrl = window.location.pathname + window.location.search.replace(/[?&]admin=[^&]*/, '').replace(/^&/, '?');
+                window.history.replaceState({}, document.title, newUrl || window.location.pathname);
+            }
+        } else if (storedAdmin === 'true' && storedSecret === ADMIN_SECRET_KEY) {
+            isAdmin = true;
+        }
+
+        // Функция выхода из админ-режима
+        function exitAdminMode() {
+            localStorage.removeItem('drama_admin_mode');
+            localStorage.removeItem('drama_admin_secret');
+            isAdmin = false;
+            document.getElementById('adminBadge').classList.remove('active');
+            document.getElementById('adminToggleBtn').classList.remove('visible');
+            document.getElementById('adminPanel').classList.remove('active');
+            showToast('🔒 Админ-режим отключён', '👋', 'info');
+        }
+
+        // Функция входа в админ-режим
+        function enterAdminMode() {
+            isAdmin = true;
+            localStorage.setItem('drama_admin_mode', 'true');
+            localStorage.setItem('drama_admin_secret', ADMIN_SECRET_KEY);
+            document.getElementById('adminBadge').classList.add('active');
+            document.getElementById('adminToggleBtn').classList.add('visible');
+            document.getElementById('adminPanel').classList.add('active');
+            renderAdminDramaList();
+            showToast('🔑 Добро пожаловать, администратор!', '👋', 'success');
+        }
+
+        // Проверка при загрузке страницы
+        function checkAdminMode() {
+            if (isAdmin) {
+                document.getElementById('adminBadge').classList.add('active');
+                document.getElementById('adminToggleBtn').classList.add('visible');
+            } else {
+                document.getElementById('adminBadge').classList.remove('active');
+                document.getElementById('adminToggleBtn').classList.remove('visible');
+            }
+        }
 
         // =====================================================
-        // БЛОК 2: НАСТРОЙКИ GITHUB (БЕЗ ТОКЕНА!)
+        // БЛОК 2: НАСТРОЙКИ GITHUB
         // =====================================================
         const GITHUB_OWNER = 'dorama15film-netizen';
         const GITHUB_REPO = 'dorama15film-netizen.github.io';
@@ -1811,7 +1882,7 @@
         const GITHUB_IMAGES_PATH = 'images/';
 
         // =====================================================
-        // БЛОК 3: СЧЁТЧИК ОНЛАЙНА (ИСПРАВЛЕННЫЙ)
+        // БЛОК 3: СЧЁТЧИК ОНЛАЙНА
         // =====================================================
         (function() {
             const STORAGE_KEY = 'drama_online_users';
@@ -1891,7 +1962,7 @@
         })();
 
         // =====================================================
-        // БЛОК 4: ПОЛУЧЕНИЕ И ПРОВЕРКА ТОКЕНА
+        // БЛОК 4: ТОКЕН
         // =====================================================
         let tokenValid = false;
 
@@ -2001,9 +2072,8 @@
         }
 
         // =====================================================
-        // БЛОК 7: ФУНКЦИИ ДЛЯ РАБОТЫ С GITHUB API
+        // БЛОК 7: GITHUB API
         // =====================================================
-
         async function checkFileExists(path, token) {
             try {
                 const response = await fetch(
@@ -2186,7 +2256,7 @@
         }
 
         // =====================================================
-        // БЛОК 8: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
+        // БЛОК 8: ДАННЫЕ О ДОРАМАХ
         // =====================================================
         const DRAMAS = {};
         const movies = [];
@@ -3047,39 +3117,37 @@
         }
 
         // =====================================================
-        // БЛОК 15: ПОКАЗЫВАЕМ АДМИН-ПАНЕЛЬ ТОЛЬКО ВАМ
+        // БЛОК 15: НАСТРОЙКА АДМИН-ПАНЕЛИ
         // =====================================================
-        if (isAdmin) {
-            document.getElementById('adminToggleBtn').classList.add('visible');
-            document.getElementById('adminBadge').classList.add('active');
-            document.getElementById('adminPanel').classList.add('active');
-            renderAdminDramaList();
 
-            const count = parseInt(document.getElementById('adminDramaEpisodes').value) || 1;
-            document.getElementById('adminDramaEpisodes').dispatchEvent(new Event('input'));
+        // Проверяем админ-режим при загрузке
+        checkAdminMode();
 
-            showToast('🔑 Добро пожаловать, администратор!', '👋', 'success');
-
-            document.getElementById('adminToggleBtn').addEventListener('click', function() {
+        // Кнопка открытия/закрытия админ-панели
+        document.getElementById('adminToggleBtn').addEventListener('click', function() {
+            if (isAdmin) {
                 document.getElementById('adminPanel').classList.toggle('active');
                 if (document.getElementById('adminPanel').classList.contains('active')) {
                     renderAdminDramaList();
                 }
-            });
+            }
+        });
 
-            document.getElementById('adminCloseBtn').addEventListener('click', function() {
-                document.getElementById('adminPanel').classList.remove('active');
-            });
+        // Кнопка закрытия панели (без выхода)
+        document.getElementById('adminCloseBtn').addEventListener('click', function() {
+            document.getElementById('adminPanel').classList.remove('active');
+        });
 
-            document.getElementById('adminSubmitBtn').addEventListener('click', addAdminDrama);
+        // Кнопка выхода из админ-режима
+        document.getElementById('adminExitBtn').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти из админ-режима?')) {
+                exitAdminMode();
+                location.reload();
+            }
+        });
 
-            console.log('🔐 Админ-панель активна!');
-            console.log('📦 Добавленных админом дорам: ' + getAdminDramas().length);
-        } else {
-            document.getElementById('adminToggleBtn').classList.remove('visible');
-            document.getElementById('adminBadge').classList.remove('active');
-            console.log('🔒 Админ-панель скрыта. Добавьте ?admin=' + ADMIN_SECRET_KEY + ' в URL для доступа.');
-        }
+        // Кнопка добавления дорамы
+        document.getElementById('adminSubmitBtn').addEventListener('click', addAdminDrama);
 
         // =====================================================
         // БЛОК 16: ИНИЦИАЛИЗАЦИЯ АДМИН-ДОРАМ ИЗ GitHub
@@ -3132,6 +3200,8 @@
         console.log('🎬 Всего дорам: ' + movies.length);
         console.log('🔑 GitHub Token проверяется автоматически при вводе!');
         console.log('🟢 Счётчик онлайн работает!');
+        console.log('🔐 Админ-режим: ' + (isAdmin ? 'АКТИВЕН' : 'НЕ АКТИВЕН'));
+        console.log('📌 Если админ-режим активен, он сохраняется при обновлении и переходах по страницам.');
     </script>
 </body>
 </html>
