@@ -1625,6 +1625,17 @@
         </div>
 
         <div class="admin-field">
+            <label>Продолжительность серии</label>
+            <input type="text" id="adminDramaDuration" placeholder="01:10:00" />
+            <div class="hint">Формат: ЧЧ:ММ:СС</div>
+        </div>
+
+        <div class="admin-field">
+            <label>Перевод</label>
+            <input type="text" id="adminDramaTranslation" placeholder="Профессиональный многоголосый" />
+        </div>
+
+        <div class="admin-field">
             <label>Ссылка на постер *</label>
             <input type="text" id="adminDramaPoster" placeholder="https://example.com/poster.jpg или poster.jpg" />
             <div class="hint">Можно указать имя файла из папки с сайтом</div>
@@ -1802,116 +1813,132 @@
         const baseDramas = {
             drama1: { name: 'Завтра снова на работу!', episodes: 6, poster: 'DR.jpg',
                 info: { year: '2024', genre: 'мелодрама, комедия', country: 'Республика Корея', director: 'Чо Ын-соль',
+                    duration: '01:10:00', translation: 'Профессиональный многоголосый',
                     plot: 'Увлекательная история о жизни и любви.',
                     cast: [{ name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' }, { name: 'Пак Джи Хён',
                         role: 'Ча Джи Юн', tag: 'Главная роль' }] } },
             drama2: { name: 'Лазурная весна', episodes: 6, poster: 'Wt.jpg',
                 info: { year: '2026', genre: 'Мелодрама', country: 'Корея Южная', director: 'Чон Хон-су',
+                    duration: '00:40:00', translation: 'Профессиональный многоголосый',
                     plot: 'Говорят, море умеет слушать...',
                     cast: [{ name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' }, { name: 'Кан Сан-джун',
                         role: 'Юн Док Хён', tag: 'Главная роль' }] } },
             drama3: { name: 'Абсолютная величина любви', episodes: 16, poster: 'DD.jpg',
                 info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Тхэ Гон Ли',
+                    duration: '00:59:00', translation: 'Профессиональный многоголосый',
                     plot: 'Днём — серая мышка за последней партой...',
                     cast: [{ name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' }, { name: 'Ким Джэ-хён',
                         role: 'Ким Джи-сок', tag: 'Главная роль' }] } },
             drama4: { name: 'Атхит - это я', episodes: 6, poster: 'i.jpg',
                 info: { year: '2022', genre: 'комедия, романтика', country: 'Таиланд', director: 'Bhandit Thongdee',
+                    duration: '00:44:00', translation: 'Озвучка, Субтитры',
                     plot: 'Сун работает сборщиком долгов...',
                     cast: [{ name: 'Nop Panut Guntachai', role: 'Атхит', tag: 'Главная роль' }, { name: 'Prem Warut',
                         role: 'Сун', tag: 'Главная роль' }] } },
             drama5: { name: 'Бойфренд по запросу', episodes: 10, poster: 'GT.jpg',
                 info: { year: '2026', genre: 'Комедия, мелодрама', country: 'Южная Корея', director: 'Ким Джон Щик',
+                    duration: '00:55:00', translation: 'Профессиональный многоголосый',
                     plot: 'Со Ми Рэ живёт работой...',
                     cast: [{ name: 'Ким Джи Су', role: '', tag: 'Главная роль' }, { name: 'Со Ин Гук', role: '',
                         tag: 'Главная роль' }] } },
             drama6: { name: 'Жена принца XXI века', episodes: 12, poster: 'GR.jpg',
                 info: { year: '2026', genre: 'мелодрама', country: 'Корея Южная', director: 'Пак Джун Хва',
+                    duration: '01:14:00', translation: 'Профессиональный многоголосый',
                     plot: 'Корея, которой не существует...',
                     cast: [{ name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' }, { name: 'Пён Усок',
                         role: 'Принц Ли Ан', tag: 'Главная роль' }] } },
             drama7: { name: 'Весенняя лихорадка', episodes: 12, poster: 'GN.jpg',
                 info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Пак Вон-гук',
+                    duration: '01:02:00', translation: 'Профессиональный многоголосый',
                     plot: 'Юн Бом сбегает из Сеула...',
                     cast: [{ name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' }, { name: 'Ли Джу-бин',
                         role: 'Юн Бом', tag: 'Главная роль' }] } },
             drama8: { name: 'Босс компании «Тайфун»', episodes: 16, poster: 'LL.jpg',
                 info: { year: '2025', genre: 'Драма, семейный', country: 'Корея Южная', director: 'Ли На-джон',
+                    duration: '01:17:00', translation: 'Профессиональный многоголосый',
                     plot: '1997 год. Южная Корея...',
                     cast: [{ name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' }, { name: 'Ким Мин-ха',
                         role: 'О Ми-сук', tag: 'Главная роль' }] } },
             drama9: { name: 'Все твои желания исполнятся', episodes: 13, poster: 'FQ.jpg',
                 info: { year: '2025', genre: 'комедия, мелодрама, фэнтези', country: 'Корея Южная',
-                    director: 'Бён Хон Ли',
+                    director: 'Бён Хон Ли', duration: '00:55:00', translation: 'Любительский многоголосый',
                     plot: 'Га Ён разучилась мечтать...',
                     cast: [{ name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' }, { name: 'У Бин Ким',
                         role: 'Джинн', tag: 'Главная роль' }] } },
             drama10: { name: 'Полярная звезда', episodes: 9, poster: 'RR.jpg',
                 info: { year: '2025', genre: 'триллер, мелодрама, боевик', country: 'Корея Южная',
-                    director: 'Ким Хи-вон',
+                    director: 'Ким Хи-вон', duration: '00:53:00', translation: 'Профессиональный многоголосый',
                     plot: 'Мун Джу когда-то была звездой...',
                     cast: [{ name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' }, { name: 'Кан Дон-вон',
                         role: 'Сан Хо', tag: 'Главная роль' }] } },
             drama11: { name: 'В погоне за нефритом', episodes: 40, poster: 'KK.jpg',
                 info: { year: '2026', genre: 'драма, мелодрама', country: 'Китай', director: 'Цзэн Цинцзе',
+                    duration: '00:46:50', translation: 'Любительский многоголосый',
                     plot: 'Метель — штука безжалостная...',
                     cast: [{ name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' }, { name: 'Сивэй Тянь',
                         role: 'Фань Чанъюй', tag: 'Главная роль' }] } },
             drama12: { name: '50-летние профи', episodes: 12, poster: 'God.jpg',
                 info: { year: '2026', genre: 'комедия, боевик, криминал', country: 'Корея Южная',
-                    director: 'Хан Донхва',
+                    director: 'Хан Донхва', duration: '01:10:00', translation: 'Профессиональный многоголосый',
                     plot: 'Есть такая поговорка — покой нам только снится...',
                     cast: [{ name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' }, { name: 'О Джонсэ',
                         role: 'Бон', tag: 'Главная роль' }, { name: 'Хо Сонтхэ', role: 'Кан',
                         tag: 'Главная роль' }] } },
             drama13: { name: 'Клетки эмпатии', episodes: 6, poster: 'AA.jpg',
                 info: { year: '2026', genre: 'Мелодрама, Фэнтези', country: 'Корея Южная', director: 'Ким Чхиль-бон',
+                    duration: '00:49:00', translation: 'Профессиональный многоголосый',
                     plot: 'Бывают люди, которые чувствуют слишком много...',
                     cast: [{ name: 'Ким Мён-су', role: 'Психолог', tag: 'Главная роль' }, { name: 'Кан Мин-а',
                         role: 'Айдол', tag: 'Главная роль' }] } },
             drama14: { name: 'Вперёд, Кальмар!', episodes: 41, poster: 'WK.jpg',
                 info: { year: '2019', genre: 'комедия, мелодрама, романтика, молодость, спорт', country: 'Китай',
-                    director: 'Чэнь Хунжу',
+                    director: 'Чэнь Хунжу', duration: '00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Бойкая студентка Тун Нянь...',
                     cast: [{ name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' }, { name: 'Ли Сянь',
                         role: 'Хань Шан Янь', tag: 'Главная роль' }] } },
             drama15: { name: 'Борьба в прямом эфире', episodes: 6, poster: 'HY.jpg',
                 info: { year: '2026', genre: 'Триллер, Драма, Боевик', country: 'Япония', director: 'Хидэки Такэути',
+                    duration: '00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Камера трясётся в руках...',
                     cast: [{ name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' }] } },
             drama16: { name: 'Золотое место', episodes: 10, poster: 'LG.jpg',
                 info: { year: '2026', genre: 'криминал, триллер', country: 'Корея Южная', director: 'Сон Хун Ким',
+                    duration: '00:52:50', translation: 'Любительский двухголосый',
                     plot: 'Ким Хи Джу умеет быть невидимкой...',
                     cast: [{ name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' }] } },
             drama17: { name: 'Судьба, поцелованная дождем', episodes: 30, poster: 'LASET.jpg',
                 info: { year: '2025', genre: 'Мелодрама', country: 'Китай', director: 'Линь Цин',
+                    duration: '30 x 00:12:00', translation: 'Любительский многоголосый',
                     plot: 'Шесть лет — это много или мало?...',
                     cast: [{ name: 'Чэнь Фантун', role: '', tag: 'Главная роль' }, { name: 'Дай Гаочжэн', role: '',
                         tag: 'Главная роль' }] } },
             drama18: { name: 'Ты мой герой', episodes: 40, poster: 'kdfgj.jpg',
                 info: { year: '2024', genre: 'Мелодрама, комедия, романтика', country: 'Китай', director: 'Ли Цзянь',
+                    duration: '40 x 00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'История о настоящей любви...',
                     cast: [{ name: 'Сун Цзянь', role: 'Чжан И', tag: 'Главная роль' }, { name: 'Ли Цинь',
                         role: 'Хэ Хуань', tag: 'Главная роль' }] } },
             drama19: { name: 'Профессионал-одиночка', episodes: 24, poster: '1920x.jpg',
                 info: { year: '2020', genre: 'мелодрама, комедия, романтика', country: 'Китай', director: 'Линь Янь',
+                    duration: '24 x 00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Сюжет разворачивается вокруг двух студентов...',
                     cast: [{ name: 'Дэн Чаоюань', role: 'Цинь Шэнь', tag: 'Главная роль' }, { name: 'Ирене Сун',
                         role: 'Юань Цянь', tag: 'Главная роль' }] } },
             drama20: { name: 'Жутко влюблённые', episodes: 6, poster: 'ldf.jpg',
                 info: { year: '2026', genre: 'мелодрама, комедия, фэнтези, детектив', country: 'Корея Южная',
-                    director: 'Ли Минсу',
+                    director: 'Ли Минсу', duration: '01:10:30', translation: 'Проф. Многоголосый',
                     plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом...',
                     cast: [{ name: 'Пак Ынбин', role: 'Чон Ён Ри', tag: 'Главная роль' }, { name: 'Ян Сэджон',
                         role: 'Ма Ган Ук', tag: 'Главная роль' }] } },
             drama21: { name: 'История леди Ок', episodes: 16, poster: 'kdjH.png',
                 info: { year: '2024', genre: 'драма', country: 'Корея Южная', director: 'Чин Хёк',
+                    duration: '16 x 01:23:00', translation: 'Профессиональный многоголосый',
                     plot: 'Ок Тэ Ён — женщина, которая привыкла прятаться...',
                     cast: [{ name: 'Син Сын Хван', role: 'Ок Тэ Ён', tag: 'Главная роль' }, { name: 'Чху Ён У',
                         role: 'Чхон Сын Хи', tag: 'Главная роль' }] } },
             drama22: { name: 'Логическая ошибка', episodes: 8, poster: 'kdfh.jpeg',
                 info: { year: '2025', genre: 'мелодрама, комедия, BL', country: 'Корея Южная',
-                    director: 'Ким Хён Джун',
+                    director: 'Ким Хён Джун', duration: '00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Студент факультета компьютерных наук Чу Сан У...',
                     cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
                         role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
@@ -2310,6 +2337,8 @@
                                  <strong>Жанр:</strong> ${info.genre || movie.genre || '—'}<br>
                                  <strong>Страна:</strong> ${info.country || '—'}<br>
                                  <strong>Режиссёр:</strong> ${info.director || '—'}<br>
+                                 <strong>Продолжительность:</strong> ${info.duration || '—'}<br>
+                                 <strong>Перевод:</strong> ${info.translation || '—'}<br>
                                  <strong>Количество серий:</strong> ${d.episodes || '—'}<br>
                                  ${info.plot ? `<br><strong>Описание:</strong><br>${info.plot}` : ''}
                                  ${castHtml}`
@@ -2552,6 +2581,8 @@
             const genre = document.getElementById('adminDramaGenre').value.trim();
             const country = document.getElementById('adminDramaCountry').value.trim() || 'Не указана';
             const director = document.getElementById('adminDramaDirector').value.trim() || 'Не указан';
+            const duration = document.getElementById('adminDramaDuration').value.trim() || '—';
+            const translation = document.getElementById('adminDramaTranslation').value.trim() || '—';
             const poster = document.getElementById('adminDramaPoster').value.trim();
             const episodes = parseInt(document.getElementById('adminDramaEpisodes').value.trim());
             const plot = document.getElementById('adminDramaPlot').value.trim() || 'Описание отсутствует.';
@@ -2599,6 +2630,8 @@
                 genre: genre,
                 country: country,
                 director: director,
+                duration: duration,
+                translation: translation,
                 episodes: episodes,
                 plot: plot,
                 cast: cast,
@@ -2618,6 +2651,8 @@
             document.getElementById('adminDramaGenre').value = '';
             document.getElementById('adminDramaCountry').value = '';
             document.getElementById('adminDramaDirector').value = '';
+            document.getElementById('adminDramaDuration').value = '';
+            document.getElementById('adminDramaTranslation').value = '';
             document.getElementById('adminDramaPoster').value = '';
             document.getElementById('adminDramaEpisodes').value = '';
             document.getElementById('adminDramaPlot').value = '';
@@ -2708,8 +2743,8 @@
                             director: ad.director || 'Не указан',
                             genre: ad.genre,
                             country: ad.country || 'Не указана',
-                            duration: ad.episodes + ' x 00:45:00',
-                            translation: 'Не указан',
+                            duration: ad.duration || '—',
+                            translation: ad.translation || '—',
                             plot: ad.plot || 'Описание отсутствует.',
                             cast: ad.cast || [{ name: 'Актёр не указан', role: 'Главная роль', tag: '' }]
                         },
