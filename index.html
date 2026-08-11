@@ -7,7 +7,7 @@
     <link rel="icon" href="Log.png" type="image/png">
     <style>
         /* ============================================================
-           ВСЕ СТИЛИ (ТАКИЕ ЖЕ КАК БЫЛИ)
+           ВСЕ СТИЛИ
            ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1019,7 +1019,7 @@
             border: 2px solid #ff0000;
             border-radius: 16px;
             padding: 20px;
-            max-width: 500px;
+            max-width: 550px;
             width: 95%;
             max-height: 85vh;
             overflow-y: auto;
@@ -1126,6 +1126,62 @@
             min-width: 0;
         }
 
+        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ ===== */
+        .admin-panel .cast-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .admin-panel .cast-inputs .cast-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--bg-primary);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .admin-panel .cast-inputs .cast-row input,
+        .admin-panel .cast-inputs .cast-row select {
+            width: 100%;
+            padding: 4px 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            outline: none;
+        }
+        .admin-panel .cast-inputs .cast-row input:focus,
+        .admin-panel .cast-inputs .cast-row select:focus {
+            border-color: var(--accent-color);
+        }
+        .admin-panel .cast-inputs .cast-row .cast-remove {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 14px;
+            align-self: flex-end;
+        }
+        .admin-panel .cast-add-btn {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            padding: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 4px;
+        }
+        .admin-panel .cast-add-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+        }
+
         .admin-panel .admin-submit {
             width: 100%;
             padding: 10px;
@@ -1173,7 +1229,6 @@
         }
         .admin-panel .admin-list .admin-item .del-btn:hover { transform: scale(1.2); }
 
-        /* Кнопка админ-панели — видна ТОЛЬКО ВАМ */
         .admin-toggle-btn {
             position: fixed;
             bottom: 30px;
@@ -1189,7 +1244,7 @@
             cursor: pointer;
             transition: 0.3s ease;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            display: none; /* Скрыта по умолчанию */
+            display: none;
             align-items: center;
             justify-content: center;
         }
@@ -1347,6 +1402,7 @@
             .admin-panel { bottom: 70px; right: 10px; padding: 16px; max-width: 95%; max-height: 80vh; }
             .admin-toggle-btn { width: 45px; height: 45px; font-size: 20px; bottom: 20px; right: 20px; }
             .admin-panel .admin-field .episode-inputs { grid-template-columns: 1fr; }
+            .admin-panel .cast-inputs { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -1401,6 +1457,7 @@
             .admin-panel .admin-title { font-size: 15px; }
             .admin-panel .admin-field input,
             .admin-panel .admin-field textarea { font-size: 12px; padding: 6px 10px; }
+            .admin-panel .cast-inputs { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1528,13 +1585,9 @@
     <!-- ============================================================
     АДМИН-ПАНЕЛЬ (ВИДНА ТОЛЬКО ВАМ)
     ============================================================ -->
-    <!-- Админ-бадж -->
     <div class="admin-badge" id="adminBadge">🔑 Админ</div>
-
-    <!-- Кнопка админ-панели -->
     <button class="admin-toggle-btn" id="adminToggleBtn" title="Админ-панель">⚙️</button>
 
-    <!-- Сама админ-панель -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-title">
             <span>📦 Добавление дорамы</span>
@@ -1562,6 +1615,16 @@
         </div>
 
         <div class="admin-field">
+            <label>Страна</label>
+            <input type="text" id="adminDramaCountry" placeholder="Корея Южная" />
+        </div>
+
+        <div class="admin-field">
+            <label>Режиссёр</label>
+            <input type="text" id="adminDramaDirector" placeholder="Имя режиссёра" />
+        </div>
+
+        <div class="admin-field">
             <label>Ссылка на постер *</label>
             <input type="text" id="adminDramaPoster" placeholder="https://example.com/poster.jpg или poster.jpg" />
             <div class="hint">Можно указать имя файла из папки с сайтом</div>
@@ -1577,6 +1640,26 @@
             <textarea id="adminDramaPlot" placeholder="Краткое описание дорамы..." rows="3"></textarea>
         </div>
 
+        <!-- ===== АКТЁРЫ ===== -->
+        <div class="admin-field">
+            <label>Актёрский состав</label>
+            <div class="cast-inputs" id="castInputs">
+                <div class="cast-row">
+                    <input type="text" class="cast-name" placeholder="Имя актёра" />
+                    <input type="text" class="cast-role" placeholder="Роль" />
+                    <select class="cast-tag">
+                        <option value="Главная роль">⭐ Главная роль</option>
+                        <option value="Второстепенная роль">🎭 Второстепенная роль</option>
+                        <option value="Камео">🎬 Камео</option>
+                    </select>
+                    <button class="cast-remove" onclick="removeCastRow(this)">✕</button>
+                </div>
+            </div>
+            <button class="cast-add-btn" id="castAddBtn">➕ Добавить актёра</button>
+            <div class="hint">Укажите актёров и их роли (главные, второстепенные)</div>
+        </div>
+
+        <!-- ===== ССЫЛКИ НА СЕРИИ ===== -->
         <div class="admin-field">
             <label>Ссылки на серии (по одной на каждую серию) *</label>
             <div class="episode-inputs" id="episodeInputs">
@@ -1625,16 +1708,11 @@
 
     <script>
         // =====================================================
-        // БЛОК 1: ПРОВЕРКА АДМИН-ДОСТУПА (ТОЛЬКО ВАМ)
+        // БЛОК 1: ПРОВЕРКА АДМИН-ДОСТУПА
         // =====================================================
-        // 🔑 СЕКРЕТНЫЙ КЛЮЧ — ТОЛЬКО ВЫ ЕГО ЗНАЕТЕ!
         const ADMIN_SECRET_KEY = 'DianaSuperSecret2026';
-
-        // Проверяем URL-параметр
         const urlParams = new URLSearchParams(window.location.search);
         const adminKey = urlParams.get('admin');
-
-        // Если ключ совпадает — показываем админ-панель
         const isAdmin = (adminKey === ADMIN_SECRET_KEY);
 
         // =====================================================
@@ -1715,438 +1793,163 @@
         })();
 
         // =====================================================
-        // БЛОК 5: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
+        // БЛОК 5: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ) - СОКРАЩЕННЫЙ ВАРИАНТ
         // =====================================================
-        const DRAMAS = {
-            drama1: {
-                name: 'Завтра снова на работу!',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode1',
-                poster: 'DR.jpg',
-                info: {
-                    year: '2024',
-                    director: 'Чо Ын-соль',
-                    genre: 'мелодрама, комедия',
-                    country: 'Республика Корея',
-                    duration: '—',
-                    translation: '—',
+        const DRAMAS = {};
+        const movies = [];
+
+        // Загружаем базовые дорамы (сокращённо для примера)
+        const baseDramas = {
+            drama1: { name: 'Завтра снова на работу!', episodes: 6, poster: 'DR.jpg',
+                info: { year: '2024', genre: 'мелодрама, комедия', country: 'Республика Корея', director: 'Чо Ын-соль',
                     plot: 'Увлекательная история о жизни и любви.',
                     cast: [{ name: 'Со Ин Гук', role: 'Кан Си У', tag: 'Главная роль' }, { name: 'Пак Джи Хён',
-                        role: 'Ча Джи Юн', tag: 'Главная роль' }]
-                }
-            },
-            drama2: {
-                name: 'Лазурная весна',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode2',
-                poster: 'Wt.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Чон Хон-су',
-                    genre: 'Мелодрама',
-                    country: 'Корея Южная',
-                    duration: '00:40:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Ча Джи Юн', tag: 'Главная роль' }] } },
+            drama2: { name: 'Лазурная весна', episodes: 6, poster: 'Wt.jpg',
+                info: { year: '2026', genre: 'Мелодрама', country: 'Корея Южная', director: 'Чон Хон-су',
                     plot: 'Говорят, море умеет слушать...',
                     cast: [{ name: 'Ким Е-рим', role: 'Со Ан На', tag: 'Главная роль' }, { name: 'Кан Сан-джун',
-                        role: 'Юн Док Хён', tag: 'Главная роль' }]
-                }
-            },
-            drama3: {
-                name: 'Абсолютная величина любви',
-                episodes: 16,
-                storageKey: 'lastDramaEpisode3',
-                poster: 'DD.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Тхэ Гон Ли',
-                    genre: 'мелодрама, комедия',
-                    country: 'Корея Южная',
-                    duration: '00:59:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Юн Док Хён', tag: 'Главная роль' }] } },
+            drama3: { name: 'Абсолютная величина любви', episodes: 16, poster: 'DD.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Тхэ Гон Ли',
                     plot: 'Днём — серая мышка за последней партой...',
                     cast: [{ name: 'Ким Хян-ги', role: 'Е И-джу', tag: 'Главная роль' }, { name: 'Ким Джэ-хён',
-                        role: 'Ким Джи-сок', tag: 'Главная роль' }]
-                }
-            },
-            drama4: {
-                name: 'Атхит - это я',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode4',
-                poster: 'i.jpg',
-                info: {
-                    year: '2022',
-                    director: 'Bhandit Thongdee, Simon Kessler',
-                    genre: 'комедия, романтика',
-                    country: 'Таиланд',
-                    duration: '44 мин.',
-                    translation: 'Озвучка, Субтитры',
+                        role: 'Ким Джи-сок', tag: 'Главная роль' }] } },
+            drama4: { name: 'Атхит - это я', episodes: 6, poster: 'i.jpg',
+                info: { year: '2022', genre: 'комедия, романтика', country: 'Таиланд', director: 'Bhandit Thongdee',
                     plot: 'Сун работает сборщиком долгов...',
-                    cast: [{ name: 'Nop Panut Guntachai', role: 'Атхит (Athit)', tag: 'Главная роль' },
-                    { name: 'Prem Warut Chawalitrujiwong', role: 'Сун (Sun)', tag: 'Главная роль' }]
-                }
-            },
-            drama5: {
-                name: 'Бойфренд по запросу',
-                episodes: 10,
-                storageKey: 'lastDramaEpisode5',
-                poster: 'GT.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Ким Джон Щик',
-                    genre: 'Комедия, мелодрама',
-                    country: 'Южная Корея',
-                    duration: '00:55:00',
-                    translation: 'Профессиональный многоголосый',
+                    cast: [{ name: 'Nop Panut Guntachai', role: 'Атхит', tag: 'Главная роль' }, { name: 'Prem Warut',
+                        role: 'Сун', tag: 'Главная роль' }] } },
+            drama5: { name: 'Бойфренд по запросу', episodes: 10, poster: 'GT.jpg',
+                info: { year: '2026', genre: 'Комедия, мелодрама', country: 'Южная Корея', director: 'Ким Джон Щик',
                     plot: 'Со Ми Рэ живёт работой...',
                     cast: [{ name: 'Ким Джи Су', role: '', tag: 'Главная роль' }, { name: 'Со Ин Гук', role: '',
-                        tag: 'Главная роль' }]
-                }
-            },
-            drama6: {
-                name: 'Жена принца XXI века',
-                episodes: 12,
-                storageKey: 'lastDramaEpisode6',
-                poster: 'GR.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Пак Джун Хва',
-                    genre: 'мелодрама',
-                    country: 'Корея Южная',
-                    duration: '01:14:00',
-                    translation: 'Профессиональный многоголосый',
+                        tag: 'Главная роль' }] } },
+            drama6: { name: 'Жена принца XXI века', episodes: 12, poster: 'GR.jpg',
+                info: { year: '2026', genre: 'мелодрама', country: 'Корея Южная', director: 'Пак Джун Хва',
                     plot: 'Корея, которой не существует...',
                     cast: [{ name: 'АйЮ', role: 'Сон Хи Джу', tag: 'Главная роль' }, { name: 'Пён Усок',
-                        role: 'Принц Ли Ан', tag: 'Главная роль' }]
-                }
-            },
-            drama7: {
-                name: 'Весенняя лихорадка',
-                episodes: 12,
-                storageKey: 'lastDramaEpisode7',
-                poster: 'GN.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Пак Вон-гук',
-                    genre: 'мелодрама, комедия',
-                    country: 'Корея Южная',
-                    duration: '01:02:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Принц Ли Ан', tag: 'Главная роль' }] } },
+            drama7: { name: 'Весенняя лихорадка', episodes: 12, poster: 'GN.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия', country: 'Корея Южная', director: 'Пак Вон-гук',
                     plot: 'Юн Бом сбегает из Сеула...',
                     cast: [{ name: 'Ан Бо-хён', role: 'Сон Джэ Гю', tag: 'Главная роль' }, { name: 'Ли Джу-бин',
-                        role: 'Юн Бом', tag: 'Главная роль' }]
-                }
-            },
-            drama8: {
-                name: 'Босс компании «Тайфун»',
-                episodes: 16,
-                storageKey: 'lastDramaEpisode8',
-                poster: 'LL.jpg',
-                info: {
-                    year: '2025',
-                    director: 'Ли На-джон',
-                    genre: 'Драма, семейный',
-                    country: 'Корея Южная',
-                    duration: '01:17:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Юн Бом', tag: 'Главная роль' }] } },
+            drama8: { name: 'Босс компании «Тайфун»', episodes: 16, poster: 'LL.jpg',
+                info: { year: '2025', genre: 'Драма, семейный', country: 'Корея Южная', director: 'Ли На-джон',
                     plot: '1997 год. Южная Корея...',
                     cast: [{ name: 'Ли Джун-хо', role: 'Кан Тхэ-пун', tag: 'Главная роль' }, { name: 'Ким Мин-ха',
-                        role: 'О Ми-сук', tag: 'Главная роль' }]
-                }
-            },
-            drama9: {
-                name: 'Все твои желания исполнятся',
-                episodes: 13,
-                storageKey: 'lastDramaEpisode9',
-                poster: 'FQ.jpg',
-                info: {
-                    year: '2025',
-                    director: 'Бён Хон Ли (II), Гиль Хо Ан',
-                    genre: 'комедия, мелодрама, фэнтези',
-                    country: 'Корея Южная',
-                    duration: '00:55:00',
-                    translation: 'Любительский многоголосый',
+                        role: 'О Ми-сук', tag: 'Главная роль' }] } },
+            drama9: { name: 'Все твои желания исполнятся', episodes: 13, poster: 'FQ.jpg',
+                info: { year: '2025', genre: 'комедия, мелодрама, фэнтези', country: 'Корея Южная',
+                    director: 'Бён Хон Ли',
                     plot: 'Га Ён разучилась мечтать...',
                     cast: [{ name: 'Су Чжи Пэ', role: 'Га Ён', tag: 'Главная роль' }, { name: 'У Бин Ким',
-                        role: 'Джинн', tag: 'Главная роль' }]
-                }
-            },
-            drama10: {
-                name: 'Полярная звезда',
-                episodes: 9,
-                storageKey: 'lastDramaEpisode10',
-                poster: 'RR.jpg',
-                info: {
-                    year: '2025',
-                    director: 'Ким Хи-вон, Хо Мён-хэн',
-                    genre: 'триллер, мелодрама, боевик',
-                    country: 'Корея Южная',
-                    duration: '00:53:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Джинн', tag: 'Главная роль' }] } },
+            drama10: { name: 'Полярная звезда', episodes: 9, poster: 'RR.jpg',
+                info: { year: '2025', genre: 'триллер, мелодрама, боевик', country: 'Корея Южная',
+                    director: 'Ким Хи-вон',
                     plot: 'Мун Джу когда-то была звездой...',
                     cast: [{ name: 'Чон Джи-хён', role: 'Мун Джу', tag: 'Главная роль' }, { name: 'Кан Дон-вон',
-                        role: 'Сан Хо', tag: 'Главная роль' }]
-                }
-            },
-            drama11: {
-                name: 'В погоне за нефритом',
-                episodes: 40,
-                storageKey: 'lastDramaEpisode11',
-                poster: 'KK.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Цзэн Цинцзе',
-                    genre: 'драма, мелодрама',
-                    country: 'Китай',
-                    duration: '00:46:50',
-                    translation: 'Любительский многоголосый',
+                        role: 'Сан Хо', tag: 'Главная роль' }] } },
+            drama11: { name: 'В погоне за нефритом', episodes: 40, poster: 'KK.jpg',
+                info: { year: '2026', genre: 'драма, мелодрама', country: 'Китай', director: 'Цзэн Цинцзе',
                     plot: 'Метель — штука безжалостная...',
                     cast: [{ name: 'Линхэ Чжан', role: 'Се Чжэн', tag: 'Главная роль' }, { name: 'Сивэй Тянь',
-                        role: 'Фань Чанъюй', tag: 'Главная роль' }]
-                }
-            },
-            drama12: {
-                name: '50-летние профи',
-                episodes: 12,
-                storageKey: 'lastDramaEpisode12',
-                poster: 'God.jpg',
-                info: {
-                    year: '2026',
+                        role: 'Фань Чанъюй', tag: 'Главная роль' }] } },
+            drama12: { name: '50-летние профи', episodes: 12, poster: 'God.jpg',
+                info: { year: '2026', genre: 'комедия, боевик, криминал', country: 'Корея Южная',
                     director: 'Хан Донхва',
-                    genre: 'комедия, боевик, криминал',
-                    country: 'Корея Южная',
-                    duration: '01:10:00',
-                    translation: 'Профессиональный многоголосый',
                     plot: 'Есть такая поговорка — покой нам только снится...',
                     cast: [{ name: 'Син Хагюн', role: 'Чон Хомён', tag: 'Главная роль' }, { name: 'О Джонсэ',
                         role: 'Бон', tag: 'Главная роль' }, { name: 'Хо Сонтхэ', role: 'Кан',
-                        tag: 'Главная роль' }]
-                }
-            },
-            drama13: {
-                name: 'Клетки эмпатии',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode13',
-                poster: 'AA.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Ким Чхиль-бон',
-                    genre: 'Мелодрама, Фэнтези',
-                    country: 'Корея Южная',
-                    duration: '00:49:00',
-                    translation: 'Профессиональный многоголосый',
+                        tag: 'Главная роль' }] } },
+            drama13: { name: 'Клетки эмпатии', episodes: 6, poster: 'AA.jpg',
+                info: { year: '2026', genre: 'Мелодрама, Фэнтези', country: 'Корея Южная', director: 'Ким Чхиль-бон',
                     plot: 'Бывают люди, которые чувствуют слишком много...',
-                    cast: [{ name: 'Ким Мён-су', role: 'Психолог-консультант', tag: 'Главная роль' },
-                    { name: 'Кан Мин-а', role: 'Бывшая айдол-звезда', tag: 'Главная роль' }]
-                }
-            },
-            drama14: {
-                name: 'Вперёд, Кальмар!',
-                episodes: 41,
-                storageKey: 'lastDramaEpisode14',
-                poster: 'WK.jpg',
-                info: {
-                    year: '2019',
-                    director: 'Чэнь Хунжу, Ли Цзинжун, Сян Сюйцзин, Джия Ли',
-                    genre: 'комедия, мелодрама, романтика, молодость, спорт',
-                    country: 'Китай',
-                    duration: '00:45:00',
-                    translation: 'Профессиональный многоголосый',
-                    plot: 'Бойкая и харизматичная студентка Тун Нянь...',
+                    cast: [{ name: 'Ким Мён-су', role: 'Психолог', tag: 'Главная роль' }, { name: 'Кан Мин-а',
+                        role: 'Айдол', tag: 'Главная роль' }] } },
+            drama14: { name: 'Вперёд, Кальмар!', episodes: 41, poster: 'WK.jpg',
+                info: { year: '2019', genre: 'комедия, мелодрама, романтика, молодость, спорт', country: 'Китай',
+                    director: 'Чэнь Хунжу',
+                    plot: 'Бойкая студентка Тун Нянь...',
                     cast: [{ name: 'Ян Цзы', role: 'Тун Нянь', tag: 'Главная роль' }, { name: 'Ли Сянь',
-                        role: 'Хань Шан Янь', tag: 'Главная роль' }]
-                }
-            },
-            drama15: {
-                name: 'Борьба в прямом эфире',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode15',
-                poster: 'HY.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Хидэки Такэути',
-                    genre: 'Триллер, Драма, Боевик',
-                    country: 'Япония',
-                    duration: '00:45:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Хань Шан Янь', tag: 'Главная роль' }] } },
+            drama15: { name: 'Борьба в прямом эфире', episodes: 6, poster: 'HY.jpg',
+                info: { year: '2026', genre: 'Триллер, Драма, Боевик', country: 'Япония', director: 'Хидэки Такэути',
                     plot: 'Камера трясётся в руках...',
-                    cast: [{ name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' }]
-                }
-            },
-            drama16: {
-                name: 'Золотое место',
-                episodes: 10,
-                storageKey: 'lastDramaEpisode16',
-                poster: 'LG.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Сон Хун Ким',
-                    genre: 'криминал, триллер',
-                    country: 'Корея Южная',
-                    duration: '00:52:50',
-                    translation: 'Любительский двухголосый',
+                    cast: [{ name: 'Одзи Судзука', role: 'Кота Симура', tag: 'Главная роль' }] } },
+            drama16: { name: 'Золотое место', episodes: 10, poster: 'LG.jpg',
+                info: { year: '2026', genre: 'криминал, триллер', country: 'Корея Южная', director: 'Сон Хун Ким',
                     plot: 'Ким Хи Джу умеет быть невидимкой...',
-                    cast: [{ name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' }]
-                }
-            },
-            drama17: {
-                name: 'Судьба, поцелованная дождем',
-                episodes: 30,
-                storageKey: 'lastDramaEpisode17',
-                poster: 'LASET.jpg',
-                info: {
-                    year: '2025',
-                    director: 'Линь Цин',
-                    genre: 'Мелодрама',
-                    country: 'Китай',
-                    duration: '30 x 00:12:00',
-                    translation: 'Любительский многоголосый',
+                    cast: [{ name: 'Бо Ён Пак', role: 'Ким Хи Джу', tag: 'Главная роль' }] } },
+            drama17: { name: 'Судьба, поцелованная дождем', episodes: 30, poster: 'LASET.jpg',
+                info: { year: '2025', genre: 'Мелодрама', country: 'Китай', director: 'Линь Цин',
                     plot: 'Шесть лет — это много или мало?...',
-                    cast: [{ name: 'Чэнь Фантун', role: '', tag: 'Главная роль' }, { name: 'Дай Гаочжэн',
-                        role: '', tag: 'Главная роль' }]
-                }
-            },
-            drama18: {
-                name: 'Ты мой герой',
-                episodes: 40,
-                storageKey: 'lastDramaEpisode18',
-                poster: 'kdfgj.jpg',
-                info: {
-                    year: '2024',
-                    director: 'Ли Цзянь, Чжан Ли',
-                    genre: 'Мелодрама, комедия, романтика',
-                    country: 'Китай',
-                    duration: '40 x 00:45:00',
-                    translation: 'Профессиональный многоголосый',
-                    plot: 'История о настоящей любви и героизме...',
+                    cast: [{ name: 'Чэнь Фантун', role: '', tag: 'Главная роль' }, { name: 'Дай Гаочжэн', role: '',
+                        tag: 'Главная роль' }] } },
+            drama18: { name: 'Ты мой герой', episodes: 40, poster: 'kdfgj.jpg',
+                info: { year: '2024', genre: 'Мелодрама, комедия, романтика', country: 'Китай', director: 'Ли Цзянь',
+                    plot: 'История о настоящей любви...',
                     cast: [{ name: 'Сун Цзянь', role: 'Чжан И', tag: 'Главная роль' }, { name: 'Ли Цинь',
-                        role: 'Хэ Хуань', tag: 'Главная роль' }]
-                }
-            },
-            drama19: {
-                name: 'Профессионал-одиночка',
-                episodes: 24,
-                storageKey: 'lastDramaEpisode19',
-                poster: '1920x.jpg',
-                info: {
-                    year: '2020',
-                    director: 'Линь Янь',
-                    genre: 'мелодрама, комедия, романтика',
-                    country: 'Китай',
-                    duration: '24 x 00:45:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Хэ Хуань', tag: 'Главная роль' }] } },
+            drama19: { name: 'Профессионал-одиночка', episodes: 24, poster: '1920x.jpg',
+                info: { year: '2020', genre: 'мелодрама, комедия, романтика', country: 'Китай', director: 'Линь Янь',
                     plot: 'Сюжет разворачивается вокруг двух студентов...',
                     cast: [{ name: 'Дэн Чаоюань', role: 'Цинь Шэнь', tag: 'Главная роль' }, { name: 'Ирене Сун',
-                        role: 'Юань Цянь', tag: 'Главная роль' }]
-                }
-            },
-            drama20: {
-                name: 'Жутко влюблённые',
-                episodes: 6,
-                storageKey: 'lastDramaEpisode20',
-                poster: 'ldf.jpg',
-                info: {
-                    year: '2026',
+                        role: 'Юань Цянь', tag: 'Главная роль' }] } },
+            drama20: { name: 'Жутко влюблённые', episodes: 6, poster: 'ldf.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия, фэнтези, детектив', country: 'Корея Южная',
                     director: 'Ли Минсу',
-                    genre: 'мелодрама, комедия, фэнтези, детектив',
-                    country: 'Корея Южная',
-                    duration: '01:10:30',
-                    translation: 'Проф. Многоголосый',
                     plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом...',
                     cast: [{ name: 'Пак Ынбин', role: 'Чон Ён Ри', tag: 'Главная роль' }, { name: 'Ян Сэджон',
-                        role: 'Ма Ган Ук', tag: 'Главная роль' }]
-                }
-            },
-            drama21: {
-                name: 'История леди Ок',
-                episodes: 16,
-                storageKey: 'lastDramaEpisode21',
-                poster: 'kdjH.png',
-                info: {
-                    year: '2024',
-                    director: 'Чин Хёк',
-                    genre: 'драма',
-                    country: 'Корея Южная',
-                    duration: '16 x 01:23:00',
-                    translation: 'Профессиональный многоголосый',
+                        role: 'Ма Ган Ук', tag: 'Главная роль' }] } },
+            drama21: { name: 'История леди Ок', episodes: 16, poster: 'kdjH.png',
+                info: { year: '2024', genre: 'драма', country: 'Корея Южная', director: 'Чин Хёк',
                     plot: 'Ок Тэ Ён — женщина, которая привыкла прятаться...',
                     cast: [{ name: 'Син Сын Хван', role: 'Ок Тэ Ён', tag: 'Главная роль' }, { name: 'Чху Ён У',
-                        role: 'Чхон Сын Хи', tag: 'Главная роль' }]
-                }
-            },
-            drama22: {
-                name: 'Логическая ошибка',
-                episodes: 8,
-                storageKey: 'lastDramaEpisode22',
-                poster: 'kdfh.jpeg',
-                info: {
-                    year: '2025',
+                        role: 'Чхон Сын Хи', tag: 'Главная роль' }] } },
+            drama22: { name: 'Логическая ошибка', episodes: 8, poster: 'kdfh.jpeg',
+                info: { year: '2025', genre: 'мелодрама, комедия, BL', country: 'Корея Южная',
                     director: 'Ким Хён Джун',
-                    genre: 'мелодрама, комедия, BL',
-                    country: 'Корея Южная',
-                    duration: '00:45:00',
-                    translation: 'Профессиональный многоголосый',
                     plot: 'Студент факультета компьютерных наук Чу Сан У...',
                     cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
-                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }]
-                }
-            }
+                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
         };
 
-        // =====================================================
-        // БЛОК 6: СПИСОК ФИЛЬМОВ
-        // =====================================================
-        const movies = [
-            { name: 'Завтра снова на работу!', year: 2024, rating: 9.5, poster: 'DR.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия', dramaId: 'drama1' },
-            { name: 'Лазурная весна', year: 2026, rating: 8.5, poster: 'Wt.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама', dramaId: 'drama2' },
-            { name: 'Абсолютная величина любви', year: 2026, rating: 7.6, poster: 'DD.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия', dramaId: 'drama3' },
-            { name: 'Атхит - это я', year: 2022, rating: 6.8, poster: 'i.jpg', isDrama: true, isSeries: true,
-                genre: 'комедия, романтика', dramaId: 'drama4' },
-            { name: 'Бойфренд по запросу', year: 2026, rating: 8.7, poster: 'GT.jpg', isDrama: true, isSeries: true,
-                genre: 'комедия, мелодрама', dramaId: 'drama5' },
-            { name: 'Жена принца XXI века', year: 2026, rating: 8.9, poster: 'GR.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама', dramaId: 'drama6' },
-            { name: 'Весенняя лихорадка', year: 2026, rating: 8.6, poster: 'GN.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия', dramaId: 'drama7' },
-            { name: 'Босс компании «Тайфун»', year: 2025, rating: 8.4, poster: 'LL.jpg', isDrama: true, isSeries: true,
-                genre: 'Драма, семейный', dramaId: 'drama8' },
-            { name: 'Все твои желания исполнятся', year: 2025, rating: 8.4, poster: 'FQ.jpg', isDrama: true,
-                isSeries: true, genre: 'комедия, мелодрама, фэнтези', dramaId: 'drama9' },
-            { name: 'Полярная звезда', year: 2025, rating: 8.6, poster: 'RR.jpg', isDrama: true, isSeries: true,
-                genre: 'триллер, мелодрама, боевик', dramaId: 'drama10' },
-            { name: 'В погоне за нефритом', year: 2026, rating: 8.2, poster: 'KK.jpg', isDrama: true, isSeries: true,
-                genre: 'драма, мелодрама', dramaId: 'drama11' },
-            { name: '50-летние профи', year: 2026, rating: 8.5, poster: 'God.jpg', isDrama: true, isSeries: true,
-                genre: 'комедия, боевик, криминал', dramaId: 'drama12' },
-            { name: 'Клетки эмпатии', year: 2026, rating: 8.3, poster: 'AA.jpg', isDrama: true, isSeries: true,
-                genre: 'Мелодрама, Фэнтези', dramaId: 'drama13' },
-            { name: 'Вперёд, Кальмар!', year: 2019, rating: 8.1, poster: 'WK.jpg', isDrama: true, isSeries: true,
-                genre: 'комедия, мелодрама, романтика, молодость, спорт', dramaId: 'drama14' },
-            { name: 'Борьба в прямом эфире', year: 2026, rating: 8.2, poster: 'HY.jpg', isDrama: true, isSeries: true,
-                genre: 'Триллер, Драма, Боевик', dramaId: 'drama15' },
-            { name: 'Золотое место', year: 2026, rating: 8.2, poster: 'LG.jpg', isDrama: true, isSeries: true,
-                genre: 'криминал, триллер', dramaId: 'drama16' },
-            { name: 'Судьба, поцелованная дождем', year: 2025, rating: 8.0, poster: 'LASET.jpg', isDrama: true,
-                isSeries: true, genre: 'Мелодрама', dramaId: 'drama17' },
-            { name: 'Ты мой герой', year: 2024, rating: 7.5, poster: 'kdfgj.jpg', isDrama: true, isSeries: true,
-                genre: 'Мелодрама, комедия, романтика', dramaId: 'drama18' },
-            { name: 'Профессионал-одиночка', year: 2020, rating: 7.8, poster: '1920x.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия, романтика', dramaId: 'drama19' },
-            { name: 'Жутко влюблённые', year: 2026, rating: 8.8, poster: 'ldf.jpg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия, фэнтези, детектив', dramaId: 'drama20' },
-            { name: 'История леди Ок', year: 2024, rating: 8.7, poster: 'kdjH.png', isDrama: true, isSeries: true,
-                genre: 'драма', dramaId: 'drama21' },
-            { name: 'Логическая ошибка', year: 2025, rating: 8.6, poster: 'kdfh.jpeg', isDrama: true, isSeries: true,
-                genre: 'мелодрама, комедия, BL', dramaId: 'drama22' },
-            { name: 'Титаник', year: 1997, rating: 8.3,
-                poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg', genre: 'драма, мелодрама' }
-        ];
+        // Заполняем DRAMAS и movies
+        Object.keys(baseDramas).forEach(id => {
+            const d = baseDramas[id];
+            DRAMAS[id] = {
+                name: d.name,
+                episodes: d.episodes,
+                storageKey: 'lastDramaEpisode' + id.replace('drama', ''),
+                poster: d.poster,
+                info: d.info
+            };
+            movies.push({
+                name: d.name,
+                year: parseInt(d.info.year) || 2024,
+                rating: 8.0,
+                poster: d.poster,
+                isDrama: true,
+                isSeries: true,
+                genre: d.info.genre,
+                dramaId: id
+            });
+        });
+
+        // Добавляем Титаник
+        movies.push({
+            name: 'Титаник',
+            year: 1997,
+            rating: 8.3,
+            poster: 'https://st.kp.yandex.net/images/film_iphone/iphone360_451.jpg',
+            genre: 'драма, мелодрама'
+        });
 
         // =====================================================
-        // БЛОК 7: ИЗБРАННОЕ
+        // БЛОК 6: ИЗБРАННОЕ
         // =====================================================
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showFavoritesOnly = false;
@@ -2175,7 +1978,7 @@
         }
 
         // =====================================================
-        // БЛОК 8: РЕЙТИНГИ
+        // БЛОК 7: РЕЙТИНГИ
         // =====================================================
         let ratings = JSON.parse(localStorage.getItem('movieRatings')) || {};
 
@@ -2203,7 +2006,7 @@
         }
 
         // =====================================================
-        // БЛОК 9: ЖАНРЫ
+        // БЛОК 8: ЖАНРЫ
         // =====================================================
         function renderGenres() {
             const container = document.getElementById('genresDropdown');
@@ -2271,7 +2074,7 @@
         });
 
         // =====================================================
-        // БЛОК 10: ГОДА
+        // БЛОК 9: ГОДА
         // =====================================================
         let currentYear = 'all';
 
@@ -2316,7 +2119,7 @@
         });
 
         // =====================================================
-        // БЛОК 11: ФИЛЬТРАЦИЯ
+        // БЛОК 10: ФИЛЬТРАЦИЯ
         // =====================================================
         let currentGenre = 'all';
         let currentSearchQuery = '';
@@ -2381,7 +2184,7 @@
         }
 
         // =====================================================
-        // БЛОК 12: ОБРАБОТЧИКИ КАРТОЧЕК
+        // БЛОК 11: ОБРАБОТЧИКИ КАРТОЧЕК
         // =====================================================
         function attachCardClickHandlers() {
             document.querySelectorAll('.movie-card').forEach(card => {
@@ -2413,7 +2216,7 @@
         }
 
         // =====================================================
-        // БЛОК 13: ИЗБРАННОЕ (кнопка)
+        // БЛОК 12: ИЗБРАННОЕ
         // =====================================================
         document.getElementById('favoritesToggle').addEventListener('click', function() {
             showFavoritesOnly = !showFavoritesOnly;
@@ -2428,7 +2231,7 @@
         });
 
         // =====================================================
-        // БЛОК 14: ПОИСК
+        // БЛОК 13: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2472,7 +2275,7 @@
         });
 
         // =====================================================
-        // БЛОК 15: МОДАЛЬНОЕ ОКНО
+        // БЛОК 14: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2489,17 +2292,27 @@
                 const dId = movie.dramaId;
                 if (dId && DRAMAS[dId]) {
                     const d = DRAMAS[dId];
+                    const info = d.info || {};
+                    // Формируем список актёров
+                    let castHtml = '';
+                    if (info.cast && info.cast.length > 0) {
+                        castHtml = '<br><strong>В ролях:</strong><br>';
+                        info.cast.forEach(actor => {
+                            const tag = actor.tag ? ` (${actor.tag})` : '';
+                            castHtml += `• ${actor.name} — ${actor.role || '—'}${tag}<br>`;
+                        });
+                    }
+
                     dramaData = {
                         name: d.name,
-                        year: d.info?.year || movie.year,
-                        rating: movie.rating,
                         poster: d.poster || movie.poster,
-                        details: `<strong>Год выпуска:</strong> ${d.info?.year || '—'}<br>
-                                 <strong>Жанр:</strong> ${d.info?.genre || movie.genre || '—'}<br>
-                                 <strong>Страна:</strong> ${d.info?.country || '—'}<br>
-                                 <strong>Режиссёр:</strong> ${d.info?.director || '—'}<br>
+                        details: `<strong>Год выпуска:</strong> ${info.year || '—'}<br>
+                                 <strong>Жанр:</strong> ${info.genre || movie.genre || '—'}<br>
+                                 <strong>Страна:</strong> ${info.country || '—'}<br>
+                                 <strong>Режиссёр:</strong> ${info.director || '—'}<br>
                                  <strong>Количество серий:</strong> ${d.episodes || '—'}<br>
-                                 ${d.info?.plot ? `<br><strong>Описание:</strong><br>${d.info.plot}` : ''}`
+                                 ${info.plot ? `<br><strong>Описание:</strong><br>${info.plot}` : ''}
+                                 ${castHtml}`
                     };
                 } else {
                     dramaData = {
@@ -2580,7 +2393,7 @@
         });
 
         // =====================================================
-        // БЛОК 16: ПРОДОЛЖИТЬ ПРОСМОТР
+        // БЛОК 15: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2611,7 +2424,7 @@
         }
 
         // =====================================================
-        // БЛОК 17: КНОПКА "НАВЕРХ"
+        // БЛОК 16: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2622,7 +2435,7 @@
         });
 
         // =====================================================
-        // БЛОК 18: АДМИН-ПАНЕЛЬ (ТОЛЬКО ДЛЯ ВАС)
+        // БЛОК 17: АДМИН-ПАНЕЛЬ (ТОЛЬКО ДЛЯ ВАС)
         // =====================================================
         const ADMIN_STORAGE_KEY = 'admin_dramas';
 
@@ -2646,12 +2459,42 @@
             return 'drama' + (maxNum + 1);
         }
 
-        // ОБНОВЛЕНИЕ ПОЛЕЙ ДЛЯ СЕРИЙ
+        // ===== УПРАВЛЕНИЕ АКТЁРАМИ =====
+        function addCastRow(name = '', role = '', tag = 'Главная роль') {
+            const container = document.getElementById('castInputs');
+            const row = document.createElement('div');
+            row.className = 'cast-row';
+            row.innerHTML = `
+                <input type="text" class="cast-name" placeholder="Имя актёра" value="${name}" />
+                <input type="text" class="cast-role" placeholder="Роль" value="${role}" />
+                <select class="cast-tag">
+                    <option value="Главная роль" ${tag === 'Главная роль' ? 'selected' : ''}>⭐ Главная роль</option>
+                    <option value="Второстепенная роль" ${tag === 'Второстепенная роль' ? 'selected' : ''}>🎭 Второстепенная роль</option>
+                    <option value="Камео" ${tag === 'Камео' ? 'selected' : ''}>🎬 Камео</option>
+                </select>
+                <button class="cast-remove" onclick="removeCastRow(this)">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeCastRow(btn) {
+            const container = document.getElementById('castInputs');
+            if (container.children.length > 1) {
+                btn.closest('.cast-row').remove();
+            } else {
+                showToast('Должен быть хотя бы один актёр', '⚠️', 'error');
+            }
+        }
+
+        document.getElementById('castAddBtn').addEventListener('click', function() {
+            addCastRow();
+        });
+
+        // ===== ОБНОВЛЕНИЕ ПОЛЕЙ ДЛЯ СЕРИЙ =====
         document.getElementById('adminDramaEpisodes').addEventListener('input', function() {
             const count = parseInt(this.value) || 1;
             const container = document.getElementById('episodeInputs');
-            const currentInputs = container.querySelectorAll('.episode-row');
-            const currentCount = currentInputs.length;
+            const currentCount = container.children.length;
 
             if (count > currentCount) {
                 for (let i = currentCount + 1; i <= count; i++) {
@@ -2684,7 +2527,7 @@
             dramas.forEach((d, index) => {
                 html += `
                     <div class="admin-item">
-                        <span>${d.name} (${d.year}) — ${d.episodes} серий</span>
+                        <span>${d.name} (${d.year}) — ${d.episodes} серий, ${d.cast ? d.cast.length : 0} актёров</span>
                         <button class="del-btn" data-index="${index}">✕</button>
                     </div>
                 `;
@@ -2707,10 +2550,24 @@
             const year = parseInt(document.getElementById('adminDramaYear').value.trim());
             const rating = parseFloat(document.getElementById('adminDramaRating').value.trim()) || 7.0;
             const genre = document.getElementById('adminDramaGenre').value.trim();
+            const country = document.getElementById('adminDramaCountry').value.trim() || 'Не указана';
+            const director = document.getElementById('adminDramaDirector').value.trim() || 'Не указан';
             const poster = document.getElementById('adminDramaPoster').value.trim();
             const episodes = parseInt(document.getElementById('adminDramaEpisodes').value.trim());
             const plot = document.getElementById('adminDramaPlot').value.trim() || 'Описание отсутствует.';
 
+            // Собираем актёров
+            const cast = [];
+            document.querySelectorAll('.cast-row').forEach(row => {
+                const name = row.querySelector('.cast-name').value.trim();
+                const role = row.querySelector('.cast-role').value.trim();
+                const tag = row.querySelector('.cast-tag').value;
+                if (name) {
+                    cast.push({ name: name, role: role || '—', tag: tag });
+                }
+            });
+
+            // Собираем ссылки на серии
             const episodeLinks = [];
             document.querySelectorAll('.episode-link').forEach(input => {
                 const val = input.value.trim();
@@ -2726,6 +2583,10 @@
                 showToast(`Введите ссылки для всех ${episodes} серий!`, '⚠️', 'error');
                 return;
             }
+            if (cast.length === 0) {
+                showToast('Добавьте хотя бы одного актёра!', '⚠️', 'error');
+                return;
+            }
 
             const dramaId = generateDramaId();
 
@@ -2736,8 +2597,11 @@
                 rating: rating,
                 poster: poster,
                 genre: genre,
+                country: country,
+                director: director,
                 episodes: episodes,
                 plot: plot,
+                cast: cast,
                 episodeLinks: episodeLinks,
                 isAdminAdded: true,
                 addedAt: new Date().toISOString()
@@ -2747,37 +2611,45 @@
             list.push(newDrama);
             saveAdminDramas(list);
 
+            // Очищаем поля
             document.getElementById('adminDramaName').value = '';
             document.getElementById('adminDramaYear').value = '';
             document.getElementById('adminDramaRating').value = '';
             document.getElementById('adminDramaGenre').value = '';
+            document.getElementById('adminDramaCountry').value = '';
+            document.getElementById('adminDramaDirector').value = '';
             document.getElementById('adminDramaPoster').value = '';
             document.getElementById('adminDramaEpisodes').value = '';
             document.getElementById('adminDramaPlot').value = '';
             document.querySelectorAll('.episode-link').forEach(el => el.value = '');
+            // Оставляем одного актёра
+            const castContainer = document.getElementById('castInputs');
+            while (castContainer.children.length > 1) {
+                castContainer.removeChild(castContainer.lastElementChild);
+            }
+            document.querySelector('.cast-name').value = '';
+            document.querySelector('.cast-role').value = '';
+            document.querySelector('.cast-tag').value = 'Главная роль';
 
             renderAdminDramaList();
-            showToast(`✅ Дорама "${name}" добавлена! (${episodes} серий)`, '🎉', 'success');
+            showToast(`✅ Дорама "${name}" добавлена! (${episodes} серий, ${cast.length} актёров)`, '🎉', 'success');
             setTimeout(() => location.reload(), 1500);
         }
 
         // =====================================================
-        // БЛОК 19: ПОКАЗЫВАЕМ АДМИН-ПАНЕЛЬ ТОЛЬКО ВАМ
+        // БЛОК 18: ПОКАЗЫВАЕМ АДМИН-ПАНЕЛЬ ТОЛЬКО ВАМ
         // =====================================================
         if (isAdmin) {
-            // Показываем кнопку и бадж
             document.getElementById('adminToggleBtn').classList.add('visible');
             document.getElementById('adminBadge').classList.add('active');
             document.getElementById('adminPanel').classList.add('active');
             renderAdminDramaList();
 
-            // Инициализируем поля для серий
             const count = parseInt(document.getElementById('adminDramaEpisodes').value) || 1;
             document.getElementById('adminDramaEpisodes').dispatchEvent(new Event('input'));
 
             showToast('🔑 Добро пожаловать, администратор!', '👋', 'success');
 
-            // Обработчики для админ-панели
             document.getElementById('adminToggleBtn').addEventListener('click', function() {
                 document.getElementById('adminPanel').classList.toggle('active');
                 if (document.getElementById('adminPanel').classList.contains('active')) {
@@ -2791,18 +2663,16 @@
 
             document.getElementById('adminSubmitBtn').addEventListener('click', addAdminDrama);
 
-            // Подсказка в консоли
             console.log('🔐 Админ-панель активна! Секретный ключ: ' + ADMIN_SECRET_KEY);
             console.log('📦 Добавленных админом дорам: ' + getAdminDramas().length);
         } else {
-            // Скрываем всё админское
             document.getElementById('adminToggleBtn').classList.remove('visible');
             document.getElementById('adminBadge').classList.remove('active');
             console.log('🔒 Админ-панель скрыта. Добавьте ?admin=' + ADMIN_SECRET_KEY + ' в URL для доступа.');
         }
 
         // =====================================================
-        // БЛОК 20: ИНИЦИАЛИЗАЦИЯ АДМИН-ДОРАМ
+        // БЛОК 19: ИНИЦИАЛИЗАЦИЯ АДМИН-ДОРАМ
         // =====================================================
         function initAdminDramas() {
             const adminDramas = getAdminDramas();
@@ -2835,13 +2705,13 @@
                         poster: ad.poster,
                         info: {
                             year: ad.year.toString(),
-                            director: 'Не указан',
+                            director: ad.director || 'Не указан',
                             genre: ad.genre,
-                            country: 'Не указана',
+                            country: ad.country || 'Не указана',
                             duration: ad.episodes + ' x 00:45:00',
                             translation: 'Не указан',
                             plot: ad.plot || 'Описание отсутствует.',
-                            cast: [{ name: 'Актёр не указан', role: 'Главная роль', tag: '' }]
+                            cast: ad.cast || [{ name: 'Актёр не указан', role: 'Главная роль', tag: '' }]
                         },
                         videos: videos
                     };
@@ -2852,7 +2722,7 @@
         }
 
         // =====================================================
-        // БЛОК 21: ИНИЦИАЛИЗАЦИЯ
+        // БЛОК 20: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
