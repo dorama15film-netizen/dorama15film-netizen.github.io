@@ -671,6 +671,7 @@
         .movie-card:nth-child(20) { animation-delay: 1.00s; }
         .movie-card:nth-child(21) { animation-delay: 1.05s; }
         .movie-card:nth-child(22) { animation-delay: 1.10s; }
+        .movie-card:nth-child(23) { animation-delay: 1.15s; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -2052,7 +2053,7 @@
         }
 
         // =====================================================
-        // БЛОК 6: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
+        // БЛОК 6: ДАННЫЕ О ДОРАМАХ (23 ДОРАМЫ)
         // =====================================================
         const DRAMAS = {};
         const movies = [];
@@ -2188,7 +2189,27 @@
                     director: 'Ким Хён Джун', duration: '00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Студент факультета компьютерных наук Чу Сан У...',
                     cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
-                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
+                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } },
+            // ===== НОВАЯ ДОРАМА 23: НАША ВСЕЛЕННАЯ =====
+            drama23: {
+                name: 'Наша вселенная',
+                episodes: 12,
+                poster: '12451913.jpg',
+                info: {
+                    year: '2026',
+                    director: 'Ким Сын Хо',
+                    genre: 'мелодрама, комедия, семейный',
+                    country: 'Корея Южная',
+                    duration: '01:10:00',
+                    translation: 'Профессиональный многоголосый',
+                    plot: 'Сюжет строится вокруг двух родственников — Сон Тхэ Хёна (Пэ Ин Хёк) и У Хён Джин (Но Чжон Ый). Изначально они не близки: их связывает только родство через брак (сестра Хён Джин замужем за братом Тхэ Хёна), и с первой встречи они не находят общего языка, постоянно конфликтуют. Трагическая авария уносит жизни родителей малыша У Джу (Пак Ю Хо) — его родители были братом Тхэ Хёна и сестрой Хён Джин. Теперь У Джу остаётся на попечении его дяди и тёти. Чтобы заботиться о ребёнке, Тхэ Хён и Хён Джин вынуждены начать жить вместе. По мере того как они вместе преодолевают трудности воспитания, постепенно исчезают недопонимания, а между ними зарождаются романтические чувства.',
+                    cast: [
+                        { name: 'Пэ Ин Хёк', role: 'Сон Тхэ Хён', tag: 'Главная роль' },
+                        { name: 'Но Чжон Ый', role: 'У Хён Джин', tag: 'Главная роль' },
+                        { name: 'Пак Ю Хо', role: 'У Джу', tag: 'Главная роль' }
+                    ]
+                }
+            }
         };
 
         Object.keys(baseDramas).forEach(id => {
@@ -2695,7 +2716,7 @@
 
         function generateDramaId() {
             const existing = getAdminDramas();
-            let maxNum = 22;
+            let maxNum = 23;
             existing.forEach(d => {
                 const match = d.dramaId.match(/drama(\d+)/);
                 if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
@@ -3126,7 +3147,7 @@
             }
 
             const existingDramas = getAdminDramas();
-            let maxNum = 22;
+            let maxNum = 23;
             existingDramas.forEach(d => {
                 const match = d.dramaId.match(/drama(\d+)/);
                 if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
