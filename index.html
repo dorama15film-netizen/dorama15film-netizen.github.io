@@ -7,7 +7,7 @@
     <link rel="icon" href="Log.png" type="image/png">
     <style>
         /* ============================================================
-           ВСЕ СТИЛИ
+           ВСЕ СТИЛИ (ТОЛЬКО ГЛАВНАЯ СТРАНИЦА)
            ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -30,8 +30,6 @@
             --scrollbar-thumb: #f1c40f;
             --accent-color: #f1c40f;
             --accent-hover: #f39c12;
-            --token-valid: #2ecc71;
-            --token-invalid: #e74c3c;
         }
 
         [data-theme="light"] {
@@ -53,8 +51,6 @@
             --scrollbar-thumb: #00bcd4;
             --accent-color: #00bcd4;
             --accent-hover: #0097a7;
-            --token-valid: #27ae60;
-            --token-invalid: #c0392b;
         }
 
         html, body {
@@ -86,9 +82,7 @@
             display: block;
         }
 
-        /* ============================================================
-           ЛОГОТИП
-           ============================================================ */
+        /* ЛОГОТИП */
         .logo-overlay {
             position: absolute;
             top: 20px;
@@ -109,9 +103,7 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        /* ============================================================
-           СЧЁТЧИК ОНЛАЙНА
-           ============================================================ */
+        /* СЧЁТЧИК ОНЛАЙНА */
         .online-counter {
             position: absolute;
             top: 20px;
@@ -160,9 +152,7 @@
             50% { opacity: 0.5; transform: scale(1.3); }
         }
 
-        /* ============================================================
-           ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
-           ============================================================ */
+        /* ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ */
         .theme-toggle-wrapper {
             position: absolute;
             top: 20px;
@@ -228,9 +218,7 @@
         [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
         [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
-        /* ============================================================
-           ФИЛЬТР ПО ГОДАМ
-           ============================================================ */
+        /* ФИЛЬТР ПО ГОДАМ */
         .years-wrapper {
             position: absolute;
             top: 20px;
@@ -305,9 +293,7 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
-        /* ============================================================
-           ПРОДОЛЖИТЬ ПРОСМОТР
-           ============================================================ */
+        /* ПРОДОЛЖИТЬ ПРОСМОТР */
         .continue-wrapper {
             position: absolute;
             top: 50%;
@@ -370,9 +356,7 @@
             transition: color 0.3s ease;
         }
 
-        /* ============================================================
-           ПАНЕЛЬ УПРАВЛЕНИЯ
-           ============================================================ */
+        /* ПАНЕЛЬ УПРАВЛЕНИЯ */
         .controls-bar {
             width: 100%;
             padding: 12px 20px 8px 20px;
@@ -533,9 +517,7 @@
             text-align: center;
         }
 
-        /* ============================================================
-           ПОИСК
-           ============================================================ */
+        /* ПОИСК */
         .search-section {
             width: 100%;
             padding: 15px 20px 8px 20px;
@@ -616,9 +598,7 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        /* ============================================================
-           СЕТКА ФИЛЬМОВ
-           ============================================================ */
+        /* СЕТКА ФИЛЬМОВ */
         .movies-grid-wrapper {
             width: 100%;
             flex: 1;
@@ -743,9 +723,7 @@
             transition: border-color 0.3s ease, color 0.3s ease;
         }
 
-        /* ============================================================
-           НЕТ РЕЗУЛЬТАТОВ
-           ============================================================ */
+        /* НЕТ РЕЗУЛЬТАТОВ */
         .no-results {
             display: none;
             text-align: center;
@@ -763,9 +741,7 @@
             margin-bottom: 12px;
         }
 
-        /* ============================================================
-           МОДАЛЬНОЕ ОКНО
-           ============================================================ */
+        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -889,9 +865,7 @@
             transform: rotate(90deg);
         }
 
-        /* ============================================================
-           РЕЙТИНГ В МОДАЛКЕ
-           ============================================================ */
+        /* РЕЙТИНГ В МОДАЛКЕ */
         .modal-rating-section {
             margin: 12px 0;
             display: flex;
@@ -925,9 +899,7 @@
             color: var(--accent-color);
         }
 
-        /* ============================================================
-           TOAST
-           ============================================================ */
+        /* TOAST */
         .toast-container {
             position: fixed;
             bottom: 100px;
@@ -966,9 +938,7 @@
             to { opacity: 0; transform: translateX(50px); }
         }
 
-        /* ============================================================
-           КНОПКА "НАВЕРХ"
-           ============================================================ */
+        /* КНОПКА "НАВЕРХ" */
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -1011,354 +981,7 @@
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* ============================================================
-           АДМИН-ПАНЕЛЬ
-           ============================================================ */
-        .admin-panel {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            z-index: 9998;
-            background: var(--bg-secondary);
-            border: 2px solid #ff0000;
-            border-radius: 16px;
-            padding: 20px;
-            max-width: 550px;
-            width: 95%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.9);
-            transition: all 0.3s ease;
-        }
-        .admin-panel.active {
-            display: block;
-        }
-        .admin-panel::-webkit-scrollbar { width: 4px; }
-        .admin-panel::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-        .admin-panel::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
-
-        .admin-panel .admin-title {
-            color: var(--text-primary);
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .admin-panel .admin-title .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .admin-panel .admin-title .close-btn:hover { color: #e74c3c; }
-
-        .admin-panel .admin-title .admin-exit-btn {
-            background: #e74c3c;
-            border: 2px solid #c0392b;
-            border-radius: 20px;
-            color: #fff;
-            padding: 4px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s ease;
-            margin-right: 8px;
-        }
-        .admin-panel .admin-title .admin-exit-btn:hover {
-            background: #c0392b;
-            transform: scale(1.05);
-        }
-
-        .admin-panel .admin-field {
-            margin-bottom: 10px;
-        }
-        .admin-panel .admin-field label {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .admin-panel .admin-field input,
-        .admin-panel .admin-field textarea,
-        .admin-panel .admin-field select {
-            width: 100%;
-            padding: 8px 12px;
-            background: var(--input-bg);
-            border: 2px solid var(--border-light);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-family: system-ui, sans-serif;
-            font-size: 14px;
-            outline: none;
-            transition: 0.3s ease;
-        }
-        .admin-panel .admin-field input:focus,
-        .admin-panel .admin-field textarea:focus,
-        .admin-panel .admin-field select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 20px var(--shadow-glow);
-        }
-        .admin-panel .admin-field textarea {
-            resize: vertical;
-            min-height: 40px;
-            font-size: 13px;
-        }
-        .admin-panel .admin-field .hint {
-            color: var(--text-muted);
-            font-size: 11px;
-            margin-top: 2px;
-        }
-        .admin-panel .admin-field .episode-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 4px;
-        }
-        .admin-panel .admin-field .episode-inputs .episode-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-primary);
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        .admin-panel .admin-field .episode-inputs .episode-row span {
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 20px;
-        }
-        .admin-panel .admin-field .episode-inputs .episode-row input {
-            flex: 1;
-            padding: 4px 6px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 12px;
-            outline: none;
-            min-width: 0;
-        }
-
-        /* ===== ТОКЕН ПОЛЕ С ИНДИКАТОРОМ ===== */
-        .admin-panel .token-field {
-            border: 2px solid #ff0000;
-            border-radius: 10px;
-            padding: 10px;
-            background: rgba(255,0,0,0.05);
-            transition: border-color 0.5s ease, background 0.5s ease;
-            position: relative;
-        }
-        .admin-panel .token-field.valid {
-            border-color: var(--token-valid);
-            background: rgba(46, 204, 113, 0.1);
-        }
-        .admin-panel .token-field.invalid {
-            border-color: var(--token-invalid);
-            background: rgba(231, 76, 60, 0.1);
-        }
-        .admin-panel .token-field .token-status {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-left: 8px;
-            transition: background 0.5s ease;
-            background: #6a7288;
-            flex-shrink: 0;
-        }
-        .admin-panel .token-field .token-status.valid {
-            background: var(--token-valid);
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
-        }
-        .admin-panel .token-field .token-status.invalid {
-            background: var(--token-invalid);
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.4);
-        }
-        .admin-panel .token-field .token-label-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-        .admin-panel .token-field .token-label-row label {
-            margin-bottom: 0;
-            color: var(--text-secondary);
-        }
-        .admin-panel .token-field input {
-            border-color: #ff0000;
-        }
-        .admin-panel .token-field.valid input {
-            border-color: var(--token-valid);
-        }
-        .admin-panel .token-field.invalid input {
-            border-color: var(--token-invalid);
-        }
-
-        /* ===== ПОЛЯ ДЛЯ АКТЁРОВ ===== */
-        .admin-panel .cast-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 4px;
-        }
-        .admin-panel .cast-inputs .cast-row {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            background: var(--bg-primary);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        .admin-panel .cast-inputs .cast-row input,
-        .admin-panel .cast-inputs .cast-row select {
-            width: 100%;
-            padding: 4px 8px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 12px;
-            outline: none;
-        }
-        .admin-panel .cast-inputs .cast-row input:focus,
-        .admin-panel .cast-inputs .cast-row select:focus {
-            border-color: var(--accent-color);
-        }
-        .admin-panel .cast-inputs .cast-row .cast-remove {
-            background: none;
-            border: none;
-            color: #e74c3c;
-            cursor: pointer;
-            font-size: 14px;
-            align-self: flex-end;
-        }
-        .admin-panel .cast-add-btn {
-            background: var(--bg-secondary);
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            padding: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: 0.2s;
-            width: 100%;
-            margin-top: 4px;
-        }
-        .admin-panel .cast-add-btn:hover {
-            border-color: var(--accent-color);
-            color: var(--text-primary);
-        }
-
-        .admin-panel .admin-submit {
-            width: 100%;
-            padding: 10px;
-            background: #1a4d2e;
-            border: 2px solid var(--accent-color);
-            border-radius: 30px;
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            margin-top: 4px;
-        }
-        .admin-panel .admin-submit:hover {
-            background: #2a6d3e;
-            border-color: var(--accent-hover);
-            transform: scale(1.02);
-            box-shadow: 0 0 30px var(--shadow-glow);
-        }
-
-        .admin-panel .admin-list {
-            margin-top: 14px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 10px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .admin-panel .admin-list .admin-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        .admin-panel .admin-list .admin-item .del-btn {
-            background: none;
-            border: none;
-            color: #e74c3c;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.2s;
-            padding: 0 6px;
-        }
-        .admin-panel .admin-list .admin-item .del-btn:hover { transform: scale(1.2); }
-
-        .admin-toggle-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 9997;
-            background: #1a4d2e;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            width: 55px;
-            height: 55px;
-            color: var(--text-primary);
-            font-size: 24px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .admin-toggle-btn.visible {
-            display: flex;
-        }
-        .admin-toggle-btn:hover {
-            background: #2a6d3e;
-            transform: scale(1.1);
-            box-shadow: 0 0 40px var(--shadow-glow);
-        }
-
-        .admin-badge {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 9999;
-            background: #e74c3c;
-            color: #fff;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: system-ui, sans-serif;
-            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-            display: none;
-            animation: pulse-badge 2s ease-in-out infinite;
-        }
-        .admin-badge.active { display: block; }
-        @keyframes pulse-badge {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(0.95); }
-        }
-
-        /* ============================================================
-           ПОДВАЛ
-           ============================================================ */
+        /* ПОДВАЛ */
         .site-footer {
             width: 100%;
             background: var(--bg-header);
@@ -1476,10 +1099,6 @@
             .footer-content { grid-template-columns: 1fr; gap: 20px; text-align: center; }
             .footer-bottom { flex-direction: column; text-align: center; }
             .toast-container { bottom: 80px; right: 15px; max-width: 280px; }
-            .admin-panel { bottom: 70px; right: 10px; padding: 16px; max-width: 95%; max-height: 80vh; }
-            .admin-toggle-btn { width: 45px; height: 45px; font-size: 20px; bottom: 20px; right: 20px; }
-            .admin-panel .admin-field .episode-inputs { grid-template-columns: 1fr; }
-            .admin-panel .cast-inputs { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -1529,12 +1148,6 @@
             .toast-container { bottom: 70px; right: 10px; max-width: 240px; }
             .toast { font-size: 12px; padding: 10px 14px; }
             .footer-column .email-link { font-size: 13px; padding: 6px 16px; }
-            .admin-panel { bottom: 60px; right: 5px; padding: 12px; max-width: 98%; max-height: 75vh; }
-            .admin-toggle-btn { width: 40px; height: 40px; font-size: 18px; bottom: 15px; right: 15px; }
-            .admin-panel .admin-title { font-size: 15px; }
-            .admin-panel .admin-field input,
-            .admin-panel .admin-field textarea { font-size: 12px; padding: 6px 10px; }
-            .admin-panel .cast-inputs { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1660,135 +1273,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- ============================================================
-    АДМИН-ПАНЕЛЬ
-    ============================================================ -->
-    <div class="admin-badge" id="adminBadge">🔑 Админ</div>
-    <button class="admin-toggle-btn" id="adminToggleBtn" title="Админ-панель">⚙️</button>
-
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-title">
-            <span>📦 Добавление дорамы</span>
-            <div>
-                <button class="admin-exit-btn" id="adminExitBtn" title="Выйти из админ-режима">🚪 Выйти</button>
-                <button class="close-btn" id="adminCloseBtn">✕</button>
-            </div>
-        </div>
-
-        <!-- ===== ТОКЕН ПОЛЕ С ИНДИКАТОРОМ ===== -->
-        <div class="admin-field token-field" id="tokenField">
-            <div class="token-label-row">
-                <label>🔑 GitHub Token</label>
-                <span class="token-status" id="tokenStatus"></span>
-                <span style="font-size: 11px; color: var(--text-muted); margin-left: auto;" id="tokenStatusText">Ожидание</span>
-            </div>
-            <input type="password" id="adminGitHubToken" placeholder="Вставьте GitHub Personal Access Token..." />
-            <div class="hint">Токен проверяется автоматически. Зелёный — ✅ валидный, Красный — ❌ неверный</div>
-        </div>
-
-        <div class="admin-field">
-            <label>Название дорамы *</label>
-            <input type="text" id="adminDramaName" placeholder="Например: Моя прекрасная дорама" />
-        </div>
-
-        <div class="admin-field">
-            <label>Год выпуска *</label>
-            <input type="number" id="adminDramaYear" placeholder="2026" />
-        </div>
-
-        <div class="admin-field">
-            <label>Рейтинг</label>
-            <input type="number" id="adminDramaRating" placeholder="8.5" step="0.1" min="0" max="10" />
-        </div>
-
-        <div class="admin-field">
-            <label>Жанр *</label>
-            <input type="text" id="adminDramaGenre" placeholder="мелодрама, комедия" />
-        </div>
-
-        <div class="admin-field">
-            <label>Страна</label>
-            <input type="text" id="adminDramaCountry" placeholder="Корея Южная" />
-        </div>
-
-        <div class="admin-field">
-            <label>Режиссёр</label>
-            <input type="text" id="adminDramaDirector" placeholder="Имя режиссёра" />
-        </div>
-
-        <div class="admin-field">
-            <label>Продолжительность серии</label>
-            <input type="text" id="adminDramaDuration" placeholder="01:10:00" />
-            <div class="hint">Формат: ЧЧ:ММ:СС</div>
-        </div>
-
-        <div class="admin-field">
-            <label>Перевод</label>
-            <input type="text" id="adminDramaTranslation" placeholder="Профессиональный многоголосый" />
-        </div>
-
-        <!-- ===== ЗАГРУЗКА ПОСТЕРА ===== -->
-        <div class="admin-field">
-            <label>Загрузить постер *</label>
-            <input type="file" id="adminDramaPosterFile" accept="image/*" />
-            <div class="hint">Выберите файл постера (JPG, PNG, WEBP). Загрузится в корень сайта</div>
-        </div>
-
-        <div class="admin-field">
-            <label>ИЛИ ссылка на постер</label>
-            <input type="text" id="adminDramaPoster" placeholder="https://example.com/poster.jpg" />
-            <div class="hint">Можно указать ссылку, если файл уже загружен</div>
-        </div>
-
-        <div class="admin-field">
-            <label>Количество серий *</label>
-            <input type="number" id="adminDramaEpisodes" placeholder="16" min="1" />
-        </div>
-
-        <div class="admin-field">
-            <label>Описание</label>
-            <textarea id="adminDramaPlot" placeholder="Краткое описание дорамы..." rows="3"></textarea>
-        </div>
-
-        <!-- ===== АКТЁРЫ ===== -->
-        <div class="admin-field">
-            <label>Актёрский состав</label>
-            <div class="cast-inputs" id="castInputs">
-                <div class="cast-row">
-                    <input type="text" class="cast-name" placeholder="Имя актёра" />
-                    <select class="cast-role-select">
-                        <option value="Главная роль">⭐ Главная роль</option>
-                        <option value="Второстепенная роль">🎭 Второстепенная роль</option>
-                        <option value="Камео">🎬 Камео</option>
-                    </select>
-                    <button class="cast-remove" onclick="removeCastRow(this)">✕</button>
-                </div>
-            </div>
-            <button class="cast-add-btn" id="castAddBtn">➕ Добавить актёра</button>
-            <div class="hint">Укажите актёров и выберите тип роли</div>
-        </div>
-
-        <!-- ===== ССЫЛКИ НА СЕРИИ ===== -->
-        <div class="admin-field">
-            <label>Ссылки на серии (по одной на каждую серию) *</label>
-            <div class="episode-inputs" id="episodeInputs">
-                <div class="episode-row">
-                    <span>1.</span>
-                    <input type="text" class="episode-link" placeholder="https://vkvideo.ru/..." />
-                </div>
-            </div>
-            <div class="hint">Вставьте ссылку на видео для каждой серии. Количество полей автоматически изменится.</div>
-        </div>
-
-        <button class="admin-submit" id="adminSubmitBtn">➕ Добавить дораму</button>
-
-        <div class="admin-list" id="adminDramaList">
-            <div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 8px 0;">
-                Список добавленных дорам
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================================
     ПОДВАЛ
     ============================================================ -->
     <footer class="site-footer">
@@ -1816,50 +1300,7 @@
 
     <script>
         // =====================================================
-        // БЛОК 1: АДМИН-РЕЖИМ
-        // =====================================================
-        const ADMIN_SECRET_KEY = 'DianaSuperSecret2026';
-        const urlParams = new URLSearchParams(window.location.search);
-        const adminKey = urlParams.get('admin');
-
-        let isAdmin = false;
-        const storedAdmin = localStorage.getItem('drama_admin_mode');
-        const storedSecret = localStorage.getItem('drama_admin_secret');
-
-        if (adminKey === ADMIN_SECRET_KEY) {
-            isAdmin = true;
-            localStorage.setItem('drama_admin_mode', 'true');
-            localStorage.setItem('drama_admin_secret', ADMIN_SECRET_KEY);
-            if (window.history && window.history.replaceState) {
-                const newUrl = window.location.pathname + window.location.search.replace(/[?&]admin=[^&]*/, '').replace(/^&/, '?');
-                window.history.replaceState({}, document.title, newUrl || window.location.pathname);
-            }
-        } else if (storedAdmin === 'true' && storedSecret === ADMIN_SECRET_KEY) {
-            isAdmin = true;
-        }
-
-        function exitAdminMode() {
-            localStorage.removeItem('drama_admin_mode');
-            localStorage.removeItem('drama_admin_secret');
-            isAdmin = false;
-            document.getElementById('adminBadge').classList.remove('active');
-            document.getElementById('adminToggleBtn').classList.remove('visible');
-            document.getElementById('adminPanel').classList.remove('active');
-            showToast('🔒 Админ-режим отключён', '👋', 'info');
-        }
-
-        function checkAdminMode() {
-            if (isAdmin) {
-                document.getElementById('adminBadge').classList.add('active');
-                document.getElementById('adminToggleBtn').classList.add('visible');
-            } else {
-                document.getElementById('adminBadge').classList.remove('active');
-                document.getElementById('adminToggleBtn').classList.remove('visible');
-            }
-        }
-
-        // =====================================================
-        // БЛОК 2: СЧЁТЧИК ОНЛАЙНА
+        // БЛОК 1: СЧЁТЧИК ОНЛАЙНА
         // =====================================================
         (function() {
             const STORAGE_KEY = 'drama_online_users';
@@ -1939,7 +1380,7 @@
         })();
 
         // =====================================================
-        // БЛОК 3: ТЕМА
+        // БЛОК 2: ТЕМА
         // =====================================================
         const themeSwitch = document.getElementById('themeSwitch');
         let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -1958,7 +1399,7 @@
         applyTheme(currentTheme);
 
         // =====================================================
-        // БЛОК 4: TOAST
+        // БЛОК 3: TOAST
         // =====================================================
         function showToast(message, icon = '', type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -1970,90 +1411,7 @@
         }
 
         // =====================================================
-        // БЛОК 5: ТОКЕН
-        // =====================================================
-        let tokenValid = false;
-
-        async function checkToken(token) {
-            if (!token || token.length < 10) {
-                tokenValid = false;
-                updateTokenStatus(false, '❌ Слишком короткий');
-                return false;
-            }
-
-            try {
-                const response = await fetch('https://api.github.com/user', {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                    }
-                });
-
-                if (response.ok) {
-                    tokenValid = true;
-                    localStorage.setItem('github_token', token);
-                    updateTokenStatus(true, '✅ Токен валидный');
-                    return true;
-                } else {
-                    tokenValid = false;
-                    localStorage.removeItem('github_token');
-                    updateTokenStatus(false, '❌ Неверный токен');
-                    return false;
-                }
-            } catch (error) {
-                tokenValid = false;
-                localStorage.removeItem('github_token');
-                updateTokenStatus(false, '❌ Ошибка проверки');
-                return false;
-            }
-        }
-
-        function updateTokenStatus(valid, text) {
-            const field = document.getElementById('tokenField');
-            const status = document.getElementById('tokenStatus');
-            const statusText = document.getElementById('tokenStatusText');
-
-            field.classList.remove('valid', 'invalid');
-            status.classList.remove('valid', 'invalid');
-
-            if (valid) {
-                field.classList.add('valid');
-                status.classList.add('valid');
-                statusText.textContent = text;
-                statusText.style.color = 'var(--token-valid)';
-            } else {
-                field.classList.add('invalid');
-                status.classList.add('invalid');
-                statusText.textContent = text;
-                statusText.style.color = 'var(--token-invalid)';
-            }
-        }
-
-        document.getElementById('adminGitHubToken').addEventListener('input', function() {
-            const token = this.value.trim();
-            if (token.length >= 10) {
-                checkToken(token);
-            } else {
-                tokenValid = false;
-                localStorage.removeItem('github_token');
-                updateTokenStatus(false, '⏳ Введите токен...');
-            }
-        });
-
-        function getGitHubToken() {
-            const token = document.getElementById('adminGitHubToken').value.trim();
-            if (!token) {
-                showToast('⚠️ Введите GitHub Token в админ-панели!', '🔑', 'error');
-                return null;
-            }
-            if (!tokenValid) {
-                showToast('⚠️ Токен невалидный! Проверьте правильность.', '🔑', 'error');
-                return null;
-            }
-            return token;
-        }
-
-        // =====================================================
-        // БЛОК 6: ДАННЫЕ О ДОРАМАХ (23 ДОРАМЫ)
+        // БЛОК 4: ДАННЫЕ О ДОРАМАХ
         // =====================================================
         const DRAMAS = {};
         const movies = [];
@@ -2190,26 +1548,13 @@
                     plot: 'Студент факультета компьютерных наук Чу Сан У...',
                     cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
                         role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } },
-            // ===== НОВАЯ ДОРАМА 23: НАША ВСЕЛЕННАЯ =====
-            drama23: {
-                name: 'Наша вселенная',
-                episodes: 12,
-                poster: '12451913.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Ким Сын Хо',
-                    genre: 'мелодрама, комедия, семейный',
-                    country: 'Корея Южная',
-                    duration: '01:10:00',
-                    translation: 'Профессиональный многоголосый',
-                    plot: 'Сюжет строится вокруг двух родственников — Сон Тхэ Хёна (Пэ Ин Хёк) и У Хён Джин (Но Чжон Ый). Изначально они не близки: их связывает только родство через брак (сестра Хён Джин замужем за братом Тхэ Хёна), и с первой встречи они не находят общего языка, постоянно конфликтуют. Трагическая авария уносит жизни родителей малыша У Джу (Пак Ю Хо) — его родители были братом Тхэ Хёна и сестрой Хён Джин. Теперь У Джу остаётся на попечении его дяди и тёти. Чтобы заботиться о ребёнке, Тхэ Хён и Хён Джин вынуждены начать жить вместе. По мере того как они вместе преодолевают трудности воспитания, постепенно исчезают недопонимания, а между ними зарождаются романтические чувства.',
-                    cast: [
-                        { name: 'Пэ Ин Хёк', role: 'Сон Тхэ Хён', tag: 'Главная роль' },
-                        { name: 'Но Чжон Ый', role: 'У Хён Джин', tag: 'Главная роль' },
-                        { name: 'Пак Ю Хо', role: 'У Джу', tag: 'Главная роль' }
-                    ]
-                }
-            }
+            drama23: { name: 'Наша вселенная', episodes: 12, poster: '12451913.jpg',
+                info: { year: '2026', genre: 'мелодрама, комедия, семейный', country: 'Корея Южная',
+                    director: 'Ким Сын Хо', duration: '01:10:00', translation: 'Профессиональный многоголосый',
+                    plot: 'Сюжет строится вокруг двух родственников...',
+                    cast: [{ name: 'Пэ Ин Хёк', role: 'Сон Тхэ Хён', tag: 'Главная роль' }, { name: 'Но Чжон Ый',
+                        role: 'У Хён Джин', tag: 'Главная роль' }, { name: 'Пак Ю Хо', role: 'У Джу',
+                        tag: 'Главная роль' }] } }
         };
 
         Object.keys(baseDramas).forEach(id => {
@@ -2242,7 +1587,7 @@
         });
 
         // =====================================================
-        // БЛОК 7: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
+        // БЛОК 5: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
         // =====================================================
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showFavoritesOnly = false;
@@ -2495,7 +1840,7 @@
         });
 
         // =====================================================
-        // БЛОК 8: ПОИСК
+        // БЛОК 6: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2539,7 +1884,7 @@
         });
 
         // =====================================================
-        // БЛОК 9: МОДАЛЬНОЕ ОКНО
+        // БЛОК 7: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2658,7 +2003,7 @@
         });
 
         // =====================================================
-        // БЛОК 10: ПРОДОЛЖИТЬ ПРОСМОТР
+        // БЛОК 8: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2689,7 +2034,7 @@
         }
 
         // =====================================================
-        // БЛОК 11: КНОПКА "НАВЕРХ"
+        // БЛОК 9: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2700,560 +2045,7 @@
         });
 
         // =====================================================
-        // БЛОК 12: АДМИН-ПАНЕЛЬ
-        // =====================================================
-        const ADMIN_STORAGE_KEY = 'admin_dramas';
-
-        function getAdminDramas() {
-            try {
-                return JSON.parse(localStorage.getItem(ADMIN_STORAGE_KEY)) || [];
-            } catch { return []; }
-        }
-
-        function saveAdminDramas(list) {
-            localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(list));
-        }
-
-        function generateDramaId() {
-            const existing = getAdminDramas();
-            let maxNum = 23;
-            existing.forEach(d => {
-                const match = d.dramaId.match(/drama(\d+)/);
-                if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
-            });
-            return 'drama' + (maxNum + 1);
-        }
-
-        // ===== УПРАВЛЕНИЕ АКТЁРАМИ =====
-        function addCastRow(name = '', role = 'Главная роль') {
-            const container = document.getElementById('castInputs');
-            const row = document.createElement('div');
-            row.className = 'cast-row';
-            row.innerHTML = `
-                <input type="text" class="cast-name" placeholder="Имя актёра" value="${name}" />
-                <select class="cast-role-select">
-                    <option value="Главная роль" ${role === 'Главная роль' ? 'selected' : ''}>⭐ Главная роль</option>
-                    <option value="Второстепенная роль" ${role === 'Второстепенная роль' ? 'selected' : ''}>🎭 Второстепенная роль</option>
-                    <option value="Камео" ${role === 'Камео' ? 'selected' : ''}>🎬 Камео</option>
-                </select>
-                <button class="cast-remove" onclick="removeCastRow(this)">✕</button>
-            `;
-            container.appendChild(row);
-        }
-
-        function removeCastRow(btn) {
-            const container = document.getElementById('castInputs');
-            if (container.children.length > 1) {
-                btn.closest('.cast-row').remove();
-            } else {
-                showToast('Должен быть хотя бы один актёр', '⚠️', 'error');
-            }
-        }
-
-        document.getElementById('castAddBtn').addEventListener('click', function() {
-            addCastRow();
-        });
-
-        // ===== ОБНОВЛЕНИЕ ПОЛЕЙ ДЛЯ СЕРИЙ =====
-        document.getElementById('adminDramaEpisodes').addEventListener('input', function() {
-            const count = parseInt(this.value) || 1;
-            const container = document.getElementById('episodeInputs');
-            const currentCount = container.children.length;
-
-            if (count > currentCount) {
-                for (let i = currentCount + 1; i <= count; i++) {
-                    const row = document.createElement('div');
-                    row.className = 'episode-row';
-                    row.innerHTML = `
-                        <span>${i}.</span>
-                        <input type="text" class="episode-link" placeholder="https://vkvideo.ru/..." />
-                    `;
-                    container.appendChild(row);
-                }
-            } else if (count < currentCount) {
-                for (let i = currentCount; i > count; i--) {
-                    container.removeChild(container.lastElementChild);
-                }
-            }
-        });
-
-        function renderAdminDramaList() {
-            const container = document.getElementById('adminDramaList');
-            const dramas = getAdminDramas();
-            if (dramas.length === 0) {
-                container.innerHTML =
-                    `<div style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 8px 0;">
-                    Добавленных дорам пока нет
-                </div>`;
-                return;
-            }
-            let html = '';
-            dramas.forEach((d, index) => {
-                html += `
-                    <div class="admin-item">
-                        <span>${d.name} (${d.year}) — ${d.episodes} серий, ${d.cast ? d.cast.length : 0} актёров</span>
-                        <button class="del-btn" data-index="${index}">✕</button>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-            container.querySelectorAll('.del-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    const list = getAdminDramas();
-                    list.splice(idx, 1);
-                    saveAdminDramas(list);
-                    renderAdminDramaList();
-                    location.reload();
-                });
-            });
-        }
-
-        // =====================================================
-        // БЛОК 13: РАБОТАЮЩАЯ АДМИН-ПАНЕЛЬ ЧЕРЕЗ GITHUB API
-        // =====================================================
-        const GITHUB_OWNER = 'dorama15film-netizen';
-        const GITHUB_REPO = 'dorama15film-netizen.github.io';
-        const GITHUB_BRANCH = 'main';
-
-        // ФУНКЦИЯ ПОЛУЧЕНИЯ ФАЙЛА С GITHUB
-        async function getFileFromGitHub(path, token) {
-            try {
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-                if (response.status === 404) return null;
-                if (!response.ok) throw new Error('Ошибка получения файла');
-                return await response.json();
-            } catch (error) {
-                console.error('Ошибка получения файла:', error);
-                return null;
-            }
-        }
-
-        // ФУНКЦИЯ СОХРАНЕНИЯ ФАЙЛА НА GITHUB
-        async function saveFileToGitHub(path, content, message, token, sha = null) {
-            try {
-                const body = {
-                    message: message,
-                    content: content,
-                    branch: GITHUB_BRANCH
-                };
-                if (sha) body.sha = sha;
-
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/vnd.github.v3+json'
-                        },
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.message || 'Ошибка сохранения');
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('Ошибка сохранения файла:', error);
-                throw error;
-            }
-        }
-
-        // ФУНКЦИЯ ЗАГРУЗКИ ПОСТЕРА НА GITHUB
-        async function uploadPosterToGitHub(file, token) {
-            try {
-                const reader = new FileReader();
-                return new Promise((resolve, reject) => {
-                    reader.onload = async function(e) {
-                        try {
-                            const base64Content = e.target.result.split(',')[1];
-                            const fileName = file.name;
-                            const fullPath = fileName;
-
-                            const existing = await getFileFromGitHub(fullPath, token);
-
-                            const result = await saveFileToGitHub(
-                                fullPath,
-                                base64Content,
-                                `Загрузка постера: ${fileName}`,
-                                token,
-                                existing ? existing.sha : null
-                            );
-
-                            resolve({
-                                success: true,
-                                filename: fileName,
-                                path: fullPath,
-                                url: `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${fullPath}`
-                            });
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } catch (error) {
-                console.error('Ошибка загрузки постера:', error);
-                throw error;
-            }
-        }
-
-        // ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ В INDEX.HTML
-        async function addDramaToIndexHtml(dramaData, token) {
-            try {
-                const file = await getFileFromGitHub('index.html', token);
-                if (!file) throw new Error('Файл index.html не найден');
-
-                let content = atob(file.content);
-                
-                const baseDramasStart = content.indexOf('const baseDramas = {');
-                if (baseDramasStart === -1) throw new Error('baseDramas не найдена');
-                
-                let braceCount = 0;
-                let insertIndex = -1;
-                for (let i = baseDramasStart; i < content.length; i++) {
-                    if (content[i] === '{') braceCount++;
-                    if (content[i] === '}') {
-                        braceCount--;
-                        if (braceCount === 0) {
-                            insertIndex = i;
-                            break;
-                        }
-                    }
-                }
-                
-                if (insertIndex === -1) throw new Error('Не найден конец baseDramas');
-
-                const newDrama = `
-            drama${dramaData.id}: {
-                name: '${dramaData.name.replace(/'/g, "\\'")}',
-                episodes: ${dramaData.episodes},
-                poster: '${dramaData.poster}',
-                info: {
-                    year: '${dramaData.year}',
-                    director: '${dramaData.director.replace(/'/g, "\\'")}',
-                    genre: '${dramaData.genre}',
-                    country: '${dramaData.country}',
-                    duration: '${dramaData.duration}',
-                    translation: '${dramaData.translation}',
-                    plot: '${dramaData.plot.replace(/'/g, "\\'")}',
-                    cast: [${dramaData.cast.map(actor => `
-                        { name: '${actor.name.replace(/'/g, "\\'")}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
-                    ]
-                }
-            },`;
-
-                const newContent = content.slice(0, insertIndex) + newDrama + content.slice(insertIndex);
-                const encodedContent = btoa(newContent);
-
-                await saveFileToGitHub(
-                    'index.html',
-                    encodedContent,
-                    `Добавлена дорама: ${dramaData.name}`,
-                    token,
-                    file.sha
-                );
-
-                return { success: true };
-            } catch (error) {
-                console.error('Ошибка добавления в index.html:', error);
-                throw error;
-            }
-        }
-
-        // ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ В WATCH.HTML
-        async function addDramaToWatchHtml(dramaData, token) {
-            try {
-                const file = await getFileFromGitHub('watch.html', token);
-                if (!file) throw new Error('Файл watch.html не найден');
-
-                let content = atob(file.content);
-                
-                const dramasStart = content.indexOf('const DRAMAS = {');
-                if (dramasStart === -1) throw new Error('DRAMAS не найдена');
-                
-                let braceCount = 0;
-                let insertIndex = -1;
-                for (let i = dramasStart; i < content.length; i++) {
-                    if (content[i] === '{') braceCount++;
-                    if (content[i] === '}') {
-                        braceCount--;
-                        if (braceCount === 0) {
-                            insertIndex = i;
-                            break;
-                        }
-                    }
-                }
-                
-                if (insertIndex === -1) throw new Error('Не найден конец DRAMAS');
-
-                const newDrama = `
-            // ===== ДОРАМА ${dramaData.id}: ${dramaData.name} =====
-            drama${dramaData.id}: {
-                name: '${dramaData.name.replace(/'/g, "\\'")}',
-                episodes: ${dramaData.episodes},
-                storageKey: 'lastDramaEpisode${dramaData.id}',
-                info: {
-                    year: '${dramaData.year}',
-                    director: '${dramaData.director.replace(/'/g, "\\'")}',
-                    genre: '${dramaData.genre}',
-                    country: '${dramaData.country}',
-                    duration: '${dramaData.duration}',
-                    translation: '${dramaData.translation}',
-                    plot: '${dramaData.plot.replace(/'/g, "\\'")}',
-                    cast: [${dramaData.cast.map(actor => `
-                        { name: '${actor.name.replace(/'/g, "\\'")}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
-                    ]
-                },
-                videos: {${dramaData.videos.map((url, i) => `
-                    ${i + 1}: '${url}'`).join(',')}
-                }
-            },`;
-
-                const newContent = content.slice(0, insertIndex) + newDrama + content.slice(insertIndex);
-                const encodedContent = btoa(newContent);
-
-                await saveFileToGitHub(
-                    'watch.html',
-                    encodedContent,
-                    `Добавлена дорама: ${dramaData.name} (watch.html)`,
-                    token,
-                    file.sha
-                );
-
-                return { success: true };
-            } catch (error) {
-                console.error('Ошибка добавления в watch.html:', error);
-                throw error;
-            }
-        }
-
-        // ДОБАВЛЕНИЕ В MOVIES
-        async function addMovieToList(dramaData, token) {
-            try {
-                const file = await getFileFromGitHub('index.html', token);
-                if (!file) throw new Error('Файл index.html не найден');
-
-                let content = atob(file.content);
-                
-                const moviesStart = content.indexOf('const movies = [');
-                if (moviesStart === -1) throw new Error('movies не найдена');
-                
-                let bracketCount = 0;
-                let insertIndex = -1;
-                for (let i = moviesStart; i < content.length; i++) {
-                    if (content[i] === '[') bracketCount++;
-                    if (content[i] === ']') {
-                        bracketCount--;
-                        if (bracketCount === 0) {
-                            insertIndex = i;
-                            break;
-                        }
-                    }
-                }
-                
-                if (insertIndex === -1) throw new Error('Не найден конец movies');
-
-                const newMovie = `
-            { name: '${dramaData.name.replace(/'/g, "\\'")}', year: ${dramaData.year}, rating: ${dramaData.rating || 8.0}, poster: '${dramaData.poster}', isDrama: true, isSeries: true, genre: '${dramaData.genre}', dramaId: 'drama${dramaData.id}' },`;
-
-                const newContent = content.slice(0, insertIndex) + newMovie + content.slice(insertIndex);
-                const encodedContent = btoa(newContent);
-
-                await saveFileToGitHub(
-                    'index.html',
-                    encodedContent,
-                    `Добавлена дорама в список: ${dramaData.name}`,
-                    token,
-                    file.sha
-                );
-
-                return { success: true };
-            } catch (error) {
-                console.error('Ошибка добавления в movies:', error);
-                throw error;
-            }
-        }
-
-        // ОСНОВНАЯ ФУНКЦИЯ
-        async function addDramaReal() {
-            const token = getGitHubToken();
-            if (!token) return;
-
-            const name = document.getElementById('adminDramaName').value.trim();
-            const year = parseInt(document.getElementById('adminDramaYear').value.trim());
-            const rating = parseFloat(document.getElementById('adminDramaRating').value.trim()) || 8.0;
-            const genre = document.getElementById('adminDramaGenre').value.trim();
-            const country = document.getElementById('adminDramaCountry').value.trim() || 'Корея Южная';
-            const director = document.getElementById('adminDramaDirector').value.trim() || 'Не указан';
-            const duration = document.getElementById('adminDramaDuration').value.trim() || '01:00:00';
-            const translation = document.getElementById('adminDramaTranslation').value.trim() || 'Профессиональный многоголосый';
-            const episodes = parseInt(document.getElementById('adminDramaEpisodes').value.trim());
-            const plot = document.getElementById('adminDramaPlot').value.trim() || 'Описание отсутствует.';
-            const posterFile = document.getElementById('adminDramaPosterFile').files[0];
-            const posterUrl = document.getElementById('adminDramaPoster').value.trim();
-
-            const cast = [];
-            document.querySelectorAll('.cast-row').forEach(row => {
-                const name = row.querySelector('.cast-name').value.trim();
-                const role = row.querySelector('.cast-role-select').value;
-                if (name) {
-                    cast.push({ name: name, role: role, tag: role });
-                }
-            });
-
-            const videos = [];
-            document.querySelectorAll('.episode-link').forEach(input => {
-                const val = input.value.trim();
-                if (val) videos.push(val);
-            });
-
-            if (!name) { showToast('Введите название дорамы!', '⚠️', 'error'); return; }
-            if (!year || year < 1900) { showToast('Введите корректный год!', '⚠️', 'error'); return; }
-            if (!genre) { showToast('Введите жанр!', '⚠️', 'error'); return; }
-            if (!episodes || episodes < 1) { showToast('Введите количество серий!', '⚠️', 'error'); return; }
-            if (videos.length !== episodes) {
-                showToast(`Введите ссылки для всех ${episodes} серий!`, '⚠️', 'error');
-                return;
-            }
-            if (cast.length === 0) {
-                showToast('Добавьте хотя бы одного актёра!', '⚠️', 'error');
-                return;
-            }
-
-            let posterFileName = posterUrl;
-
-            if (posterFile) {
-                try {
-                    showToast('⏳ Загрузка постера на GitHub...', '📤', 'info');
-                    const uploadResult = await uploadPosterToGitHub(posterFile, token);
-                    posterFileName = uploadResult.filename;
-                    showToast('✅ Постер загружен!', '🖼️', 'success');
-                } catch (error) {
-                    showToast('❌ Ошибка загрузки постера: ' + error.message, '🚫', 'error');
-                    return;
-                }
-            } else if (!posterUrl) {
-                showToast('Укажите постер (загрузите файл или укажите ссылку)!', '⚠️', 'error');
-                return;
-            }
-
-            const existingDramas = getAdminDramas();
-            let maxNum = 23;
-            existingDramas.forEach(d => {
-                const match = d.dramaId.match(/drama(\d+)/);
-                if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
-            });
-            const dramaId = maxNum + 1;
-
-            const dramaData = {
-                id: dramaId,
-                name: name,
-                year: year,
-                rating: rating,
-                poster: posterFileName,
-                genre: genre,
-                country: country,
-                director: director,
-                duration: duration,
-                translation: translation,
-                episodes: episodes,
-                plot: plot,
-                cast: cast,
-                videos: videos
-            };
-
-            try {
-                showToast('⏳ Добавление дорамы в код...', '💾', 'info');
-                
-                await addDramaToIndexHtml(dramaData, token);
-                await addDramaToWatchHtml(dramaData, token);
-                await addMovieToList(dramaData, token);
-
-                showToast(`✅ Дорама "${name}" добавлена в код на GitHub!`, '🎉', 'success');
-                
-                document.getElementById('adminDramaName').value = '';
-                document.getElementById('adminDramaYear').value = '';
-                document.getElementById('adminDramaRating').value = '';
-                document.getElementById('adminDramaGenre').value = '';
-                document.getElementById('adminDramaCountry').value = '';
-                document.getElementById('adminDramaDirector').value = '';
-                document.getElementById('adminDramaDuration').value = '';
-                document.getElementById('adminDramaTranslation').value = '';
-                document.getElementById('adminDramaPoster').value = '';
-                document.getElementById('adminDramaPosterFile').value = '';
-                document.getElementById('adminDramaEpisodes').value = '';
-                document.getElementById('adminDramaPlot').value = '';
-                document.querySelectorAll('.episode-link').forEach(el => el.value = '');
-
-                const castContainer = document.getElementById('castInputs');
-                while (castContainer.children.length > 1) {
-                    castContainer.removeChild(castContainer.lastElementChild);
-                }
-                document.querySelector('.cast-name').value = '';
-                document.querySelector('.cast-role-select').value = 'Главная роль';
-
-                // Обновляем список в админ-панели
-                const list = getAdminDramas();
-                list.push({
-                    dramaId: 'drama' + dramaId,
-                    name: name,
-                    year: year,
-                    episodes: episodes,
-                    cast: cast
-                });
-                saveAdminDramas(list);
-                renderAdminDramaList();
-
-                setTimeout(() => location.reload(), 3000);
-            } catch (error) {
-                showToast('❌ Ошибка добавления: ' + error.message, '🚫', 'error');
-                console.error(error);
-            }
-        }
-
-        // =====================================================
-        // БЛОК 14: НАСТРОЙКА АДМИН-ПАНЕЛИ
-        // =====================================================
-
-        checkAdminMode();
-
-        document.getElementById('adminToggleBtn').addEventListener('click', function() {
-            if (isAdmin) {
-                document.getElementById('adminPanel').classList.toggle('active');
-                if (document.getElementById('adminPanel').classList.contains('active')) {
-                    renderAdminDramaList();
-                }
-            }
-        });
-
-        document.getElementById('adminCloseBtn').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.remove('active');
-        });
-
-        document.getElementById('adminExitBtn').addEventListener('click', function() {
-            if (confirm('Вы уверены, что хотите выйти из админ-режима?')) {
-                exitAdminMode();
-                location.reload();
-            }
-        });
-
-        document.getElementById('adminSubmitBtn').addEventListener('click', addDramaReal);
-
-        // =====================================================
-        // БЛОК 15: ИНИЦИАЛИЗАЦИЯ
+        // БЛОК 10: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
@@ -3268,9 +2060,6 @@
 
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('🎬 Всего дорам: ' + movies.length);
-        console.log('🔑 GitHub Token проверяется автоматически при вводе!');
-        console.log('✅ Админ-панель работает через GitHub API!');
-        console.log('🔐 Админ-режим: ' + (isAdmin ? 'АКТИВЕН' : 'НЕ АКТИВЕН'));
     </script>
 </body>
 </html>
