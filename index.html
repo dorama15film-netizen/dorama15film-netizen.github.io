@@ -671,7 +671,6 @@
         .movie-card:nth-child(20) { animation-delay: 1.00s; }
         .movie-card:nth-child(21) { animation-delay: 1.05s; }
         .movie-card:nth-child(22) { animation-delay: 1.10s; }
-        .movie-card:nth-child(23) { animation-delay: 1.15s; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -1730,7 +1729,7 @@
         <div class="admin-field">
             <label>Загрузить постер *</label>
             <input type="file" id="adminDramaPosterFile" accept="image/*" />
-            <div class="hint">Выберите файл постера (JPG, PNG, WEBP). Загрузится в папку images/ на GitHub</div>
+            <div class="hint">Выберите файл постера (JPG, PNG, WEBP). Загрузится в корень сайта</div>
         </div>
 
         <div class="admin-field">
@@ -1859,12 +1858,12 @@
         }
 
         // =====================================================
-        // БЛОК 2: СЧЁТЧИК ОНЛАЙНА (ОБЩИЙ, ЧЕРЕЗ GITHUB)
+        // БЛОК 2: СЧЁТЧИК ОНЛАЙНА
         // =====================================================
         (function() {
-            const ONLINE_FILE = 'online.json';
-            const HEARTBEAT_INTERVAL = 10000;
-            const TIMEOUT_INTERVAL = 30000;
+            const STORAGE_KEY = 'drama_online_users';
+            const HEARTBEAT_INTERVAL = 5000;
+            const TIMEOUT_INTERVAL = 15000;
             const countElement = document.getElementById('onlineCount');
 
             function getUserId() {
@@ -1876,142 +1875,101 @@
                 return userId;
             }
 
-            function getGitHubToken() {
-                return localStorage.getItem('github_token') || '';
-            }
-
-            async function getOnlineUsersFromGitHub(token) {
+            function getOnlineUsers() {
+                const now = Date.now();
+                let users = {};
                 try {
-                    const url = `https://api.github.com/repos/dorama15film-netizen/dorama15film-netizen.github.io/contents/${ONLINE_FILE}`;
-                    const headers = token ? { 'Authorization': `token ${token}` } : {};
-                    
-                    const response = await fetch(url, { headers });
-                    if (response.status === 404) return {};
-                    if (!response.ok) throw new Error('Ошибка загрузки');
-                    const data = await response.json();
-                    const content = JSON.parse(atob(data.content));
-                    return content;
-                } catch (error) {
-                    console.warn('Ошибка загрузки онлайн-счётчика:', error);
-                    return {};
-                }
-            }
-
-            async function saveOnlineUsersToGitHub(users, token) {
-                try {
-                    if (!token) return false;
-                    const content = btoa(JSON.stringify(users, null, 2));
-                    const url = `https://api.github.com/repos/dorama15film-netizen/dorama15film-netizen.github.io/contents/${ONLINE_FILE}`;
-                    const headers = {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    };
-
-                    let sha = null;
-                    try {
-                        const checkResponse = await fetch(url, { headers });
-                        if (checkResponse.ok) {
-                            const data = await checkResponse.json();
-                            sha = data.sha;
-                        }
-                    } catch (e) {}
-
-                    const body = {
-                        message: `Обновление онлайн-счётчика: ${new Date().toISOString()}`,
-                        content: content,
-                        branch: 'main'
-                    };
-                    if (sha) body.sha = sha;
-
-                    const response = await fetch(url, {
-                        method: 'PUT',
-                        headers: headers,
-                        body: JSON.stringify(body)
-                    });
-
-                    return response.ok;
-                } catch (error) {
-                    console.warn('Ошибка сохранения онлайн-счётчика:', error);
-                    return false;
-                }
-            }
-
-            async function updateCounter() {
-                const token = getGitHubToken();
-                if (!token) {
-                    // Локальный режим
-                    let count = parseInt(localStorage.getItem('drama_online_count')) || 1;
-                    if (countElement) countElement.textContent = count;
-                    return;
-                }
-
-                try {
-                    const userId = getUserId();
-                    const now = Date.now();
-                    
-                    let users = await getOnlineUsersFromGitHub(token);
-                    
-                    for (const [key, time] of Object.entries(users)) {
-                        if (now - time > TIMEOUT_INTERVAL) {
-                            delete users[key];
-                        }
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    if (stored) {
+                        users = JSON.parse(stored);
                     }
-                    
-                    users[userId] = now;
-                    await saveOnlineUsersToGitHub(users, token);
-                    
-                    const onlineCount = Object.keys(users).length;
-                    if (countElement) {
-                        countElement.textContent = onlineCount;
-                    }
-                    localStorage.setItem('drama_online_count', onlineCount);
-                    
-                } catch (error) {
-                    console.warn('Ошибка обновления счётчика:', error);
-                    let count = parseInt(localStorage.getItem('drama_online_count')) || 1;
-                    if (countElement) countElement.textContent = count;
+                } catch (e) {
+                    users = {};
                 }
+                for (const [key, time] of Object.entries(users)) {
+                    if (now - time > TIMEOUT_INTERVAL) {
+                        delete users[key];
+                    }
+                }
+                return users;
+            }
+
+            function updateCounter() {
+                const userId = getUserId();
+                const now = Date.now();
+                let users = getOnlineUsers();
+                users[userId] = now;
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                } catch (e) {}
+                const onlineCount = Object.keys(users).length;
+                if (countElement) {
+                    countElement.textContent = onlineCount;
+                }
+                return onlineCount;
             }
 
             updateCounter();
             const intervalId = setInterval(updateCounter, HEARTBEAT_INTERVAL);
 
-            window.addEventListener('beforeunload', async function() {
-                const token = getGitHubToken();
-                if (!token) return;
-                
-                const userId = localStorage.getItem('drama_user_id');
-                if (userId) {
-                    try {
-                        let users = await getOnlineUsersFromGitHub(token);
-                        delete users[userId];
-                        await saveOnlineUsersToGitHub(users, token);
-                    } catch (e) {}
-                }
-                clearInterval(intervalId);
-            });
-
             document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) updateCounter();
+                if (!document.hidden) {
+                    updateCounter();
+                }
             });
 
             window.addEventListener('focus', function() {
                 updateCounter();
             });
 
-            console.log('🟢 Счётчик онлайн запущен (общий через GitHub)');
+            window.addEventListener('beforeunload', function() {
+                const userId = localStorage.getItem('drama_user_id');
+                if (userId) {
+                    try {
+                        let users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                        delete users[userId];
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+                    } catch (e) {}
+                }
+                clearInterval(intervalId);
+            });
+
+            console.log('🟢 Счётчик онлайн запущен.');
         })();
 
         // =====================================================
-        // БЛОК 3: НАСТРОЙКИ GITHUB
+        // БЛОК 3: ТЕМА
         // =====================================================
-        const GITHUB_OWNER = 'dorama15film-netizen';
-        const GITHUB_REPO = 'dorama15film-netizen.github.io';
-        const GITHUB_BRANCH = 'main';
-        const GITHUB_IMAGES_PATH = 'images/';
+        const themeSwitch = document.getElementById('themeSwitch');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            currentTheme = theme;
+        }
+
+        themeSwitch.addEventListener('click', () => {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '', 'info');
+        });
+        applyTheme(currentTheme);
 
         // =====================================================
-        // БЛОК 4: ТОКЕН
+        // БЛОК 4: TOAST
+        // =====================================================
+        function showToast(message, icon = '', type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
+        }
+
+        // =====================================================
+        // БЛОК 5: ТОКЕН
         // =====================================================
         let tokenValid = false;
 
@@ -2094,222 +2052,7 @@
         }
 
         // =====================================================
-        // БЛОК 5: ТЕМА
-        // =====================================================
-        const themeSwitch = document.getElementById('themeSwitch');
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-
-        function applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            currentTheme = theme;
-        }
-
-        themeSwitch.addEventListener('click', () => {
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(newTheme);
-            showToast(newTheme === 'light' ? '☀️ Светлая тема' : '🌙 Тёмная тема', '', 'info');
-        });
-        applyTheme(currentTheme);
-
-        // =====================================================
-        // БЛОК 6: TOAST
-        // =====================================================
-        function showToast(message, icon = '', type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span class="toast-icon">${icon}</span> ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
-        }
-
-        // =====================================================
-        // БЛОК 7: GITHUB API
-        // =====================================================
-        async function checkFileExists(path, token) {
-            try {
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                        }
-                    }
-                );
-                if (response.status === 404) return null;
-                if (!response.ok) return null;
-                return await response.json();
-            } catch {
-                return null;
-            }
-        }
-
-        async function createImagesFolder(token) {
-            try {
-                const existing = await checkFileExists(GITHUB_IMAGES_PATH + '.gitkeep', token);
-                if (existing) return true;
-
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_IMAGES_PATH}.gitkeep`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: 'Создание папки images/',
-                            content: btoa(''),
-                            branch: GITHUB_BRANCH
-                        })
-                    }
-                );
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    console.warn('Не удалось создать папку images:', error);
-                    return false;
-                }
-
-                return true;
-            } catch (error) {
-                console.warn('Ошибка создания папки images:', error);
-                return false;
-            }
-        }
-
-        async function uploadPosterToGitHub(file, token) {
-            try {
-                await createImagesFolder(token);
-
-                const reader = new FileReader();
-                return new Promise((resolve, reject) => {
-                    reader.onload = async function(e) {
-                        try {
-                            const base64Content = e.target.result.split(',')[1];
-                            
-                            const fileExt = file.name.split('.').pop();
-                            const safeName = Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + fileExt;
-                            const fullPath = GITHUB_IMAGES_PATH + safeName;
-
-                            const existing = await checkFileExists(fullPath, token);
-
-                            const response = await fetch(
-                                `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${fullPath}`,
-                                {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Authorization': `token ${token}`,
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        message: `Загрузка постера: ${safeName}`,
-                                        content: base64Content,
-                                        sha: existing ? existing.sha : undefined,
-                                        branch: GITHUB_BRANCH
-                                    })
-                                }
-                            );
-
-                            if (!response.ok) {
-                                const error = await response.json();
-                                throw new Error(error.message || 'Ошибка загрузки');
-                            }
-
-                            const data = await response.json();
-                            resolve({
-                                success: true,
-                                url: `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${fullPath}`,
-                                filename: safeName,
-                                path: fullPath
-                            });
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
-            } catch (error) {
-                console.error('Ошибка загрузки постера:', error);
-                throw error;
-            }
-        }
-
-        async function saveDramasToGitHub(dramasData, token) {
-            try {
-                let fileContent = `// =====================================================
-        // ДАННЫЕ О ДОРАМАХ (АВТОМАТИЧЕСКИ СГЕНЕРИРОВАНЫ)
-        // =====================================================
-
-        const DRAMAS = {`;
-
-                dramasData.forEach((d, index) => {
-                    const comma = index < dramasData.length - 1 ? ',' : '';
-                    const dramaId = d.dramaId || `drama${23 + index}`;
-                    
-                    fileContent += `
-            "${dramaId}": {
-                name: "${d.name.replace(/"/g, '\\"')}",
-                episodes: ${d.episodes},
-                storageKey: "lastDramaEpisode${dramaId.replace('drama', '')}",
-                poster: "${d.poster}",
-                info: {
-                    year: "${d.year}",
-                    director: "${d.director || 'Не указан'}",
-                    genre: "${d.genre}",
-                    country: "${d.country || 'Не указана'}",
-                    duration: "${d.duration || '—'}",
-                    translation: "${d.translation || '—'}",
-                    plot: "${(d.plot || 'Описание отсутствует.').replace(/"/g, '\\"').replace(/\n/g, '\\n')}",
-                    cast: [${d.cast ? d.cast.map(actor => `
-                        { name: "${actor.name.replace(/"/g, '\\"')}", role: "${actor.role.replace(/"/g, '\\"')}", tag: "${actor.tag}" }`).join(',') : ''}
-                    ]
-                },
-                videos: {${Object.entries(d.episodeLinks || {}).map(([num, link]) => `
-                    ${num}: "${link}"`).join(',')}
-                }
-            }${comma}`;
-                });
-
-                fileContent += `
-            };`;
-
-                const encodedContent = btoa(unescape(encodeURIComponent(fileContent)));
-
-                const existing = await checkFileExists('dramas.js', token);
-
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/dramas.js`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: `Обновление данных дорам: ${new Date().toLocaleString('ru-RU')}`,
-                            content: encodedContent,
-                            sha: existing ? existing.sha : undefined,
-                            branch: GITHUB_BRANCH
-                        })
-                    }
-                );
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.message || 'Ошибка сохранения данных');
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error('Ошибка сохранения на GitHub:', error);
-                throw error;
-            }
-        }
-
-        // =====================================================
-        // БЛОК 8: ДАННЫЕ О ДОРАМАХ (23 ДОРАМЫ)
+        // БЛОК 6: ДАННЫЕ О ДОРАМАХ (22 ДОРАМЫ)
         // =====================================================
         const DRAMAS = {};
         const movies = [];
@@ -2445,27 +2188,7 @@
                     director: 'Ким Хён Джун', duration: '00:45:00', translation: 'Профессиональный многоголосый',
                     plot: 'Студент факультета компьютерных наук Чу Сан У...',
                     cast: [{ name: 'Чхэ Чжон Хёп', role: 'Чу Сан У', tag: 'Главная роль' }, { name: 'Пак Со Хам',
-                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } },
-            // ===== НОВАЯ ДОРАМА 23: НАША ВСЕЛЕННАЯ =====
-            drama23: {
-                name: 'Наша вселенная',
-                episodes: 12,
-                poster: '12451913.jpg',
-                info: {
-                    year: '2026',
-                    director: 'Ким Сын Хо',
-                    genre: 'мелодрама, комедия, семейный',
-                    country: 'Корея Южная',
-                    duration: '01:10:00',
-                    translation: 'Профессиональный многоголосый',
-                    plot: 'Сюжет строится вокруг двух родственников — Сон Тхэ Хёна (Пэ Ин Хёк) и У Хён Джин (Но Чжон Ый). Изначально они не близки: их связывает только родство через брак (сестра Хён Джин замужем за братом Тхэ Хёна), и с первой встречи они не находят общего языка, постоянно конфликтуют. Трагическая авария уносит жизни родителей малыша У Джу (Пак Ю Хо) — его родители были братом Тхэ Хёна и сестрой Хён Джин. Теперь У Джу остаётся на попечении его дяди и тёти. Чтобы заботиться о ребёнке, Тхэ Хён и Хён Джин вынуждены начать жить вместе. По мере того как они вместе преодолевают трудности воспитания, постепенно исчезают недопонимания, а между ними зарождаются романтические чувства.',
-                    cast: [
-                        { name: 'Пэ Ин Хёк', role: 'Сон Тхэ Хён', tag: 'Главная роль' },
-                        { name: 'Но Чжон Ый', role: 'У Хён Джин', tag: 'Главная роль' },
-                        { name: 'Пак Ю Хо', role: 'У Джу', tag: 'Главная роль' }
-                    ]
-                }
-            }
+                        role: 'Чан Чжэ Ён', tag: 'Главная роль' }] } }
         };
 
         Object.keys(baseDramas).forEach(id => {
@@ -2498,7 +2221,7 @@
         });
 
         // =====================================================
-        // БЛОК 9: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
+        // БЛОК 7: ИЗБРАННОЕ, РЕЙТИНГИ, ЖАНРЫ, ФИЛЬТРАЦИЯ
         // =====================================================
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let showFavoritesOnly = false;
@@ -2751,7 +2474,7 @@
         });
 
         // =====================================================
-        // БЛОК 10: ПОИСК
+        // БЛОК 8: ПОИСК
         // =====================================================
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
@@ -2795,7 +2518,7 @@
         });
 
         // =====================================================
-        // БЛОК 11: МОДАЛЬНОЕ ОКНО
+        // БЛОК 9: МОДАЛЬНОЕ ОКНО
         // =====================================================
         const modalOverlay = document.getElementById('modalOverlay');
         const modalClose = document.getElementById('modalClose');
@@ -2914,7 +2637,7 @@
         });
 
         // =====================================================
-        // БЛОК 12: ПРОДОЛЖИТЬ ПРОСМОТР
+        // БЛОК 10: ПРОДОЛЖИТЬ ПРОСМОТР
         // =====================================================
         function getLastWatchedDrama() {
             const saved = localStorage.getItem('lastDramaId');
@@ -2945,7 +2668,7 @@
         }
 
         // =====================================================
-        // БЛОК 13: КНОПКА "НАВЕРХ"
+        // БЛОК 11: КНОПКА "НАВЕРХ"
         // =====================================================
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', function() {
@@ -2956,7 +2679,7 @@
         });
 
         // =====================================================
-        // БЛОК 14: АДМИН-ПАНЕЛЬ
+        // БЛОК 12: АДМИН-ПАНЕЛЬ
         // =====================================================
         const ADMIN_STORAGE_KEY = 'admin_dramas';
 
@@ -2972,7 +2695,7 @@
 
         function generateDramaId() {
             const existing = getAdminDramas();
-            let maxNum = 23;
+            let maxNum = 22;
             existing.forEach(d => {
                 const match = d.dramaId.match(/drama(\d+)/);
                 if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
@@ -3065,19 +2788,293 @@
             });
         }
 
-        // ===== ОСНОВНАЯ ФУНКЦИЯ ДОБАВЛЕНИЯ =====
-        async function addAdminDrama() {
+        // =====================================================
+        // БЛОК 13: РАБОТАЮЩАЯ АДМИН-ПАНЕЛЬ ЧЕРЕЗ GITHUB API
+        // =====================================================
+        const GITHUB_OWNER = 'dorama15film-netizen';
+        const GITHUB_REPO = 'dorama15film-netizen.github.io';
+        const GITHUB_BRANCH = 'main';
+
+        // ФУНКЦИЯ ПОЛУЧЕНИЯ ФАЙЛА С GITHUB
+        async function getFileFromGitHub(path, token) {
+            try {
+                const response = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+                    {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    }
+                );
+                if (response.status === 404) return null;
+                if (!response.ok) throw new Error('Ошибка получения файла');
+                return await response.json();
+            } catch (error) {
+                console.error('Ошибка получения файла:', error);
+                return null;
+            }
+        }
+
+        // ФУНКЦИЯ СОХРАНЕНИЯ ФАЙЛА НА GITHUB
+        async function saveFileToGitHub(path, content, message, token, sha = null) {
+            try {
+                const body = {
+                    message: message,
+                    content: content,
+                    branch: GITHUB_BRANCH
+                };
+                if (sha) body.sha = sha;
+
+                const response = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        body: JSON.stringify(body)
+                    }
+                );
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Ошибка сохранения');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Ошибка сохранения файла:', error);
+                throw error;
+            }
+        }
+
+        // ФУНКЦИЯ ЗАГРУЗКИ ПОСТЕРА НА GITHUB
+        async function uploadPosterToGitHub(file, token) {
+            try {
+                const reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onload = async function(e) {
+                        try {
+                            const base64Content = e.target.result.split(',')[1];
+                            const fileName = file.name;
+                            const fullPath = fileName;
+
+                            const existing = await getFileFromGitHub(fullPath, token);
+
+                            const result = await saveFileToGitHub(
+                                fullPath,
+                                base64Content,
+                                `Загрузка постера: ${fileName}`,
+                                token,
+                                existing ? existing.sha : null
+                            );
+
+                            resolve({
+                                success: true,
+                                filename: fileName,
+                                path: fullPath,
+                                url: `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${fullPath}`
+                            });
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки постера:', error);
+                throw error;
+            }
+        }
+
+        // ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ В INDEX.HTML
+        async function addDramaToIndexHtml(dramaData, token) {
+            try {
+                const file = await getFileFromGitHub('index.html', token);
+                if (!file) throw new Error('Файл index.html не найден');
+
+                const content = atob(file.content);
+                const lines = content.split('\n');
+
+                // Находим конец baseDramas
+                let insertIndex = -1;
+                let braceCount = 0;
+                let foundBaseDramas = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('const baseDramas = {')) {
+                        foundBaseDramas = true;
+                        braceCount = 1;
+                    }
+                    if (foundBaseDramas) {
+                        if (lines[i].includes('{')) braceCount++;
+                        if (lines[i].includes('}')) braceCount--;
+                        if (braceCount === 0) {
+                            insertIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (insertIndex === -1) throw new Error('Не найден конец baseDramas');
+
+                const newDramaCode = `
+            drama${dramaData.id}: {
+                name: '${dramaData.name}',
+                episodes: ${dramaData.episodes},
+                poster: '${dramaData.poster}',
+                info: {
+                    year: '${dramaData.year}',
+                    director: '${dramaData.director}',
+                    genre: '${dramaData.genre}',
+                    country: '${dramaData.country}',
+                    duration: '${dramaData.duration}',
+                    translation: '${dramaData.translation}',
+                    plot: '${dramaData.plot.replace(/'/g, "\\'")}',
+                    cast: [${dramaData.cast.map(actor => `
+                        { name: '${actor.name}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
+                    ]
+                }
+            },`;
+
+                lines.splice(insertIndex, 0, newDramaCode);
+
+                // Добавляем в movies
+                const movieIndex = lines.findIndex(line => line.includes('const movies = ['));
+                if (movieIndex !== -1) {
+                    const newMovie = `
+            { name: '${dramaData.name}', year: ${dramaData.year}, rating: ${dramaData.rating || 8.0}, poster: '${dramaData.poster}', isDrama: true, isSeries: true, genre: '${dramaData.genre}', dramaId: 'drama${dramaData.id}' },`;
+                    
+                    let movieInsertIndex = -1;
+                    let movieBraceCount = 0;
+                    let foundMovies = false;
+
+                    for (let i = movieIndex; i < lines.length; i++) {
+                        if (lines[i].includes('const movies = [')) {
+                            foundMovies = true;
+                            movieBraceCount = 1;
+                        }
+                        if (foundMovies) {
+                            if (lines[i].includes('[')) movieBraceCount++;
+                            if (lines[i].includes(']')) movieBraceCount--;
+                            if (movieBraceCount === 0) {
+                                movieInsertIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (movieInsertIndex !== -1) {
+                        lines.splice(movieInsertIndex, 0, newMovie);
+                    }
+                }
+
+                const newContent = lines.join('\n');
+                const encodedContent = btoa(newContent);
+
+                await saveFileToGitHub(
+                    'index.html',
+                    encodedContent,
+                    `Добавлена дорама: ${dramaData.name}`,
+                    token,
+                    file.sha
+                );
+
+                return { success: true };
+            } catch (error) {
+                console.error('Ошибка добавления в index.html:', error);
+                throw error;
+            }
+        }
+
+        // ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ В WATCH.HTML
+        async function addDramaToWatchHtml(dramaData, token) {
+            try {
+                const file = await getFileFromGitHub('watch.html', token);
+                if (!file) throw new Error('Файл watch.html не найден');
+
+                const content = atob(file.content);
+                const lines = content.split('\n');
+
+                let insertIndex = -1;
+                let braceCount = 0;
+                let foundDRAMAS = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].includes('const DRAMAS = {')) {
+                        foundDRAMAS = true;
+                        braceCount = 1;
+                    }
+                    if (foundDRAMAS) {
+                        if (lines[i].includes('{')) braceCount++;
+                        if (lines[i].includes('}')) braceCount--;
+                        if (braceCount === 0) {
+                            insertIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (insertIndex === -1) throw new Error('Не найден конец DRAMAS');
+
+                const newDramaCode = `
+            // ===== ДОРАМА ${dramaData.id}: ${dramaData.name} =====
+            drama${dramaData.id}: {
+                name: '${dramaData.name}',
+                episodes: ${dramaData.episodes},
+                storageKey: 'lastDramaEpisode${dramaData.id}',
+                info: {
+                    year: '${dramaData.year}',
+                    director: '${dramaData.director}',
+                    genre: '${dramaData.genre}',
+                    country: '${dramaData.country}',
+                    duration: '${dramaData.duration}',
+                    translation: '${dramaData.translation}',
+                    plot: '${dramaData.plot.replace(/'/g, "\\'")}',
+                    cast: [${dramaData.cast.map(actor => `
+                        { name: '${actor.name}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
+                    ]
+                },
+                videos: {${dramaData.videos.map((url, i) => `
+                    ${i + 1}: '${url}'`).join(',')}
+                }
+            },`;
+
+                lines.splice(insertIndex, 0, newDramaCode);
+
+                const newContent = lines.join('\n');
+                const encodedContent = btoa(newContent);
+
+                await saveFileToGitHub(
+                    'watch.html',
+                    encodedContent,
+                    `Добавлена дорама: ${dramaData.name} (watch.html)`,
+                    token,
+                    file.sha
+                );
+
+                return { success: true };
+            } catch (error) {
+                console.error('Ошибка добавления в watch.html:', error);
+                throw error;
+            }
+        }
+
+        // ОСНОВНАЯ ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ
+        async function addDramaReal() {
             const token = getGitHubToken();
             if (!token) return;
 
             const name = document.getElementById('adminDramaName').value.trim();
             const year = parseInt(document.getElementById('adminDramaYear').value.trim());
-            const rating = parseFloat(document.getElementById('adminDramaRating').value.trim()) || 7.0;
+            const rating = parseFloat(document.getElementById('adminDramaRating').value.trim()) || 8.0;
             const genre = document.getElementById('adminDramaGenre').value.trim();
-            const country = document.getElementById('adminDramaCountry').value.trim() || 'Не указана';
+            const country = document.getElementById('adminDramaCountry').value.trim() || 'Корея Южная';
             const director = document.getElementById('adminDramaDirector').value.trim() || 'Не указан';
-            const duration = document.getElementById('adminDramaDuration').value.trim() || '—';
-            const translation = document.getElementById('adminDramaTranslation').value.trim() || '—';
+            const duration = document.getElementById('adminDramaDuration').value.trim() || '01:00:00';
+            const translation = document.getElementById('adminDramaTranslation').value.trim() || 'Профессиональный многоголосый';
             const episodes = parseInt(document.getElementById('adminDramaEpisodes').value.trim());
             const plot = document.getElementById('adminDramaPlot').value.trim() || 'Описание отсутствует.';
             const posterFile = document.getElementById('adminDramaPosterFile').files[0];
@@ -3092,19 +3089,17 @@
                 }
             });
 
-            const episodeLinks = {};
-            document.querySelectorAll('.episode-link').forEach((input, index) => {
+            const videos = [];
+            document.querySelectorAll('.episode-link').forEach(input => {
                 const val = input.value.trim();
-                if (val) {
-                    episodeLinks[index + 1] = val;
-                }
+                if (val) videos.push(val);
             });
 
             if (!name) { showToast('Введите название дорамы!', '⚠️', 'error'); return; }
             if (!year || year < 1900) { showToast('Введите корректный год!', '⚠️', 'error'); return; }
             if (!genre) { showToast('Введите жанр!', '⚠️', 'error'); return; }
             if (!episodes || episodes < 1) { showToast('Введите количество серий!', '⚠️', 'error'); return; }
-            if (Object.keys(episodeLinks).length !== episodes) {
+            if (videos.length !== episodes) {
                 showToast(`Введите ссылки для всех ${episodes} серий!`, '⚠️', 'error');
                 return;
             }
@@ -3120,7 +3115,7 @@
                     showToast('⏳ Загрузка постера на GitHub...', '📤', 'info');
                     const uploadResult = await uploadPosterToGitHub(posterFile, token);
                     posterFileName = uploadResult.filename;
-                    showToast('✅ Постер загружен на GitHub!', '🖼️', 'success');
+                    showToast('✅ Постер загружен!', '🖼️', 'success');
                 } catch (error) {
                     showToast('❌ Ошибка загрузки постера: ' + error.message, '🚫', 'error');
                     return;
@@ -3130,10 +3125,16 @@
                 return;
             }
 
-            const dramaId = generateDramaId();
+            const existingDramas = getAdminDramas();
+            let maxNum = 22;
+            existingDramas.forEach(d => {
+                const match = d.dramaId.match(/drama(\d+)/);
+                if (match) maxNum = Math.max(maxNum, parseInt(match[1]));
+            });
+            const dramaId = maxNum + 1;
 
-            const newDrama = {
-                dramaId: dramaId,
+            const dramaData = {
+                id: dramaId,
                 name: name,
                 year: year,
                 rating: rating,
@@ -3146,51 +3147,46 @@
                 episodes: episodes,
                 plot: plot,
                 cast: cast,
-                episodeLinks: episodeLinks,
-                isAdminAdded: true,
-                addedAt: new Date().toISOString()
+                videos: videos
             };
 
-            const list = getAdminDramas();
-            list.push(newDrama);
-            saveAdminDramas(list);
-
             try {
-                showToast('⏳ Сохранение данных на GitHub...', '💾', 'info');
-                await saveDramasToGitHub(list, token);
-                showToast('✅ Данные сохранены на GitHub!', '🎉', 'success');
+                showToast('⏳ Добавление дорамы в код...', '💾', 'info');
+                
+                await addDramaToIndexHtml(dramaData, token);
+                await addDramaToWatchHtml(dramaData, token);
+
+                showToast(`✅ Дорама "${name}" добавлена в код на GitHub!`, '🎉', 'success');
+                
+                document.getElementById('adminDramaName').value = '';
+                document.getElementById('adminDramaYear').value = '';
+                document.getElementById('adminDramaRating').value = '';
+                document.getElementById('adminDramaGenre').value = '';
+                document.getElementById('adminDramaCountry').value = '';
+                document.getElementById('adminDramaDirector').value = '';
+                document.getElementById('adminDramaDuration').value = '';
+                document.getElementById('adminDramaTranslation').value = '';
+                document.getElementById('adminDramaPoster').value = '';
+                document.getElementById('adminDramaPosterFile').value = '';
+                document.getElementById('adminDramaEpisodes').value = '';
+                document.getElementById('adminDramaPlot').value = '';
+                document.querySelectorAll('.episode-link').forEach(el => el.value = '');
+
+                const castContainer = document.getElementById('castInputs');
+                while (castContainer.children.length > 1) {
+                    castContainer.removeChild(castContainer.lastElementChild);
+                }
+                document.querySelector('.cast-name').value = '';
+                document.querySelector('.cast-role-select').value = 'Главная роль';
+
+                setTimeout(() => location.reload(), 2000);
             } catch (error) {
-                showToast('❌ Ошибка сохранения на GitHub: ' + error.message, '🚫', 'error');
+                showToast('❌ Ошибка добавления: ' + error.message, '🚫', 'error');
             }
-
-            document.getElementById('adminDramaName').value = '';
-            document.getElementById('adminDramaYear').value = '';
-            document.getElementById('adminDramaRating').value = '';
-            document.getElementById('adminDramaGenre').value = '';
-            document.getElementById('adminDramaCountry').value = '';
-            document.getElementById('adminDramaDirector').value = '';
-            document.getElementById('adminDramaDuration').value = '';
-            document.getElementById('adminDramaTranslation').value = '';
-            document.getElementById('adminDramaPoster').value = '';
-            document.getElementById('adminDramaPosterFile').value = '';
-            document.getElementById('adminDramaEpisodes').value = '';
-            document.getElementById('adminDramaPlot').value = '';
-            document.querySelectorAll('.episode-link').forEach(el => el.value = '');
-
-            const castContainer = document.getElementById('castInputs');
-            while (castContainer.children.length > 1) {
-                castContainer.removeChild(castContainer.lastElementChild);
-            }
-            document.querySelector('.cast-name').value = '';
-            document.querySelector('.cast-role-select').value = 'Главная роль';
-
-            renderAdminDramaList();
-            showToast(`✅ Дорама "${name}" добавлена и сохранена на GitHub!`, '🎉', 'success');
-            setTimeout(() => location.reload(), 2000);
         }
 
         // =====================================================
-        // БЛОК 15: НАСТРОЙКА АДМИН-ПАНЕЛИ
+        // БЛОК 14: НАСТРОЙКА АДМИН-ПАНЕЛИ
         // =====================================================
 
         checkAdminMode();
@@ -3215,10 +3211,11 @@
             }
         });
 
-        document.getElementById('adminSubmitBtn').addEventListener('click', addAdminDrama);
+        // ПЕРЕОПРЕДЕЛЯЕМ КНОПКУ ДОБАВЛЕНИЯ
+        document.getElementById('adminSubmitBtn').addEventListener('click', addDramaReal);
 
         // =====================================================
-        // БЛОК 16: ИНИЦИАЛИЗАЦИЯ
+        // БЛОК 15: ИНИЦИАЛИЗАЦИЯ
         // =====================================================
         renderGenres();
         renderYears();
@@ -3234,9 +3231,8 @@
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('🎬 Всего дорам: ' + movies.length);
         console.log('🔑 GitHub Token проверяется автоматически при вводе!');
-        console.log('🟢 Счётчик онлайн работает (общий через GitHub)!');
+        console.log('✅ Админ-панель теперь РЕАЛЬНО работает через GitHub API!');
         console.log('🔐 Админ-режим: ' + (isAdmin ? 'АКТИВЕН' : 'НЕ АКТИВЕН'));
-        console.log('📌 Если админ-режим активен, он сохраняется при обновлении и переходах по страницам.');
     </script>
 </body>
 </html>
