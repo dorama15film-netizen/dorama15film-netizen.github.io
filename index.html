@@ -1816,7 +1816,7 @@
 
     <script>
         // =====================================================
-        // БЛОК 1: АДМИН-РЕЖИМ (СОХРАНЯЕТСЯ В localStorage)
+        // БЛОК 1: АДМИН-РЕЖИМ
         // =====================================================
         const ADMIN_SECRET_KEY = 'DianaSuperSecret2026';
         const urlParams = new URLSearchParams(window.location.search);
@@ -2916,83 +2916,46 @@
                 const file = await getFileFromGitHub('index.html', token);
                 if (!file) throw new Error('Файл index.html не найден');
 
-                const content = atob(file.content);
-                const lines = content.split('\n');
-
-                // Находим конец baseDramas
-                let insertIndex = -1;
+                let content = atob(file.content);
+                
+                const baseDramasStart = content.indexOf('const baseDramas = {');
+                if (baseDramasStart === -1) throw new Error('baseDramas не найдена');
+                
                 let braceCount = 0;
-                let foundBaseDramas = false;
-
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('const baseDramas = {')) {
-                        foundBaseDramas = true;
-                        braceCount = 1;
-                    }
-                    if (foundBaseDramas) {
-                        if (lines[i].includes('{')) braceCount++;
-                        if (lines[i].includes('}')) braceCount--;
+                let insertIndex = -1;
+                for (let i = baseDramasStart; i < content.length; i++) {
+                    if (content[i] === '{') braceCount++;
+                    if (content[i] === '}') {
+                        braceCount--;
                         if (braceCount === 0) {
                             insertIndex = i;
                             break;
                         }
                     }
                 }
-
+                
                 if (insertIndex === -1) throw new Error('Не найден конец baseDramas');
 
-                const newDramaCode = `
+                const newDrama = `
             drama${dramaData.id}: {
-                name: '${dramaData.name}',
+                name: '${dramaData.name.replace(/'/g, "\\'")}',
                 episodes: ${dramaData.episodes},
                 poster: '${dramaData.poster}',
                 info: {
                     year: '${dramaData.year}',
-                    director: '${dramaData.director}',
+                    director: '${dramaData.director.replace(/'/g, "\\'")}',
                     genre: '${dramaData.genre}',
                     country: '${dramaData.country}',
                     duration: '${dramaData.duration}',
                     translation: '${dramaData.translation}',
                     plot: '${dramaData.plot.replace(/'/g, "\\'")}',
                     cast: [${dramaData.cast.map(actor => `
-                        { name: '${actor.name}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
+                        { name: '${actor.name.replace(/'/g, "\\'")}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
                     ]
                 }
             },`;
 
-                lines.splice(insertIndex, 0, newDramaCode);
-
-                // Добавляем в movies
-                const movieIndex = lines.findIndex(line => line.includes('const movies = ['));
-                if (movieIndex !== -1) {
-                    const newMovie = `
-            { name: '${dramaData.name}', year: ${dramaData.year}, rating: ${dramaData.rating || 8.0}, poster: '${dramaData.poster}', isDrama: true, isSeries: true, genre: '${dramaData.genre}', dramaId: 'drama${dramaData.id}' },`;
-                    
-                    let movieInsertIndex = -1;
-                    let movieBraceCount = 0;
-                    let foundMovies = false;
-
-                    for (let i = movieIndex; i < lines.length; i++) {
-                        if (lines[i].includes('const movies = [')) {
-                            foundMovies = true;
-                            movieBraceCount = 1;
-                        }
-                        if (foundMovies) {
-                            if (lines[i].includes('[')) movieBraceCount++;
-                            if (lines[i].includes(']')) movieBraceCount--;
-                            if (movieBraceCount === 0) {
-                                movieInsertIndex = i;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (movieInsertIndex !== -1) {
-                        lines.splice(movieInsertIndex, 0, newMovie);
-                    }
-                }
-
-                const newContent = lines.join('\n');
+                const newContent = content.slice(0, insertIndex) + newDrama + content.slice(insertIndex);
                 const encodedContent = btoa(newContent);
 
                 await saveFileToGitHub(
@@ -3016,46 +2979,42 @@
                 const file = await getFileFromGitHub('watch.html', token);
                 if (!file) throw new Error('Файл watch.html не найден');
 
-                const content = atob(file.content);
-                const lines = content.split('\n');
-
-                let insertIndex = -1;
+                let content = atob(file.content);
+                
+                const dramasStart = content.indexOf('const DRAMAS = {');
+                if (dramasStart === -1) throw new Error('DRAMAS не найдена');
+                
                 let braceCount = 0;
-                let foundDRAMAS = false;
-
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('const DRAMAS = {')) {
-                        foundDRAMAS = true;
-                        braceCount = 1;
-                    }
-                    if (foundDRAMAS) {
-                        if (lines[i].includes('{')) braceCount++;
-                        if (lines[i].includes('}')) braceCount--;
+                let insertIndex = -1;
+                for (let i = dramasStart; i < content.length; i++) {
+                    if (content[i] === '{') braceCount++;
+                    if (content[i] === '}') {
+                        braceCount--;
                         if (braceCount === 0) {
                             insertIndex = i;
                             break;
                         }
                     }
                 }
-
+                
                 if (insertIndex === -1) throw new Error('Не найден конец DRAMAS');
 
-                const newDramaCode = `
+                const newDrama = `
             // ===== ДОРАМА ${dramaData.id}: ${dramaData.name} =====
             drama${dramaData.id}: {
-                name: '${dramaData.name}',
+                name: '${dramaData.name.replace(/'/g, "\\'")}',
                 episodes: ${dramaData.episodes},
                 storageKey: 'lastDramaEpisode${dramaData.id}',
                 info: {
                     year: '${dramaData.year}',
-                    director: '${dramaData.director}',
+                    director: '${dramaData.director.replace(/'/g, "\\'")}',
                     genre: '${dramaData.genre}',
                     country: '${dramaData.country}',
                     duration: '${dramaData.duration}',
                     translation: '${dramaData.translation}',
                     plot: '${dramaData.plot.replace(/'/g, "\\'")}',
                     cast: [${dramaData.cast.map(actor => `
-                        { name: '${actor.name}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
+                        { name: '${actor.name.replace(/'/g, "\\'")}', role: '${actor.role}', tag: '${actor.tag}' }`).join(',')}
                     ]
                 },
                 videos: {${dramaData.videos.map((url, i) => `
@@ -3063,9 +3022,7 @@
                 }
             },`;
 
-                lines.splice(insertIndex, 0, newDramaCode);
-
-                const newContent = lines.join('\n');
+                const newContent = content.slice(0, insertIndex) + newDrama + content.slice(insertIndex);
                 const encodedContent = btoa(newContent);
 
                 await saveFileToGitHub(
@@ -3083,7 +3040,54 @@
             }
         }
 
-        // ОСНОВНАЯ ФУНКЦИЯ ДОБАВЛЕНИЯ ДОРАМЫ
+        // ДОБАВЛЕНИЕ В MOVIES
+        async function addMovieToList(dramaData, token) {
+            try {
+                const file = await getFileFromGitHub('index.html', token);
+                if (!file) throw new Error('Файл index.html не найден');
+
+                let content = atob(file.content);
+                
+                const moviesStart = content.indexOf('const movies = [');
+                if (moviesStart === -1) throw new Error('movies не найдена');
+                
+                let bracketCount = 0;
+                let insertIndex = -1;
+                for (let i = moviesStart; i < content.length; i++) {
+                    if (content[i] === '[') bracketCount++;
+                    if (content[i] === ']') {
+                        bracketCount--;
+                        if (bracketCount === 0) {
+                            insertIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                if (insertIndex === -1) throw new Error('Не найден конец movies');
+
+                const newMovie = `
+            { name: '${dramaData.name.replace(/'/g, "\\'")}', year: ${dramaData.year}, rating: ${dramaData.rating || 8.0}, poster: '${dramaData.poster}', isDrama: true, isSeries: true, genre: '${dramaData.genre}', dramaId: 'drama${dramaData.id}' },`;
+
+                const newContent = content.slice(0, insertIndex) + newMovie + content.slice(insertIndex);
+                const encodedContent = btoa(newContent);
+
+                await saveFileToGitHub(
+                    'index.html',
+                    encodedContent,
+                    `Добавлена дорама в список: ${dramaData.name}`,
+                    token,
+                    file.sha
+                );
+
+                return { success: true };
+            } catch (error) {
+                console.error('Ошибка добавления в movies:', error);
+                throw error;
+            }
+        }
+
+        // ОСНОВНАЯ ФУНКЦИЯ
         async function addDramaReal() {
             const token = getGitHubToken();
             if (!token) return;
@@ -3176,6 +3180,7 @@
                 
                 await addDramaToIndexHtml(dramaData, token);
                 await addDramaToWatchHtml(dramaData, token);
+                await addMovieToList(dramaData, token);
 
                 showToast(`✅ Дорама "${name}" добавлена в код на GitHub!`, '🎉', 'success');
                 
@@ -3200,9 +3205,22 @@
                 document.querySelector('.cast-name').value = '';
                 document.querySelector('.cast-role-select').value = 'Главная роль';
 
-                setTimeout(() => location.reload(), 2000);
+                // Обновляем список в админ-панели
+                const list = getAdminDramas();
+                list.push({
+                    dramaId: 'drama' + dramaId,
+                    name: name,
+                    year: year,
+                    episodes: episodes,
+                    cast: cast
+                });
+                saveAdminDramas(list);
+                renderAdminDramaList();
+
+                setTimeout(() => location.reload(), 3000);
             } catch (error) {
                 showToast('❌ Ошибка добавления: ' + error.message, '🚫', 'error');
+                console.error(error);
             }
         }
 
@@ -3232,7 +3250,6 @@
             }
         });
 
-        // ПЕРЕОПРЕДЕЛЯЕМ КНОПКУ ДОБАВЛЕНИЯ
         document.getElementById('adminSubmitBtn').addEventListener('click', addDramaReal);
 
         // =====================================================
@@ -3252,7 +3269,7 @@
         console.log('🚀 Сайт Дорамы от Дианы успешно загружен!');
         console.log('🎬 Всего дорам: ' + movies.length);
         console.log('🔑 GitHub Token проверяется автоматически при вводе!');
-        console.log('✅ Админ-панель теперь РЕАЛЬНО работает через GitHub API!');
+        console.log('✅ Админ-панель работает через GitHub API!');
         console.log('🔐 Админ-режим: ' + (isAdmin ? 'АКТИВЕН' : 'НЕ АКТИВЕН'));
     </script>
 </body>
