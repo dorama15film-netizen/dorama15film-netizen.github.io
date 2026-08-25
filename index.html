@@ -88,9 +88,6 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ============================================================
-           ОБЁРТКА С ИЗОБРАЖЕНИЕМ
-           ============================================================ */
         .image-wrapper {
             width: 100%;
             height: 55vh;
@@ -106,7 +103,6 @@
             display: block;
         }
 
-        /* ЛОГОТИП */
         .logo-overlay {
             position: absolute;
             top: 20px;
@@ -127,7 +123,6 @@
             box-shadow: 0 0 30px rgba(241, 196, 15, 0.3);
         }
 
-        /* СЧЁТЧИК ОНЛАЙНА */
         .online-counter {
             position: absolute;
             top: 20px;
@@ -176,7 +171,6 @@
             50% { opacity: 0.5; transform: scale(1.3); }
         }
 
-        /* ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ */
         .theme-toggle-wrapper {
             position: absolute;
             top: 20px;
@@ -242,7 +236,6 @@
         [data-theme="light"] .theme-icons .sun-icon { color: #ffffff; }
         [data-theme="dark"] .theme-icons .moon-icon { color: #f1c40f; }
 
-        /* ФИЛЬТР ПО ГОДАМ */
         .years-wrapper {
             position: absolute;
             top: 20px;
@@ -317,7 +310,6 @@
             background: rgba(0, 212, 255, 0.1);
         }
 
-        /* ПРОДОЛЖИТЬ ПРОСМОТР */
         .continue-wrapper {
             position: absolute;
             top: 50%;
@@ -380,7 +372,6 @@
             transition: color 0.3s ease;
         }
 
-        /* ПАНЕЛЬ УПРАВЛЕНИЯ */
         .controls-bar {
             width: 100%;
             padding: 12px 20px 8px 20px;
@@ -541,7 +532,6 @@
             text-align: center;
         }
 
-        /* ПОИСК */
         .search-section {
             width: 100%;
             padding: 15px 20px 8px 20px;
@@ -622,7 +612,6 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.15);
         }
 
-        /* СЕТКА ФИЛЬМОВ */
         .movies-grid-wrapper {
             width: 100%;
             flex: 1;
@@ -676,6 +665,7 @@
         .movie-card:nth-child(21) { animation-delay: 1.05s; }
         .movie-card:nth-child(22) { animation-delay: 1.10s; }
         .movie-card:nth-child(23) { animation-delay: 1.15s; }
+        .movie-card:nth-child(24) { animation-delay: 1.20s; }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -747,7 +737,6 @@
             transition: border-color 0.3s ease, color 0.3s ease;
         }
 
-        /* НЕТ РЕЗУЛЬТАТОВ */
         .no-results {
             display: none;
             text-align: center;
@@ -765,7 +754,6 @@
             margin-bottom: 12px;
         }
 
-        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -889,7 +877,6 @@
             transform: rotate(90deg);
         }
 
-        /* РЕЙТИНГ В МОДАЛКЕ */
         .modal-rating-section {
             margin: 12px 0;
             display: flex;
@@ -923,7 +910,6 @@
             color: var(--accent-color);
         }
 
-        /* TOAST */
         .toast-container {
             position: fixed;
             bottom: 100px;
@@ -962,7 +948,6 @@
             to { opacity: 0; transform: translateX(50px); }
         }
 
-        /* КНОПКА "НАВЕРХ" */
         .scroll-top-btn {
             position: fixed;
             bottom: 30px;
@@ -1005,7 +990,6 @@
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* ПОДВАЛ */
         .site-footer {
             width: 100%;
             background: var(--bg-header);
@@ -1177,25 +1161,19 @@
 </head>
 <body>
 
-    <!-- ============================================================
-    ОБЁРТКА С ИЗОБРАЖЕНИЕМ
-    ============================================================ -->
     <div class="image-wrapper">
         <img src="Pr.jpeg" alt="Дорамы от Дианы — смотреть дорамы онлайн бесплатно в хорошем качестве" />
 
-        <!-- ЛОГОТИП -->
         <div class="logo-overlay" id="logoWrapper">
             <img src="Logo.jpeg" alt="Логотип Дорамы от Дианы — смотреть дорамы онлайн" />
         </div>
 
-        <!-- СЧЁТЧИК ОНЛАЙНА -->
         <div class="online-counter" id="onlineCounter">
             <span class="dot"></span>
             <span class="count" id="onlineCount">1</span>
             <span class="label">онлайн</span>
         </div>
 
-        <!-- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ -->
         <div class="theme-toggle-wrapper">
             <span class="theme-toggle-label" id="themeLabel">Тема</span>
             <div class="theme-switch" id="themeSwitch">
@@ -1207,13 +1185,11 @@
             </div>
         </div>
 
-        <!-- ФИЛЬТР ПО ГОДАМ -->
         <div class="years-wrapper" id="yearsWrapper">
             <div class="years-toggle" id="yearsToggle">Поиск по годам</div>
             <div class="years-dropdown" id="yearsDropdown"></div>
         </div>
 
-        <!-- ПРОДОЛЖИТЬ ПРОСМОТР -->
         <div class="continue-wrapper" id="continueWrapper">
             <div class="continue-card" id="continueCard">
                 <img class="continue-poster" id="continuePoster" src="" alt="Продолжить просмотр дорамы" />
@@ -1225,9 +1201,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ПАНЕЛЬ УПРАВЛЕНИЯ
-    ============================================================ -->
     <div class="controls-bar">
         <div class="controls-inner">
             <button class="genres-btn" id="genresBtn">
@@ -1240,9 +1213,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    ПОИСК
-    ============================================================ -->
     <div class="search-section">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="Поиск дорам..." autocomplete="off" />
@@ -1250,9 +1220,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    СЕТКА ФИЛЬМОВ
-    ============================================================ -->
     <div class="movies-grid-wrapper">
         <div class="movies-grid" id="moviesGrid"></div>
         <div class="no-results" id="noResults">
@@ -1261,14 +1228,8 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    КНОПКА "НАВЕРХ"
-    ============================================================ -->
     <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</button>
 
-    <!-- ============================================================
-    МОДАЛЬНОЕ ОКНО
-    ============================================================ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">✕</button>
@@ -1291,14 +1252,8 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    TOAST
-    ============================================================ -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============================================================
-    ПОДВАЛ
-    ============================================================ -->
     <footer class="site-footer">
         <div class="footer-content">
             <div class="footer-column">
@@ -1554,7 +1509,7 @@
                     plot: 'Сюжет разворачивается вокруг двух студентов...',
                     cast: [{ name: 'Дэн Чаоюань', role: 'Цинь Шэнь', tag: 'Главная роль' }, { name: 'Ирене Сун',
                         role: 'Юань Цянь', tag: 'Главная роль' }] } },
-            drama20: { name: 'Жутко влюблённые', episodes: 8, poster: 'ldf.jpg',
+            drama20: { name: 'Жутко влюблённые', episodes: 12, poster: 'ldf.jpg',
                 info: { year: '2026', genre: 'мелодрама, комедия, фэнтези, детектив', country: 'Корея Южная',
                     director: 'Ли Минсу', duration: '01:10:30', translation: 'Проф. Многоголосый',
                     plot: 'Есть люди, которым, кажется, судьба выдала все козыри разом...',
@@ -1578,7 +1533,28 @@
                     plot: 'Сюжет строится вокруг двух родственников...',
                     cast: [{ name: 'Пэ Ин Хёк', role: 'Сон Тхэ Хён', tag: 'Главная роль' }, { name: 'Но Чжон Ый',
                         role: 'У Хён Джин', tag: 'Главная роль' }, { name: 'Пак Ю Хо', role: 'У Джу',
-                        tag: 'Главная роль' }] } }
+                        tag: 'Главная роль' }] } },
+            // ===== ДОРАМА 24: И вспыхнуло пламя =====
+            drama24: {
+                name: 'И вспыхнуло пламя',
+                episodes: 10,
+                poster: 'jhg.jpg',
+                info: {
+                    year: '2024',
+                    director: 'Не указан',
+                    genre: 'мелодрама, драма, история',
+                    country: 'Китай',
+                    duration: '00:45:00',
+                    translation: 'Любительский многоголосый',
+                    plot: 'Шанхай двадцатых, но за кадром — не открытки с рикшами, а гарь гражданской войны, витающая над крышами вместе с дымом от жаровен уличных торговцев. Мальчишку в этой истории с рождения перепутали в роддоме, и вместо тепла родного дома он получил кулаки приёмного отца-военачальника. Годы побоев довели его до побега — почти без сил, почти без надежды. Спасла его дочь торговца лекарствами, простая девушка с руками, пахнущими сушёными травами и полынью. Спасла — и тут же поплатилась: её семью стёрли с лица земли, будто наказывая за доброту. Дальше — тишина в несколько лет, и внезапно судьба сводит их снова, только теперь между ними не благодарность, а нечто более острое и путаное. Влечение есть, а доверия нет ни на грош. Девушка вынашивает месть, и решается на отчаянный шаг: инсценирует собственную смерть, растворяется в ночи на долгих три года. Возвращается она уже другим человеком — по документам богатая наследница откуда-то из Юго-Восточной Азии, с шёлковыми платьями и холодным взглядом. И тут — поворот, от которого сжимается всё внутри: она объявляется невестой старшего брата того самого мальчика, которого когда-то спасла. Комната, где они встречаются впервые за три года, будто наэлектризована — там смешались ревность, старая боль, недосказанная нежность.',
+                    cast: [
+                        { name: 'Чжан Линхэ', role: 'Мужская роль', tag: 'Главная роль' },
+                        { name: 'Цзин Тянь', role: 'Женская роль', tag: 'Главная роль' },
+                        { name: 'Ван Ибо', role: 'Второстепенная роль', tag: 'Второстепенная роль' },
+                        { name: 'Чжао Лиин', role: 'Второстепенная роль', tag: 'Второстепенная роль' }
+                    ]
+                }
+            }
         };
 
         Object.keys(baseDramas).forEach(id => {
